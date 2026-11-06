@@ -275,7 +275,7 @@ $('#tema').onclick = () => setTheme(document.documentElement.dataset.theme === '
 setTheme(document.documentElement.dataset.theme || 'light');
 
 const G = window.GUIDER || [];
-const LOGO = '<svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><path pathLength="1" d="M10 54L32 10L54 54"/><path class="b" pathLength="1" d="M19 38H45"/><circle cx="10" cy="54" r="4"/><circle cx="32" cy="10" r="4"/><circle cx="54" cy="54" r="4"/><circle cx="19" cy="38" r="3.5"/><circle cx="45" cy="38" r="3.5"/></svg>';
+const LOGO = '<img class="logo" src="APlogo.png" width="1536" height="1024" alt="" aria-hidden="true">';
 $('#mark').innerHTML = LOGO;
 $('#nav').innerHTML = `<a href="#veileder" data-p="veileder">Veileder</a><a href="#prosjekter" data-p="prosjekter">Mine prosjekter</a><div class="dd"><button id="ddb" aria-expanded="false" aria-controls="ddm">Guider</button><div class="menu" id="ddm" hidden>${G.map(g => `<a href="#${g.id}" data-p="${g.id}">${g.navn}</a>`).join('')}</div></div>`;
 const ddb = $('#ddb'), ddm = $('#ddm');
