@@ -8,9 +8,9 @@
   --radius:10px;--r-sm:8px;--edge:24px;--ease:cubic-bezier(.2,.7,.2,1);
   color-scheme:light}
 :root[data-theme=dark]{
-  --page:#121411;--paper:#1A1D19;--card:#222620;--ink:#E9E6DC;--muted:#9C9E93;--line:#31362D;--hover:#2A2F27;--line-strong:#454B40;
-  --ok:#7BA886;--danger:#D0776A;--wood:#B79B6E;--tint-bg:#26332A;--tint-line:#3A5142;--warn-bg:#2B2820;--warn-line:#5A4E36;
-  --shadow:rgba(0,0,0,.45);color-scheme:dark}
+  --page:#171615;--paper:#1C1B19;--card:#22201E;--ink:#ECE7DF;--muted:#A39D94;--line:#34312D;--hover:#2A2825;--line-strong:#4B4740;
+  --ok:#B5A88A;--danger:#D98B74;--wood:#C9A774;--tint-bg:#2E2A24;--tint-line:#57503F;--warn-bg:#2D2720;--warn-line:#5C4D36;
+  --shadow:rgba(0,0,0,.5);color-scheme:dark}
 
 /* Base */
 *{box-sizing:border-box}
@@ -87,7 +87,7 @@ select option{color:var(--ink);background:var(--card)}
 main,#guide{margin-top:32px}
 main{display:grid;gap:20px}
 @media(min-width:56rem){
-  #veileder{grid-template-columns:20rem 1fr;align-items:start}
+  #veileder{grid-template-columns:22rem 1fr;align-items:start}
   #ctrl{position:sticky;top:84px;max-height:calc(100vh - 104px);overflow:hidden auto;scrollbar-width:thin}
 }
 section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
@@ -100,9 +100,9 @@ footer{margin-top:48px;margin-bottom:32px;font-size:.8rem;color:var(--muted)}
 /* Valgbokser */
 .seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .seg.stack,.seg.list{grid-template-columns:1fr}
-.seg button{position:relative;display:block;padding:10px 12px 10px 38px;font-weight:400;text-align:left;background:var(--card)}
+.seg button{position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;min-width:0;padding:10px 10px 10px 36px;font-weight:400;text-align:left;background:var(--card);overflow-wrap:break-word;hyphens:manual}
 .seg button small{display:block;margin-top:1px;font-size:.78rem;line-height:1.4;color:var(--muted)}
-.seg button::before{content:"";position:absolute;left:13px;top:13px;width:14px;height:14px;border:1.5px solid var(--line-strong);border-radius:4px;transition:background .2s,border-color .2s,box-shadow .2s}
+.seg button::before{content:"";position:absolute;left:12px;top:13px;width:14px;height:14px;border:1.5px solid var(--line-strong);border-radius:4px;transition:background .2s,border-color .2s,box-shadow .2s}
 #plan button::before,#akt button::before{border-radius:50%}
 .seg button[aria-pressed=true]{background:var(--tint-bg);border-color:var(--tint-line)}
 .seg button[aria-pressed=true]::before{background:var(--ink);border-color:var(--ink);box-shadow:inset 0 0 0 2.5px var(--tint-bg)}

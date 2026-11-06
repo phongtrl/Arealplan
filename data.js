@@ -545,7 +545,7 @@ window.DATA = {
   {
    "id": "fritid",
    "gr": "formal",
-   "navn": "Fritidsbebyggelse",
+   "navn": "Fritids­bebyggelse",
    "t": "Vann, avløp og tilkomst",
    "w": "Hyttefelt krever løsninger for infrastruktur.",
    "risiko": "Strandsone og natur gir innsigelser.",

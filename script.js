@@ -68,28 +68,32 @@ const PK = 'a101:prosjekter';
 let P = null;
 const nyId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const nytt = navn => { const n = new Date().toISOString(); return { id: nyId(), navn, plan: null, akt: null, sel: [], d: {}, t: null, opprettet: n, endret: n }; };
-const cur = () => P.liste.find(x => x.id === P.aktiv) || P.liste[0];
+const cur = () => P.liste.find(x => x.id === P.aktiv) || null;
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmtD = s => s ? new Date(s).toLocaleDateString('nb-NO') : '';
 function pload() {
   try { P = JSON.parse(localStorage.getItem(PK)); } catch (e) { P = null; }
-  if (!P || !Array.isArray(P.liste) || !P.liste.length) { const p = nytt('Mitt prosjekt'); P = { aktiv: p.id, liste: [p] }; }
+  if (!P || !Array.isArray(P.liste)) P = { aktiv: null, liste: [] };
+  // Fjerner det tidligere autogenererte standardprosjektet
+  P.liste = P.liste.filter(p => !(p.navn === 'Mitt prosjekt' && !p.info));
 }
 function psave(touch) {
   const c = cur();
-  Object.assign(c, { plan: S.plan, akt: S.akt, sel: [...S.sel], d: ST.d, t: ST.t });
-  if (touch) c.endret = new Date().toISOString();
+  if (c) {
+    Object.assign(c, { plan: S.plan, akt: S.akt, sel: [...S.sel], d: ST.d, t: ST.t });
+    if (touch) c.endret = new Date().toISOString();
+  }
   try { localStorage.setItem(PK, JSON.stringify(P)); } catch (e) {}
 }
 function popen(id) {
-  P.aktiv = id;
-  const c = cur();
-  P.aktiv = c.id;
-  S.plan = c.plan; S.akt = c.akt; S.sel = new Set(c.sel || []);
+  P.aktiv = P.liste.some(x => x.id === id) ? id : null;
+  const c = cur() || {};
+  S.plan = c.plan || null; S.akt = c.akt || null; S.sel = new Set(c.sel || []);
   ST = { d: c.d || {}, t: c.t || null };
   const sel = $('#pvelg');
-  sel.replaceChildren(...P.liste.map(x => new Option((x.info && x.info.nr ? x.info.nr + ' – ' : '') + x.navn, x.id)));
-  sel.value = c.id;
+  sel.replaceChildren(new Option(P.liste.length ? 'Ingen prosjekt valgt' : 'Ingen prosjekter ennå', ''), ...P.liste.map(x => new Option((x.info && x.info.nr ? x.info.nr + ' – ' : '') + x.navn, x.id)));
+  sel.value = P.aktiv || '';
+  $('.plink').textContent = P.liste.length ? 'Gå til mine prosjekter →' : 'Opprett et prosjekt →';
   const i = c.info || {}, pi = $('#pinfo');
   const parts = [i.oppdragsgiver, i.kommune, i.leder && 'PL: ' + i.leder].filter(Boolean);
   pi.replaceChildren();
@@ -153,13 +157,10 @@ function psubmit(e) {
 function pslett() {
   const ix = P.liste.findIndex(x => x.id === pid), p = P.liste[ix], varAktiv = pid === P.aktiv;
   P.liste.splice(ix, 1);
-  const tom = !P.liste.length && nytt('Mitt prosjekt');
-  if (tom) P.liste.push(tom);
   $('#pdlg').close();
-  popen(varAktiv ? P.liste[0].id : P.aktiv);
+  popen(varAktiv ? null : P.aktiv);
   renderProj();
   toast(`«${p.navn}» er slettet.`, () => {
-    if (tom) P.liste = P.liste.filter(x => x.id !== tom.id);
     P.liste.splice(Math.min(ix, P.liste.length), 0, p);
     popen(varAktiv ? p.id : P.aktiv);
     renderProj();
@@ -173,7 +174,7 @@ function renderProj() {
     s === 'navn' ? a.navn.localeCompare(b.navn, 'nb') :
     s === 'nr' ? ((a.info || {}).nr || '\uffff').localeCompare((b.info || {}).nr || '\uffff', 'nb', { numeric: true }) :
     (b.endret || '').localeCompare(a.endret || ''));
-  $('#pantall').textContent = P.liste.length === 1 ? '1 prosjekt' : P.liste.length + ' prosjekter';
+  $('#pantall').textContent = !P.liste.length ? 'Ingen prosjekter ennå' : P.liste.length === 1 ? '1 prosjekt' : P.liste.length + ' prosjekter';
   const ny = '<button class="pcard pnew" data-ny="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Opprett nytt prosjekt</button>';
   $('#plist').innerHTML = ny + (list.length ? list.map(p => {
     const i = p.info || {}, pl = D.plantyper.find(x => x.id === p.plan), n = Object.keys(p.d || {}).length;
@@ -183,7 +184,7 @@ function renderProj() {
       `<span class="pc-navn">${esc(p.navn)}</span>` +
       `<span class="pc-meta">${meta || 'Ingen oppdragsgiver registrert'}</span>` +
       `<span class="pc-foot"><span>${pl ? pl.navn : 'Plantype ikke valgt'}${n ? ` · ${n} avkrysset` : ''}</span><span>${fmtD(p.endret)}</span></span></button>`;
-  }).join('') : '<p class="pempty">Ingen prosjekter samsvarer med søket.</p>');
+  }).join('') : `<p class="pempty">${P.liste.length ? 'Ingen prosjekter samsvarer med søket.' : 'Du har ingen prosjekter ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
 }
 function initProj() {
   pload();
@@ -268,7 +269,7 @@ function setTheme(t) {
   document.documentElement.dataset.theme = t;
   try { localStorage.setItem('theme', t); } catch (e) {}
   $('#tema').setAttribute('aria-label', t === 'dark' ? 'Bytt til lys modus' : 'Bytt til mørk modus');
-  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#1A1D19' : '#F2EFE8';
+  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#1C1B19' : '#F2EFE8';
 }
 $('#tema').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 setTheme(document.documentElement.dataset.theme || 'light');
