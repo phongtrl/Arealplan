@@ -1,0 +1,86 @@
+{
+"meta":{"versjon":"0.1","oppdatert":"2026-11-05"},
+"plantyper":[
+{"id":"detalj","navn":"Detaljregulering","r":"pbl § 12-3","beskrivelse":"Konkret tiltak eller område, ofte privat forslagsstiller.",
+"steg":[
+{"t":"Planinitiativ og oppstartsmøte","r":"pbl § 12-8","w":"Avklarer med kommunen om planen er ønsket, og hvilke utredninger som kreves, før du bruker ressurser.","f":"Be om skriftlig referat. Det styrer alle senere krav."},
+{"t":"Varsel om oppstart","r":"pbl § 12-8","w":"Berørte parter og myndigheter får gi tidlige innspill.","f":"Glemte parter gir sene innsigelser."},
+{"t":"Utarbeid planforslag med utredninger","r":"pbl §§ 4-2, 4-3","w":"Plankart, bestemmelser, planbeskrivelse og ROS-analyse utgjør planforslaget."},
+{"t":"Kommunens behandling og offentlig ettersyn","r":"pbl §§ 12-10, 12-11","w":"Kommunen tar stilling til forslaget, deretter minst seks ukers høring.","f":"Mangelfulle utredninger kan gi avvisning før høring."},
+{"t":"Innsigelser og vedtak","r":"pbl §§ 5-4, 12-12","w":"Innsigelser må løses, eventuelt gjennom mekling, før kommunestyret vedtar planen.","f":"Snakk med innsigelsesmyndigheten før høringen."}],
+"innhold":[
+{"t":"Plankart","r":"pbl § 12-5","w":"Viser arealformål, hensynssoner og formålsgrenser."},
+{"t":"Reguleringsbestemmelser","r":"pbl § 12-7","w":"Juridisk bindende vilkår for bruk og utforming."},
+{"t":"Planbeskrivelse","r":"pbl § 4-2","w":"Begrunner planen og redegjør for virkninger."},
+{"t":"ROS-analyse","r":"pbl § 4-3","w":"Kartlegger risiko og sårbarhet i planområdet."},
+{"t":"Illustrasjonsplan og snitt","w":"Gjør planen forståelig for politikere og naboer."}]},
+{"id":"omr","navn":"Områderegulering","r":"pbl § 12-2","beskrivelse":"Samlet regulering av et større område, vanligvis kommunen som forslagsstiller.","ku":true,
+"steg":[
+{"t":"Planinitiativ og oppstartsmøte","r":"pbl § 12-8","w":"Avklarer avgrensning, mål og ansvar."},
+{"t":"Planprogram og varsel om oppstart","r":"pbl § 4-1","w":"Planprogrammet fastsetter opplegget for utredninger og medvirkning.","f":"Uklart planprogram gir stadige krav om tilleggsutredninger."},
+{"t":"Planforslag med konsekvensutredning","r":"pbl § 4-2","w":"Virkningene av området som helhet må vurderes."},
+{"t":"Offentlig ettersyn","r":"pbl § 12-10","w":"Minst seks ukers høring."},
+{"t":"Innsigelser og vedtak","r":"pbl §§ 5-4, 12-12","w":"Løs innsigelser før kommunestyrets vedtak."}],
+"innhold":[
+{"t":"Plankart","r":"pbl § 12-5"},
+{"t":"Bestemmelser","r":"pbl § 12-7","w":"Rammer for senere detaljregulering."},
+{"t":"Planbeskrivelse med KU","r":"pbl § 4-2"},
+{"t":"ROS-analyse","r":"pbl § 4-3"},
+{"t":"Rekkefølgekrav og utbyggingsavtaler","w":"Sikrer infrastruktur før utbygging."}]},
+{"id":"kpa","navn":"Kommuneplanens arealdel","r":"pbl § 11-5","beskrivelse":"Overordnet arealstrategi for hele kommunen.","ku":true,
+"steg":[
+{"t":"Planstrategi og planprogram","r":"pbl kap. 10, § 4-1","w":"Fastsetter hvilke tema som skal prioriteres."},
+{"t":"Kunnskapsgrunnlag og konsekvensutredning","r":"pbl § 4-2","w":"Alle nye arealer må utredes.","f":"Dårlig kunnskapsgrunnlag gir innsigelser på enkeltareal."},
+{"t":"Planforslag og høring","r":"pbl kap. 11","w":"Offentlig ettersyn og regionale uttalelser."},
+{"t":"Innsigelser og mekling","r":"pbl §§ 5-4, 5-5","w":"Uløste innsigelser går til mekling."},
+{"t":"Vedtak i kommunestyret","r":"pbl kap. 11"}],
+"innhold":[
+{"t":"Plankart med arealformål","r":"pbl § 11-7"},
+{"t":"Bestemmelser og retningslinjer","r":"pbl § 11-9"},
+{"t":"Planbeskrivelse med KU","r":"pbl § 4-2"},
+{"t":"ROS for nye arealer","r":"pbl § 4-3"}]},
+{"id":"endring","navn":"Endring av reguleringsplan","r":"pbl § 12-14","beskrivelse":"Endring i eksisterende plan, mindre eller større.",
+"steg":[
+{"t":"Vurder om endringen er mindre","r":"pbl § 12-14","w":"Mindre endringer kan behandles forenklet, større følger full planprosess.","f":"Naboer og myndigheter kan være uenige i hva som er mindre."},
+{"t":"Varsle og hør berørte","w":"De som berøres må få uttale seg."},
+{"t":"Dokumenter endringen","w":"Oppdatert kart og bestemmelser med tydelig begrunnelse."},
+{"t":"Vedtak","r":"pbl § 12-14"}],
+"innhold":[
+{"t":"Endret plankart og bestemmelser"},
+{"t":"Begrunnelse for endringen"},
+{"t":"Vurdering av virkninger","w":"Spesielt for naboer og sårbare forhold."},
+{"t":"ROS-vurdering","r":"pbl § 4-3","w":"Bare hvis endringen berører risiko."}]}],
+"aktorer":[
+{"id":"kommune","navn":"Kommune","tips":"Skill rollene som planmyndighet og forslagsstiller tydelig, og dokumenter avveiningene."},
+{"id":"utbygger","navn":"Forslagsstiller","tips":"Kommunens krav styrer budsjett og tidsplan. Hent dem i oppstartsmøtet."},
+{"id":"konsulent","navn":"Konsulent","tips":"Avklar oppdragsgivers mål, ansvar for medvirkning og eierskap til utredningene før start."}],
+"alltid":[
+{"t":"ROS-analyse","r":"pbl § 4-3","w":"Kreves for alle planer som åpner for utbygging.","f":"Sjekk kommunens mal og fagetatenes krav."},
+{"t":"Medvirkning","r":"pbl § 5-1","w":"Planen skal ha et opplegg for åpenhet og medvirkning, særlig for barn og unge."},
+{"t":"Barn og unges interesser","r":"RPBA","w":"Lek, uteopphold og skoleveier må sikres."},
+{"t":"Universell utforming","r":"pbl § 1-1","w":"Planen skal bidra til tilgjengelighet for alle."},
+{"t":"Klima og overvann","r":"SPR for klima og energi","w":"Klimatilpasning og overvannshåndtering følger av nasjonale føringer."}],
+"faktorer":[
+{"id":"bolig","gr":"formal","navn":"Bolig","t":"Bokvalitet og uteoppholdsareal","r":"kommunale normer","w":"Sol, støy og lekeareal vurderes tungt.","risiko":"Svak bokvalitet gir innsigelser eller avslag."},
+{"id":"fortetting","gr":"formal","navn":"Fortetting","t":"Stedsanalyse og tåleevne","r":"pbl § 4-2","w":"Viser hva området tåler av høyde og tetthet.","risiko":"Sterke naboprotester. Dokumenter medvirkningen."},
+{"id":"naering","gr":"formal","navn":"Næring og handel","t":"Trafikkanalyse og parkering","w":"Viser trafikkvirkninger og kapasitet.","risiko":"Uavklart kapasitet i vegnettet."},
+{"id":"offentlig","gr":"formal","navn":"Offentlig formål","t":"Lokalisering og kapasitet","w":"Skole og barnehage krever vurdering av skolevei og trafikksikkerhet.","risiko":"Dårlig skolevei gir sterke innsigelser."},
+{"id":"samferdsel","gr":"formal","navn":"Veg og samferdsel","ku":true,"t":"Planprogram og konsekvensutredning","r":"KU-forskriften","w":"Veg- og baneprosjekt faller ofte under vedlegg I eller II.","risiko":"Manglende KU gir forsinkelse."},
+{"id":"fritid","gr":"formal","navn":"Fritidsbebyggelse","t":"Vann, avløp og tilkomst","w":"Hyttefelt krever løsninger for infrastruktur.","risiko":"Strandsone og natur gir innsigelser."},
+{"id":"flom","gr":"sted","navn":"Flom og overvann","t":"Flomfarevurdering","r":"TEK17 § 7-2","w":"Dokumenter sikkerhet mot flom og overvann.","risiko":"NVE kan fremme innsigelse uten vurdering."},
+{"id":"skred","gr":"sted","navn":"Skred","t":"Skredfarevurdering","r":"TEK17 § 7-3","w":"Dokumenter sikkerhetsklasse og avbøtende tiltak.","risiko":"NVE kan fremme innsigelse."},
+{"id":"kvikk","gr":"sted","navn":"Kvikkleire og grunnforhold","t":"Geoteknisk vurdering","r":"NVE-veileder om kvikkleire","w":"NGUs løsmassekart og NVEs faresoner gir første indikasjon.","risiko":"Geoteknikk må ofte foreligge før høring."},
+{"id":"strand","gr":"sted","navn":"Strandsone","t":"Vurdering av strandsonen","r":"pbl § 1-8","w":"100-metersbeltet langs sjø krever særlig hensyn til allmenhet og landskap.","risiko":"Statsforvalter og fylkeskommune kan fremme innsigelse."},
+{"id":"jord","gr":"sted","navn":"Dyrka mark","t":"Jordvernvurdering og alternativer","r":"jordloven § 9","w":"Omdisponering krever dokumenterte alternativer.","risiko":"Omdisponering møter ofte innsigelse."},
+{"id":"natur","gr":"sted","navn":"Naturmangfold","t":"Kartlegging av naturmangfold","r":"naturmangfoldloven §§ 8-12","w":"Sjekk Naturbase og vurder feltkartlegging.","risiko":"Kartlegging utenfor vekstsesong gir mangelfulle data."},
+{"id":"kultur","gr":"sted","navn":"Kulturminner","t":"Kulturminnevurdering","r":"kulturminneloven § 9","w":"Undersøkelsesplikt for automatisk fredete kulturminner.","risiko":"Funn kan stanse prosjektet. Ta kontakt tidlig."},
+{"id":"stoy","gr":"sted","navn":"Støy","t":"Støyvurdering","r":"T-1442","w":"Viser om grenseverdier overholdes.","risiko":"Overskridelser uten avbøtende tiltak."},
+{"id":"vann","gr":"sted","navn":"Vann og avløp","t":"VA-rammeplan","r":"kommunal VA-norm","w":"Dokumenterer kapasitet og løsninger.","risiko":"Manglende kapasitet stopper utbyggingen."}],
+"kombo":[
+{"if":["jord","bolig"],"tekst":"Bolig på dyrka mark: forvent innsigelse fra Statsforvalteren. Dokumenter alternativ lokalisering."},
+{"if":["strand","fritid"],"tekst":"Fritidsbebyggelse i strandsonen: streng praksis. Sjekk om kommuneplanen åpner for det."},
+{"if":["flom","fortetting"],"tekst":"Fortetting i flomutsatt område: løs overvann på tomta og nedstrøms."},
+{"if":["kvikk","samferdsel"],"tekst":"Veg i kvikkleireområde: tidlig geoteknikk kan påvirke linjevalget."},
+{"if":["natur","samferdsel"],"tekst":"Veg og naturmangfold: vurder alternativer og avbøtende tiltak tidlig."},
+{"if":["kultur","fortetting"],"tekst":"Fortetting med kulturminner: avklar med fylkeskommunen før planforslaget."}]
+}
