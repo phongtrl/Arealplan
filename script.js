@@ -12,7 +12,7 @@ function btns(box, list, key, multi) {
     const id = btn.dataset.id;
     if (multi) S.sel.has(id) ? S.sel.delete(id) : S.sel.add(id);
     else S[key] = S[key] === id ? null : id;
-    psave(); mark(); render();
+    psave(1); mark(); render();
   };
 }
 
@@ -31,7 +31,7 @@ function init() {
     const b = e.target.closest('button'); if (!b) return;
     const x = D.eks[b.dataset.i];
     S.plan = x.plan; S.akt = x.akt; S.sel = new Set(x.sel);
-    psave(); mark(); render();
+    psave(1); mark(); render();
   };
   btns('#plan', D.plantyper.map(p => [p.id, `${p.navn}<small>${p.beskrivelse}</small>`]), 'plan');
   btns('#akt', D.aktorer.map(a => [a.id, a.navn]), 'akt');
@@ -67,15 +67,18 @@ let ST = { d: {}, t: null };
 const PK = 'a101:prosjekter';
 let P = null;
 const nyId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-const nytt = navn => ({ id: nyId(), navn, plan: null, akt: null, sel: [], d: {}, t: null });
+const nytt = navn => { const n = new Date().toISOString(); return { id: nyId(), navn, plan: null, akt: null, sel: [], d: {}, t: null, opprettet: n, endret: n }; };
 const cur = () => P.liste.find(x => x.id === P.aktiv) || P.liste[0];
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtD = s => s ? new Date(s).toLocaleDateString('nb-NO') : '';
 function pload() {
   try { P = JSON.parse(localStorage.getItem(PK)); } catch (e) { P = null; }
   if (!P || !Array.isArray(P.liste) || !P.liste.length) { const p = nytt('Mitt prosjekt'); P = { aktiv: p.id, liste: [p] }; }
 }
-function psave() {
+function psave(touch) {
   const c = cur();
   Object.assign(c, { plan: S.plan, akt: S.akt, sel: [...S.sel], d: ST.d, t: ST.t });
+  if (touch) c.endret = new Date().toISOString();
   try { localStorage.setItem(PK, JSON.stringify(P)); } catch (e) {}
 }
 function popen(id) {
@@ -90,23 +93,32 @@ function popen(id) {
   const i = c.info || {}, pi = $('#pinfo');
   const parts = [i.oppdragsgiver, i.kommune, i.leder && 'PL: ' + i.leder].filter(Boolean);
   pi.replaceChildren();
-  if (i.status) { const b = document.createElement('span'); b.className = 'badge'; b.textContent = i.status; pi.append(b); }
+  if (i.status) { const b = document.createElement('span'); b.className = 'badge'; b.dataset.s = i.status; b.textContent = i.status; pi.append(b); }
   pi.append(parts.join(' · '));
   pi.hidden = !i.status && !parts.length;
   psave(); mark(); render();
 }
 const PF = ['navn', 'nr', 'status', 'type', 'oppdragsgiver', 'kontakt', 'epost', 'tlf', 'leder', 'saksbeh', 'kommune', 'planid', 'gbnr', 'sted', 'start', 'vedtak', 'notat'];
-let pmode = 'new';
-function pdialog(edit) {
-  const f = $('#pform'), c = cur();
-  const info = edit ? { ...c.info, navn: c.navn } : { status: 'Planlegging', start: new Date().toISOString().slice(0, 10) };
+let pid = null, toastT;
+function toast(msg, undo) {
+  const t = $('#toast'), hide = () => { t.hidden = true; };
+  t.replaceChildren(Object.assign(document.createElement('span'), { textContent: msg }));
+  if (undo) t.append(Object.assign(document.createElement('button'), { textContent: 'Angre', onclick: () => { hide(); undo(); } }));
+  t.hidden = false; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(hide, undo ? 7000 : 3000);
+}
+function pdialog(id) {
+  const f = $('#pform'), p = id ? P.liste.find(x => x.id === id) : null;
+  pid = p ? p.id : null;
+  const info = p ? { ...p.info, navn: p.navn } : { status: 'Planlegging', start: new Date().toISOString().slice(0, 10) };
   PF.forEach(k => { f.elements[k].value = info[k] || ''; });
   if (!f.elements.status.value) f.elements.status.value = 'Planlegging';
-  f.elements.plan.value = edit ? S.plan || '' : '';
-  f.elements.akt.value = S.akt || '';
-  pmode = edit ? 'edit' : 'new';
-  $('#pdlg-t').textContent = edit ? 'Rediger prosjekt' : 'Nytt prosjekt';
-  $('#psubmit').textContent = edit ? 'Lagre endringer' : 'Opprett prosjekt';
+  f.elements.plan.value = p ? p.plan || '' : '';
+  f.elements.akt.value = p ? p.akt || '' : S.akt || '';
+  $('#pdlg-e').textContent = p ? 'Prosjekt' + (p.opprettet ? ' · opprettet ' + fmtD(p.opprettet) : '') : 'Prosjekt';
+  $('#pdlg-t').textContent = p ? p.navn : 'Nytt prosjekt';
+  $('#psubmit').textContent = p ? 'Lagre endringer' : 'Opprett prosjekt';
+  $('#pslett').hidden = $('#popne').hidden = !p;
   $('#pfeil').hidden = true;
   $('#pdlg').showModal();
   f.elements.navn.focus();
@@ -122,16 +134,56 @@ function psubmit(e) {
   const info = Object.fromEntries(PF.map(k => [k, f.elements[k].value.trim()]));
   const navn = info.navn; delete info.navn;
   const plan = f.elements.plan.value || null, akt = f.elements.akt.value || null;
-  if (pmode === 'new') {
-    psave();
-    const p = Object.assign(nytt(navn), { info, plan, akt });
-    P.liste.push(p); P.aktiv = p.id;
+  if (pid) {
+    Object.assign(P.liste.find(x => x.id === pid), { navn, info, plan, akt, endret: new Date().toISOString() });
+    if (pid === P.aktiv) { S.plan = plan; S.akt = akt; }
+    toast('Endringene er lagret.');
   } else {
-    Object.assign(cur(), { navn, info });
-    S.plan = plan; S.akt = akt; psave();
+    const p = Object.assign(nytt(navn), { info, plan, akt });
+    P.liste.push(p); pid = p.id;
+    psave(); P.aktiv = pid;
+    toast(`«${navn}» er opprettet og satt som aktivt prosjekt.`);
   }
   $('#pdlg').close();
-  popen(P.aktiv);
+  const open = e.submitter && e.submitter.id === 'popne';
+  popen(open ? pid : P.aktiv);
+  if (open) location.hash = 'veileder';
+  else renderProj();
+}
+function pslett() {
+  const ix = P.liste.findIndex(x => x.id === pid), p = P.liste[ix], varAktiv = pid === P.aktiv;
+  P.liste.splice(ix, 1);
+  const tom = !P.liste.length && nytt('Mitt prosjekt');
+  if (tom) P.liste.push(tom);
+  $('#pdlg').close();
+  popen(varAktiv ? P.liste[0].id : P.aktiv);
+  renderProj();
+  toast(`«${p.navn}» er slettet.`, () => {
+    if (tom) P.liste = P.liste.filter(x => x.id !== tom.id);
+    P.liste.splice(Math.min(ix, P.liste.length), 0, p);
+    popen(varAktiv ? p.id : P.aktiv);
+    renderProj();
+  });
+}
+function renderProj() {
+  if (!P) return;
+  const q = $('#psok').value.trim().toLowerCase(), s = $('#psort').value;
+  const hay = p => [p.navn, ...Object.values(p.info || {})].join(' ').toLowerCase();
+  const list = P.liste.filter(p => !q || hay(p).includes(q)).sort((a, b) =>
+    s === 'navn' ? a.navn.localeCompare(b.navn, 'nb') :
+    s === 'nr' ? ((a.info || {}).nr || '\uffff').localeCompare((b.info || {}).nr || '\uffff', 'nb', { numeric: true }) :
+    (b.endret || '').localeCompare(a.endret || ''));
+  $('#pantall').textContent = P.liste.length === 1 ? '1 prosjekt' : P.liste.length + ' prosjekter';
+  const ny = '<button class="pcard pnew" data-ny="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Opprett nytt prosjekt</button>';
+  $('#plist').innerHTML = ny + (list.length ? list.map(p => {
+    const i = p.info || {}, pl = D.plantyper.find(x => x.id === p.plan), n = Object.keys(p.d || {}).length;
+    const meta = [i.oppdragsgiver, i.kommune].filter(Boolean).map(esc).join(' · ');
+    return `<button class="pcard${p.id === P.aktiv ? ' on' : ''}" data-pid="${esc(p.id)}">` +
+      `<span class="pc-top"><span>${i.nr ? esc(i.nr) : 'Uten nummer'}</span>${i.status ? `<span class="badge" data-s="${esc(i.status)}">${esc(i.status)}</span>` : ''}${p.id === P.aktiv ? '<span class="pc-akt">Aktiv</span>' : ''}</span>` +
+      `<span class="pc-navn">${esc(p.navn)}</span>` +
+      `<span class="pc-meta">${meta || 'Ingen oppdragsgiver registrert'}</span>` +
+      `<span class="pc-foot"><span>${pl ? pl.navn : 'Plantype ikke valgt'}${n ? ` · ${n} avkrysset` : ''}</span><span>${fmtD(p.endret)}</span></span></button>`;
+  }).join('') : '<p class="pempty">Ingen prosjekter samsvarer med søket.</p>');
 }
 function initProj() {
   pload();
@@ -141,16 +193,13 @@ function initProj() {
   f.onsubmit = psubmit;
   $('#pdlg-x').onclick = $('#pdlg-avbryt').onclick = () => $('#pdlg').close();
   $('#pdlg').onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
+  $('#pslett').onclick = pslett;
   $('#pvelg').onchange = e => { psave(); popen(e.target.value); };
-  $('#pny').onclick = () => pdialog(false);
-  $('#pnavn').onclick = () => pdialog(true);
-  $('#pslett').onclick = () => {
-    const c = cur();
-    if (!confirm(`Slette prosjektet «${c.navn}»? Dette kan ikke angres.`)) return;
-    P.liste = P.liste.filter(x => x.id !== c.id);
-    if (!P.liste.length) P.liste.push(nytt('Mitt prosjekt'));
-    popen(P.liste[0].id);
+  $('#plist').onclick = e => {
+    const b = e.target.closest('.pcard'); if (!b) return;
+    pdialog(b.dataset.ny ? null : b.dataset.pid);
   };
+  $('#psok').oninput = $('#psort').onchange = renderProj;
   popen(P.aktiv);
 }
 const sec = (h, items, tag = 'ul', cnt) => items.length ? `<h2>${h}${cnt ? '<span class="cnt"></span>' : ''}</h2><${tag}>${items.join('')}</${tag}>` : '';
@@ -219,6 +268,7 @@ function setTheme(t) {
   document.documentElement.dataset.theme = t;
   try { localStorage.setItem('theme', t); } catch (e) {}
   $('#tema').setAttribute('aria-label', t === 'dark' ? 'Bytt til lys modus' : 'Bytt til mørk modus');
+  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#1A1D19' : '#F2EFE8';
 }
 $('#tema').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 setTheme(document.documentElement.dataset.theme || 'light');
@@ -226,12 +276,23 @@ setTheme(document.documentElement.dataset.theme || 'light');
 const G = window.GUIDER || [];
 const LOGO = '<svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><path pathLength="1" d="M10 54L32 10L54 54"/><path class="b" pathLength="1" d="M19 38H45"/><circle cx="10" cy="54" r="4"/><circle cx="32" cy="10" r="4"/><circle cx="54" cy="54" r="4"/><circle cx="19" cy="38" r="3.5"/><circle cx="45" cy="38" r="3.5"/></svg>';
 $('#mark').innerHTML = LOGO;
-$('#nav').innerHTML = `<a href="#veileder" data-p="veileder">Veileder</a><div class="dd"><button id="ddb" aria-expanded="false" aria-controls="ddm">Guider</button><div class="menu" id="ddm" hidden>${G.map(g => `<a href="#${g.id}" data-p="${g.id}">${g.navn}</a>`).join('')}</div></div>`;
+$('#nav').innerHTML = `<a href="#veileder" data-p="veileder">Veileder</a><a href="#prosjekter" data-p="prosjekter">Mine prosjekter</a><div class="dd"><button id="ddb" aria-expanded="false" aria-controls="ddm">Guider</button><div class="menu" id="ddm" hidden>${G.map(g => `<a href="#${g.id}" data-p="${g.id}">${g.navn}</a>`).join('')}</div></div>`;
 const ddb = $('#ddb'), ddm = $('#ddm');
 const dd = open => { ddm.hidden = !open; ddb.setAttribute('aria-expanded', open); };
 ddb.onclick = () => dd(ddm.hidden);
 document.addEventListener('click', e => { if (!e.target.closest('.dd')) dd(false); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !ddm.hidden) { dd(false); ddb.focus(); } });
+$('#nav').addEventListener('keydown', e => {
+  const menu = [...ddm.querySelectorAll('a')], mi = menu.indexOf(e.target);
+  if (mi >= 0 && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    e.preventDefault(); menu[(mi + (e.key === 'ArrowDown' ? 1 : -1) + menu.length) % menu.length].focus(); return;
+  }
+  if (e.target === ddb && e.key === 'ArrowDown') { e.preventDefault(); dd(true); menu[0].focus(); return; }
+  const tabs = [...document.querySelectorAll('#nav > a, #ddb')], i = tabs.indexOf(e.target);
+  if (i < 0 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+  e.preventDefault();
+  tabs[e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length].focus();
+});
 
 function renderGuide(g) {
   const list = (arr, tag = 'ul') => `<${tag}>${arr.map(x => `<li>${x}</li>`).join('')}</${tag}>`;
@@ -244,13 +305,22 @@ function renderGuide(g) {
     `<h3>Dokumenter</h3><p class="lenker">${g.l.map(([t, u]) => a(t, u)).join('')}</p>`;
 }
 
+let lastIx = null;
 function route() {
-  const g = G.find(x => x.id === location.hash.slice(1));
-  $('#veileder').hidden = !!g;
+  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter';
+  $('#veileder').hidden = !!g || pg;
+  $('#prosjekter').hidden = !pg;
   $('#guide').hidden = !g;
   if (g) renderGuide(g);
+  if (pg) renderProj();
+  const ix = g ? 2 : pg ? 1 : 0, el = g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
+  if (lastIx !== null) {
+    el.classList.remove('enter-l', 'enter-r', 'enter-f'); void el.offsetWidth;
+    el.classList.add(ix > lastIx ? 'enter-r' : ix < lastIx ? 'enter-l' : 'enter-f');
+  }
+  lastIx = ix;
   document.querySelectorAll('#nav a').forEach(l => l.removeAttribute('aria-current'));
-  const cur = document.querySelector(`#nav a[data-p="${g ? g.id : 'veileder'}"]`);
+  const cur = document.querySelector(`#nav a[data-p="${g ? g.id : pg ? 'prosjekter' : 'veileder'}"]`);
   if (cur) cur.setAttribute('aria-current', 'page');
   ddb.textContent = g ? g.navn : 'Guider';
   ddb.classList.toggle('on', !!g);
@@ -276,8 +346,8 @@ else {
 $('#out').addEventListener('change', e => {
   const c = e.target.closest('.ck'); if (!c) return;
   if (c.checked) ST.d[c.dataset.k] = 1; else delete ST.d[c.dataset.k];
-  ST.t = new Date().toISOString(); psave(); updateProgress();
+  ST.t = new Date().toISOString(); psave(1); updateProgress();
 });
 $('#out').addEventListener('click', e => {
-  if (e.target.id === 'nullstill') { ST = { d: {}, t: null }; psave(); render(); }
+  if (e.target.id === 'nullstill') { ST = { d: {}, t: null }; psave(1); render(); }
 });
