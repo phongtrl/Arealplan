@@ -85,25 +85,65 @@ function popen(id) {
   S.plan = c.plan; S.akt = c.akt; S.sel = new Set(c.sel || []);
   ST = { d: c.d || {}, t: c.t || null };
   const sel = $('#pvelg');
-  sel.replaceChildren(...P.liste.map(x => new Option(x.navn, x.id)));
+  sel.replaceChildren(...P.liste.map(x => new Option((x.info && x.info.nr ? x.info.nr + ' – ' : '') + x.navn, x.id)));
   sel.value = c.id;
+  const i = c.info || {}, pi = $('#pinfo');
+  const parts = [i.oppdragsgiver, i.kommune, i.leder && 'PL: ' + i.leder].filter(Boolean);
+  pi.replaceChildren();
+  if (i.status) { const b = document.createElement('span'); b.className = 'badge'; b.textContent = i.status; pi.append(b); }
+  pi.append(parts.join(' · '));
+  pi.hidden = !i.status && !parts.length;
   psave(); mark(); render();
+}
+const PF = ['navn', 'nr', 'status', 'type', 'oppdragsgiver', 'kontakt', 'epost', 'tlf', 'leder', 'saksbeh', 'kommune', 'planid', 'gbnr', 'sted', 'start', 'vedtak', 'notat'];
+let pmode = 'new';
+function pdialog(edit) {
+  const f = $('#pform'), c = cur();
+  const info = edit ? { ...c.info, navn: c.navn } : { status: 'Planlegging', start: new Date().toISOString().slice(0, 10) };
+  PF.forEach(k => { f.elements[k].value = info[k] || ''; });
+  if (!f.elements.status.value) f.elements.status.value = 'Planlegging';
+  f.elements.plan.value = edit ? S.plan || '' : '';
+  f.elements.akt.value = S.akt || '';
+  pmode = edit ? 'edit' : 'new';
+  $('#pdlg-t').textContent = edit ? 'Rediger prosjekt' : 'Nytt prosjekt';
+  $('#psubmit').textContent = edit ? 'Lagre endringer' : 'Opprett prosjekt';
+  $('#pfeil').hidden = true;
+  $('#pdlg').showModal();
+  f.elements.navn.focus();
+}
+function psubmit(e) {
+  e.preventDefault();
+  const f = e.target, bad = [...f.elements].find(x => x.willValidate && !x.checkValidity());
+  if (bad || !f.elements.navn.value.trim()) {
+    const el = bad || f.elements.navn;
+    $('#pfeil').textContent = el.name === 'navn' ? 'Prosjektnavn må fylles ut.' : 'Sjekk feltet «' + el.closest('label').firstChild.textContent.trim() + '».';
+    $('#pfeil').hidden = false; el.focus(); return;
+  }
+  const info = Object.fromEntries(PF.map(k => [k, f.elements[k].value.trim()]));
+  const navn = info.navn; delete info.navn;
+  const plan = f.elements.plan.value || null, akt = f.elements.akt.value || null;
+  if (pmode === 'new') {
+    psave();
+    const p = Object.assign(nytt(navn), { info, plan, akt });
+    P.liste.push(p); P.aktiv = p.id;
+  } else {
+    Object.assign(cur(), { navn, info });
+    S.plan = plan; S.akt = akt; psave();
+  }
+  $('#pdlg').close();
+  popen(P.aktiv);
 }
 function initProj() {
   pload();
+  const f = $('#pform');
+  f.elements.plan.innerHTML = '<option value="">Ikke valgt</option>' + D.plantyper.map(p => `<option value="${p.id}">${p.navn}</option>`).join('');
+  f.elements.akt.innerHTML = '<option value="">Ikke valgt</option>' + D.aktorer.map(a => `<option value="${a.id}">${a.navn}</option>`).join('');
+  f.onsubmit = psubmit;
+  $('#pdlg-x').onclick = $('#pdlg-avbryt').onclick = () => $('#pdlg').close();
+  $('#pdlg').onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
   $('#pvelg').onchange = e => { psave(); popen(e.target.value); };
-  $('#pny').onclick = () => {
-    const n = prompt('Navn på nytt prosjekt:', 'Prosjekt ' + (P.liste.length + 1));
-    if (n === null) return;
-    psave();
-    const p = nytt(n.trim() || 'Uten navn');
-    P.liste.push(p); popen(p.id);
-  };
-  $('#pnavn').onclick = () => {
-    const c = cur(), n = prompt('Nytt navn på prosjektet:', c.navn);
-    if (n === null || !n.trim()) return;
-    c.navn = n.trim(); popen(c.id);
-  };
+  $('#pny').onclick = () => pdialog(false);
+  $('#pnavn').onclick = () => pdialog(true);
   $('#pslett').onclick = () => {
     const c = cur();
     if (!confirm(`Slette prosjektet «${c.navn}»? Dette kan ikke angres.`)) return;

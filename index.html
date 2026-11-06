@@ -24,7 +24,8 @@
     <h2>Prosjekt</h2>
     <div class="proj">
       <select id="pvelg" aria-label="Velg prosjekt"></select>
-      <div class="pbtn"><button id="pny">Nytt</button><button id="pnavn">Gi nytt navn</button><button id="pslett">Slett</button></div>
+      <div id="pinfo" class="pinfo" hidden></div>
+      <div class="pbtn"><button id="pny">Nytt</button><button id="pnavn">Rediger</button><button id="pslett">Slett</button></div>
     </div>
     <h2>Eksempelscenarioer</h2><div id="eks" class="seg list"></div>
     <h2>Plantype</h2><div id="plan" class="seg stack"></div>
@@ -35,6 +36,60 @@
   <section id="out" aria-live="polite"></section>
 </main>
 <article id="guide" hidden></article>
+<dialog id="pdlg" aria-labelledby="pdlg-t">
+  <form id="pform" novalidate>
+    <div class="dh">
+      <div><p class="eyebrow">Prosjekt</p><h2 id="pdlg-t">Nytt prosjekt</h2></div>
+      <button type="button" class="icon" id="pdlg-x" aria-label="Lukk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="dbody">
+      <fieldset><legend>Prosjekt</legend>
+        <div class="fg">
+          <label class="full">Prosjektnavn <span class="req" aria-hidden="true">*</span><input name="navn" required maxlength="120" autocomplete="off" placeholder="F.eks. Detaljregulering Storgata 12"></label>
+          <label>Prosjektnummer<input name="nr" maxlength="40" autocomplete="off" placeholder="F.eks. 2026-014"></label>
+          <label>Status<select name="status"><option>Tilbud</option><option>Planlegging</option><option>Pågår</option><option>På vent</option><option>Avsluttet</option></select></label>
+          <label>Oppdragstype<select name="type"><option value="">Velg …</option><option>Utarbeide planforslag</option><option>Konsekvensutredning</option><option>Fagutredning</option><option>Mulighetsstudie</option><option>Kvalitetssikring / rådgivning</option><option>Saksbehandling</option><option>Annet</option></select></label>
+          <label>Plantype<select name="plan"></select></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Oppdragsgiver</legend>
+        <div class="fg">
+          <label class="full">Oppdragsgiver<input name="oppdragsgiver" maxlength="120" autocomplete="organization" placeholder="Firma eller kommune"></label>
+          <label>Kontaktperson<input name="kontakt" maxlength="80" autocomplete="off"></label>
+          <label>E-post<input name="epost" type="email" maxlength="120" autocomplete="off"></label>
+          <label>Telefon<input name="tlf" type="tel" maxlength="30" autocomplete="off"></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Ansvar</legend>
+        <div class="fg">
+          <label>Prosjektleder<input name="leder" maxlength="80" autocomplete="off"></label>
+          <label>Din rolle<select name="akt"></select></label>
+          <label>Saksbehandler i kommunen<input name="saksbeh" maxlength="80" autocomplete="off"></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Planområde</legend>
+        <div class="fg">
+          <label>Kommune<input name="kommune" maxlength="60" autocomplete="off"></label>
+          <label>Plan-ID<input name="planid" maxlength="40" autocomplete="off"></label>
+          <label>Gnr./bnr.<input name="gbnr" maxlength="80" autocomplete="off" placeholder="F.eks. 12/34, 12/35"></label>
+          <label>Adresse / stedsnavn<input name="sted" maxlength="120" autocomplete="off"></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Fremdrift</legend>
+        <div class="fg">
+          <label>Oppstart<input name="start" type="date"></label>
+          <label>Ønsket vedtak<input name="vedtak" type="date"></label>
+        </div>
+      </fieldset>
+      <label>Beskrivelse og notater<textarea name="notat" rows="3" maxlength="2000"></textarea></label>
+      <p id="pfeil" class="err" role="alert" hidden></p>
+    </div>
+    <div class="df">
+      <button type="button" id="pdlg-avbryt">Avbryt</button>
+      <button type="submit" class="pri" id="psubmit">Opprett prosjekt</button>
+    </div>
+  </form>
+</dialog>
 <footer>Veiledende råd. Kontroller alltid mot gjeldende lov, forskrift og kommunens krav. Data v<span id="ver"></span></footer>
 <script src="data.js"></script>
 <script src="guider.js"></script>

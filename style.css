@@ -28,6 +28,34 @@ select{font:inherit;font-size:.9rem;color:var(--ink);background:var(--card);bord
 select:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 .pbtn{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;margin-top:.45rem}
 .pbtn button{padding:.4rem .5rem}
+.pinfo{margin-top:.45rem;font-size:.8rem;line-height:1.45;color:var(--mut)}
+.badge{display:inline-block;margin-right:.45rem;padding:0 .4rem;border:1px solid var(--acc);border-radius:2px;color:var(--acc);font-size:.72rem}
+dialog{width:min(44rem,calc(100% - 2rem));max-height:calc(100vh - 2rem);padding:0;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);box-shadow:0 24px 60px rgb(0 0 0/.28)}
+dialog::backdrop{background:rgb(18 17 15/.5);backdrop-filter:blur(2px)}
+dialog[open]{animation:dlg .18s ease-out}
+@keyframes dlg{from{opacity:0;transform:translateY(8px)}}
+#pform{display:flex;flex-direction:column;max-height:calc(100vh - 2rem)}
+.dh{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1.2rem 1.5rem 1rem;border-bottom:1px solid var(--line)}
+.dh h2{margin:0;font:400 1.45rem var(--serif)}
+.dh button.icon{width:2rem;height:2rem}
+.eyebrow{margin:0 0 .15rem;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.dbody{overflow-y:auto;padding:1.2rem 1.5rem;display:grid;gap:1.4rem}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend{padding:0;margin-bottom:.65rem;font-size:.74rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:.85rem 1rem}
+.fg .full{grid-column:1/-1}
+@media(max-width:36rem){.fg{grid-template-columns:1fr}}
+dialog label{display:grid;gap:.3rem;font-size:.84rem;font-weight:500}
+dialog input,dialog textarea,dialog select{font:inherit;font-size:.92rem;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:.5rem .65rem;width:100%}
+dialog textarea{resize:vertical;min-height:4.5rem}
+dialog input::placeholder,dialog textarea::placeholder{color:var(--mut);opacity:.7}
+dialog input:focus,dialog select:focus,dialog textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--tint)}
+.req{color:var(--err)}
+.dbody .err{margin:0;font-size:.88rem}
+.df{display:flex;justify-content:flex-end;gap:.5rem;padding:.9rem 1.5rem;border-top:1px solid var(--line);background:var(--bg)}
+.df button{padding:.5rem 1.1rem}
+button.pri{background:var(--acc);border-color:var(--acc);color:var(--acc-ink);font-weight:500}
+button.pri:hover{filter:brightness(1.07)}
 #eks button::before{content:"→";border:0;width:auto;height:auto;top:.5rem;color:var(--acc)}
 .toggle{display:inline-flex;gap:0;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
 .toggle button{border:0;background:transparent;padding:.3rem .8rem}
