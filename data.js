@@ -22,7 +22,7 @@ window.DATA = {
       ],
       [
        "Veileder: Reguleringsplan (2022)",
-       "https://cms12.regjeringen.no/contentassets/2804283df64641cea321fdcdcac779f4/reguleringsplan_2022.pdf"
+       "https://www.regjeringen.no/contentassets/2804283df64641cea321fdcdcac779f4/reguleringsplan_2022.pdf"
       ]
      ],
      "uker": [
@@ -100,7 +100,7 @@ window.DATA = {
       ],
       [
        "Veileder: Reguleringsplan (2022)",
-       "https://cms12.regjeringen.no/contentassets/2804283df64641cea321fdcdcac779f4/reguleringsplan_2022.pdf"
+       "https://www.regjeringen.no/contentassets/2804283df64641cea321fdcdcac779f4/reguleringsplan_2022.pdf"
       ]
      ],
      "ex": "Typisk disposisjon: 1 Sammendrag, 2 Bakgrunn, 3 Planprosess og medvirkning, 4 Planstatus og rammer, 5 Beskrivelse av planområdet, 6 Planforslaget, 7 Virkninger, 8 Innkomne innspill."
@@ -155,7 +155,7 @@ window.DATA = {
      "l": [
       [
        "KU-veileder (2020)",
-       "https://cms12.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
+       "https://www.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
       ]
      ],
      "uker": [
@@ -208,7 +208,7 @@ window.DATA = {
      "l": [
       [
        "KU-veileder (2020)",
-       "https://cms12.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
+       "https://www.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
       ],
       [
        "Miljødirektoratet M-1941",
@@ -257,7 +257,7 @@ window.DATA = {
      "l": [
       [
        "KU-veileder (2020)",
-       "https://cms12.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
+       "https://www.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
       ],
       [
        "Miljødirektoratet M-1941",
@@ -530,7 +530,7 @@ window.DATA = {
    "l": [
     [
      "KU-veileder (2020)",
-     "https://cms12.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
+     "https://www.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf"
     ],
     [
      "Miljødirektoratet M-1941",
@@ -825,7 +825,7 @@ window.DATA = {
  "dok": [
   {
    "t": "Veileder: Reguleringsplan (KDD, 2022)",
-   "u": "https://cms12.regjeringen.no/contentassets/2804283df64641cea321fdcdcac779f4/reguleringsplan_2022.pdf",
+   "u": "https://www.regjeringen.no/contentassets/2804283df64641cea321fdcdcac779f4/reguleringsplan_2022.pdf",
    "k": "Veileder",
    "p": [
     "detalj",
@@ -840,7 +840,7 @@ window.DATA = {
   },
   {
    "t": "Veileder: Konsekvensutredninger for planer etter pbl (2020)",
-   "u": "https://cms12.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf",
+   "u": "https://www.regjeringen.no/contentassets/296b832d6e5643fbae3aed0650f60636/no/pdfs/07_ku-veileder-februar-2020-godkjent-av-pol.pdf",
    "k": "Veileder",
    "p": [
     "omr",
