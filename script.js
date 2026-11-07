@@ -105,6 +105,7 @@ function popen(id) {
   const sel = $('#pvelg');
   sel.replaceChildren(new Option(P.liste.length ? 'Ingen prosjekt valgt' : 'Ingen prosjekter ennå', ''), ...P.liste.map(x => new Option((x.info && x.info.nr ? x.info.nr + ' – ' : '') + x.navn, x.id)));
   sel.value = P.aktiv || '';
+  renderProjectPicker();
   $('.plink').textContent = P.liste.length ? 'Gå til mine prosjekter →' : 'Opprett et prosjekt →';
   const i = c.info || {}, pi = $('#pinfo');
   const parts = [i.oppdragsgiver, i.kommune, i.leder && 'PL: ' + i.leder].filter(Boolean);
@@ -113,6 +114,53 @@ function popen(id) {
   pi.append(parts.join(' · '));
   pi.hidden = !i.status && !parts.length;
   psave(); mark(); render();
+}
+function closeProjectPicker(restoreFocus = false) {
+  $('.project-menu').hidden = true;
+  $('#project-picker').setAttribute('aria-expanded', 'false');
+  if (restoreFocus) $('#project-picker').focus();
+}
+function renderProjectPicker() {
+  const project = cur();
+  $('#project-picker-name').textContent = project ? project.navn : 'Velg prosjekt';
+  $('#project-picker-meta').textContent = project ? [project.info?.nr, project.info?.kommune].filter(Boolean).join(' · ') || 'Aktivt prosjekt' : P.liste.length ? P.liste.length + ' lagrede prosjekter' : 'Start med valgene nedenfor';
+  const options = [{id: '', navn: 'Uten prosjekt', detail: 'Utforsk et nytt scenario'}, ...P.liste.map(p => ({id:p.id, navn:p.navn, detail:[p.info?.nr, p.info?.kommune, p.info?.status].filter(Boolean).join(' · ') || 'Lagret prosjekt'}))];
+  $('#project-options').innerHTML = options.map(p => `<button type="button" role="option" tabindex="-1" aria-selected="${p.id === (P.aktiv || '')}" data-project-id="${esc(p.id)}"><span><span class="project-option-name">${esc(p.navn)}</span><small>${esc(p.detail)}</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg></button>`).join('');
+  closeProjectPicker();
+}
+function initProjectPicker() {
+  const picker = $('#project-picker'), options = $('#project-options');
+  function open(last = false) {
+    $('.project-menu').hidden = false;
+    picker.setAttribute('aria-expanded', 'true');
+    const items = [...options.querySelectorAll('[role=option]')];
+    (last ? items.at(-1) : options.querySelector('[aria-selected=true]') || items[0]).focus({preventScroll:true});
+  }
+  picker.onclick = () => picker.getAttribute('aria-expanded') === 'true' ? closeProjectPicker() : open();
+  picker.onkeydown = e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(e.key === 'ArrowUp'); }
+  };
+  options.onclick = e => {
+    const option = e.target.closest('[role=option]');
+    if (!option) return;
+    $('#pvelg').value = option.dataset.projectId;
+    $('#pvelg').dispatchEvent(new Event('change'));
+    closeProjectPicker(true);
+  };
+  options.onkeydown = e => {
+    const items = [...options.querySelectorAll('[role=option]')], current = items.indexOf(document.activeElement);
+    let next;
+    if (e.key === 'ArrowDown') next = (current + 1) % items.length;
+    if (e.key === 'ArrowUp') next = (current - 1 + items.length) % items.length;
+    if (e.key === 'Home') next = 0;
+    if (e.key === 'End') next = items.length - 1;
+    if (next !== undefined) { e.preventDefault(); items[next].focus(); }
+  };
+  document.addEventListener('click', e => { if (!e.target.closest('.project-select')) closeProjectPicker(); });
+  $('.project-select').addEventListener('keydown', e => {
+    if (e.key === 'Escape' && picker.getAttribute('aria-expanded') === 'true') { e.preventDefault(); e.stopPropagation(); closeProjectPicker(true); }
+  });
+  $('.project-select').addEventListener('focusout', e => { if (!e.currentTarget.contains(e.relatedTarget)) closeProjectPicker(); });
 }
 const PF = ['navn', 'nr', 'status', 'type', 'oppdragsgiver', 'kontakt', 'epost', 'tlf', 'leder', 'saksbeh', 'kommune', 'planid', 'gbnr', 'sted', 'start', 'vedtak', 'notat'];
 let pid = null, toastT, projectScenario = null;
@@ -204,6 +252,7 @@ function renderProj() {
 }
 function initProj() {
   pload();
+  initProjectPicker();
   const f = $('#pform');
   f.elements.plan.innerHTML = '<option value="">Ikke valgt</option>' + D.plantyper.map(p => `<option value="${p.id}">${p.navn}</option>`).join('');
   f.elements.akt.innerHTML = '<option value="">Ikke valgt</option>' + D.aktorer.map(a => `<option value="${a.id}">${a.navn}</option>`).join('');
