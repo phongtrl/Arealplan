@@ -457,14 +457,14 @@ const scenarioPages = $('.scenario-pages');
 const mobilePanels = [$('#ctrl'), $('#out')];
 const mobileButtons = [$('#show-scenario'), $('#show-advice')];
 let mobilePage = 0;
-function updatePageBlend() {
+function updateMobileIndicator() {
   if (!mobileLayout.matches || !scenarioPages.clientWidth) return;
   const width = scenarioPages.clientWidth;
   const progress = Math.max(0, Math.min(1, scenarioPages.scrollLeft / width));
-  mobilePanels.forEach((panel, index) => {
-    panel.style.setProperty('--blend-shift', ((progress - index) * width * .94) + 'px');
-    panel.style.setProperty('--blend-opacity', 1 - Math.abs(progress - index));
-  });
+  const track = $('.mobile-page-buttons');
+  const distance = mobileButtons[1].offsetLeft - mobileButtons[0].offsetLeft;
+  track.style.setProperty('--indicator-x', (progress * distance) + 'px');
+  track.style.setProperty('--indicator-stretch', 1 + Math.sin(progress * Math.PI) * .06);
 }
 function syncMobilePage() {
   mobileButtons.forEach((button, index) => button.setAttribute('aria-pressed', index === mobilePage));
@@ -487,15 +487,15 @@ mobileButtons.forEach((button, index) => {
 });
 scenarioPages.addEventListener('scroll', () => {
   if (!mobileLayout.matches || !scenarioPages.clientWidth) return;
-  updatePageBlend();
+  updateMobileIndicator();
   mobilePage = Math.round(scenarioPages.scrollLeft / scenarioPages.clientWidth);
   syncMobilePage();
 }, {passive: true});
 new ResizeObserver(() => {
   if (mobileLayout.matches) scenarioPages.scrollLeft = mobilePage * scenarioPages.clientWidth;
-  updatePageBlend();
+  updateMobileIndicator();
 }).observe(scenarioPages);
-mobileLayout.addEventListener('change', () => { syncMobilePage(); updatePageBlend(); });
+mobileLayout.addEventListener('change', () => { syncMobilePage(); updateMobileIndicator(); });
 syncMobilePage();
 
-updatePageBlend();
+updateMobileIndicator();
