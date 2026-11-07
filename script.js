@@ -444,7 +444,7 @@ function closeSplash() {
   splash.classList.add('out');
   splashRemoval = setTimeout(() => splash.remove(), 450);
 }
-function showSplash(userRequested = false) {
+async function showSplash(userRequested = false) {
   clearTimeout(splashTimer);
   clearTimeout(splashRemoval);
   $('#splash')?.remove();
@@ -457,7 +457,20 @@ function showSplash(userRequested = false) {
   splash.innerHTML = LOGO + '<p class="splash-wordmark"><strong>Areal</strong><span>plan</span></p>';
   splash.onclick = closeSplash;
   document.body.append(splash);
-  splashTimer = setTimeout(closeSplash, reducedMotion ? 1400 : 2100);
+  const image = splash.querySelector('img');
+  try {
+    await image.decode();
+  } catch (error) {
+    // Ikke vis navnet alene dersom logosymbolet ikke kan lastes.
+    if (splash.isConnected) splash.remove();
+    return;
+  }
+  if (!splash.isConnected || splash.classList.contains('out')) return;
+  // Start hele sekvensen fra samme tegnede bilde, også ved kald cache.
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  if (!splash.isConnected || splash.classList.contains('out')) return;
+  splash.classList.add('ready');
+  splashTimer = setTimeout(closeSplash, reducedMotion ? 1400 : 2500);
 }
 $('.brand').addEventListener('click', e => {
   if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
