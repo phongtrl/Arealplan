@@ -411,3 +411,8 @@ h2 .ref,h2 .cnt{letter-spacing:normal}
 #project-options button[aria-selected=true]>svg{visibility:visible}
 #project-options button:focus-visible{outline:2px solid var(--wood);outline-offset:-2px}
 .project-menu-link{display:flex;justify-content:space-between;margin-top:4px;padding:11px 10px 7px;border-top:1px solid var(--line);font-size:.72rem;color:var(--muted);text-decoration:none}
+
+@media(prefers-reduced-motion:reduce){
+  #splash.user-requested{display:flex}
+  #splash.user-requested .logo,#splash.user-requested .splash-wordmark strong,#splash.user-requested .splash-wordmark span{animation:none;opacity:1;transform:none}
+}

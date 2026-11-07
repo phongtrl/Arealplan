@@ -422,22 +422,26 @@ function closeSplash() {
   splash.classList.add('out');
   splashRemoval = setTimeout(() => splash.remove(), 450);
 }
-function showSplash() {
+function showSplash(userRequested = false) {
   clearTimeout(splashTimer);
   clearTimeout(splashRemoval);
   $('#splash')?.remove();
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion && !userRequested) return;
   const splash = document.createElement('div');
   splash.id = 'splash';
+  if (userRequested) splash.classList.add('user-requested');
   splash.setAttribute('aria-hidden', 'true');
   splash.innerHTML = LOGO + '<p class="splash-wordmark"><strong>Areal</strong><span>plan</span></p>';
   splash.onclick = closeSplash;
   document.body.append(splash);
-  splashTimer = setTimeout(closeSplash, 2100);
+  splashTimer = setTimeout(closeSplash, reducedMotion ? 1400 : 2100);
 }
 $('.brand').addEventListener('click', e => {
   if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
-  showSplash();
+  e.preventDefault();
+  if (location.hash !== '#veileder') location.hash = 'veileder';
+  showSplash(true);
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' || e.key === 'Tab') closeSplash();
