@@ -499,3 +499,19 @@ mobileLayout.addEventListener('change', () => { syncMobilePage(); updateMobileIn
 syncMobilePage();
 
 updateMobileIndicator();
+
+// Desktop: gi veiledningen hele bredden ved behov.
+const choicesToggle = $('#toggle-project-choices');
+let choicesCollapsed = false;
+try { choicesCollapsed = localStorage.getItem('a101:choices-collapsed') === 'true'; } catch (error) {}
+function syncChoicesPanel() {
+  $('#veileder').classList.toggle('choices-collapsed', choicesCollapsed);
+  choicesToggle.setAttribute('aria-expanded', String(!choicesCollapsed));
+  choicesToggle.querySelector('span').textContent = choicesCollapsed ? 'Vis prosjektvalg' : 'Skjul prosjektvalg';
+}
+choicesToggle.onclick = () => {
+  choicesCollapsed = !choicesCollapsed;
+  syncChoicesPanel();
+  try { localStorage.setItem('a101:choices-collapsed', String(choicesCollapsed)); } catch (error) {}
+};
+syncChoicesPanel();
