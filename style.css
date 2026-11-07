@@ -1,3 +1,4 @@
+@font-face{font-family:"Roboto Compact";src:url("fonts/Roboto-Variable.ttf") format("truetype");font-style:normal;font-weight:100 900;font-stretch:75% 100%;font-display:swap}
 @font-face{font-family:Manrope;src:url("fonts/Manrope-Variable.ttf") format("truetype");font-style:normal;font-weight:200 800;font-display:swap}
 /* Design tokens (Valtrack-familien) */
 :root{
@@ -500,3 +501,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #out>ul>li>details>summary>b,
 #out>ol>li>.row>b,
 #out>ul>li>.row>b{font-weight:500;letter-spacing:-.01em}
+
+/* Smalere punkttitler og trygg orddeling på små skjermer. */
+#out>ol>li>details>summary>b,
+#out>ul>li>details>summary>b,
+#out>ol>li>.row>b,
+#out>ul>li>.row>b{font-family:"Roboto Compact",Arial,sans-serif;font-stretch:90%;font-weight:450;font-size:.98rem;letter-spacing:0;overflow-wrap:anywhere;hyphens:manual}
+#out>ul,#out>ol{min-width:0}
+#out li,#out summary,#out .row{min-width:0;overflow-wrap:anywhere}
+@media(max-width:44rem){#out{padding:20px 16px}#out .lenker a{max-width:100%;overflow-wrap:anywhere}}

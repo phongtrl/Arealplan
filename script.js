@@ -60,6 +60,7 @@ function refUrl(r) {
   return (D.refurl || {})[r] || null;
 }
 const GK = [[/\bros\b/i, 'ros'], [/planprogram/i, 'planprogram'], [/konsekvensutredning/i, 'ku'], [/planbeskrivelse/i, 'planbeskrivelse'], [/bestemmelser/i, 'bestemmelser'], [/medvirkning|varsel om oppstart/i, 'medvirkning']];
+const checklistTitle = title => esc(title).replace(/kulturminnevurdering/gi, word => word.slice(0, 11) + '\u00ad' + word.slice(11)).replace(/reguleringsbestemmelser/gi, word => word.slice(0, 11) + '\u00ad' + word.slice(11)).replace(/konsekvensutredning/gi, word => word.slice(0, 10) + '\u00ad' + word.slice(10));
 const li = (i, grp) => {
   const url = i.r ? refUrl(i.r) : null;
   const ref = i.r ? (url ? `<a class="ref" href="${url}" target="_blank" rel="noopener">${i.r}</a>` : `<span class="ref">${i.r}</span>`) : '';
@@ -72,7 +73,7 @@ const li = (i, grp) => {
   const key = grp + ':' + i.t;
   const ck = `<input type="checkbox" class="ck" data-k="${key}"${ST.d[key] ? ' checked' : ''}${i.uk ? ` data-a="${i.uk[0]}" data-b="${i.uk[1]}"` : ''} aria-label="Fullført: ${i.t}">`;
   const uk = i.uk ? `<span class="ref">${i.uk[0]}–${i.uk[1]} uker</span>` : '';
-  return `<li>${d ? `<details><summary>${ck}<b>${i.t}</b>${ref}${uk}</summary>${d}</details>` : `<div class="row">${ck}<b>${i.t}</b>${ref}${uk}</div>`}</li>`;
+  return `<li>${d ? `<details><summary>${ck}<b>${checklistTitle(i.t)}</b>${ref}${uk}</summary>${d}</details>` : `<div class="row">${ck}<b>${checklistTitle(i.t)}</b>${ref}${uk}</div>`}</li>`;
 };
 const fmtT = (a, b) => b <= 12 ? `${a}–${b} uker` : `${Math.round(a / 4.35)}–${Math.round(b / 4.35)} mnd`;
 let ST = { d: {}, t: null };
