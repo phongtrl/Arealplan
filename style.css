@@ -478,12 +478,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 [data-project-status="Planlegging"],.badge[data-s="Planlegging"]{--status-color:#8C7450}
 [data-project-status="Pågår"],.badge[data-s="Pågår"]{--status-color:#4F7358}
 [data-project-status="På vent"],.badge[data-s="På vent"]{--status-color:#A57232}
-[data-project-status="Avsluttet"],.badge[data-s="Avsluttet"]{--status-color:#747772}
+[data-project-status="Avsluttet"],.badge[data-s="Avsluttet"]{--status-color:#A9503F}
 :root[data-theme=dark] [data-project-status="Tilbud"],:root[data-theme=dark] .badge[data-s="Tilbud"]{--status-color:#9FBDD5}
 :root[data-theme=dark] [data-project-status="Planlegging"],:root[data-theme=dark] .badge[data-s="Planlegging"]{--status-color:#C9B38D}
 :root[data-theme=dark] [data-project-status="Pågår"],:root[data-theme=dark] .badge[data-s="Pågår"]{--status-color:#A7C4A4}
 :root[data-theme=dark] [data-project-status="På vent"],:root[data-theme=dark] .badge[data-s="På vent"]{--status-color:#DBB077}
-:root[data-theme=dark] [data-project-status="Avsluttet"],:root[data-theme=dark] .badge[data-s="Avsluttet"]{--status-color:#B0B4AC}
+:root[data-theme=dark] [data-project-status="Avsluttet"],:root[data-theme=dark] .badge[data-s="Avsluttet"]{--status-color:#D98B74}
 .badge[data-s]{color:var(--status-color);background:color-mix(in srgb,var(--status-color) 10%,var(--card));border-color:color-mix(in srgb,var(--status-color) 32%,var(--line))}
 .badge[data-s]::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;margin-right:6px}
 .project-stamps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0 14px}
@@ -536,3 +536,7 @@ footer>p{margin:0}
 .faq-section summary{font-size:.88rem;font-weight:500;overflow-wrap:anywhere}
 #about .faq-section details p{padding-left:18px;margin:10px 0 0;color:var(--muted);font-size:.84rem}
 @media(max-width:44rem){#about{margin-top:20px}.about-intro,.about-section{padding:24px 20px}.footer-links{gap:8px 14px}}
+
+.pcard[data-project-status="Avsluttet"]{border:1px solid color-mix(in srgb,var(--status-color) 65%,var(--line));box-shadow:none}
+.badge[data-s="Avsluttet"]{background:transparent;border-color:var(--status-color)}
+.pc-inactive{margin-left:auto;font-size:.7rem;color:var(--status-color)}
