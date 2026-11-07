@@ -443,3 +443,39 @@ if ('serviceWorker' in navigator && window.isSecureContext) {
     navigator.serviceWorker.register('./sw.js').catch(() => { /* Siden fungerer også uten frakoblet modus. */ });
   });
 }
+
+// Mobil: separate sider med naturlig sveiping og tilgjengelige knapper.
+const mobileLayout = matchMedia('(max-width: 55.999rem)');
+const scenarioPages = $('.scenario-pages');
+const mobilePanels = [$('#ctrl'), $('#out')];
+const mobileButtons = [$('#show-scenario'), $('#show-advice')];
+let mobilePage = 0;
+function syncMobilePage() {
+  mobileButtons.forEach((button, index) => button.setAttribute('aria-pressed', index === mobilePage));
+  mobilePanels.forEach((panel, index) => { panel.inert = mobileLayout.matches && index !== mobilePage; });
+}
+function openMobilePage(index) {
+  mobilePage = index;
+  syncMobilePage();
+  scenarioPages.scrollTo({left: index * scenarioPages.clientWidth, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+}
+mobileButtons.forEach((button, index) => {
+  button.onclick = () => openMobilePage(index);
+  button.onkeydown = event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === 'Home' || event.key === 'ArrowLeft' ? 0 : 1;
+    mobileButtons[next].focus();
+    openMobilePage(next);
+  };
+});
+scenarioPages.addEventListener('scroll', () => {
+  if (!mobileLayout.matches || !scenarioPages.clientWidth) return;
+  mobilePage = Math.round(scenarioPages.scrollLeft / scenarioPages.clientWidth);
+  syncMobilePage();
+}, {passive: true});
+new ResizeObserver(() => {
+  if (mobileLayout.matches) scenarioPages.scrollLeft = mobilePage * scenarioPages.clientWidth;
+}).observe(scenarioPages);
+mobileLayout.addEventListener('change', syncMobilePage);
+syncMobilePage();

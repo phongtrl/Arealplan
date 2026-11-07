@@ -26,6 +26,11 @@
   </div>
 </header>
 <main id="veileder">
+  <nav class="mobile-pages" aria-label="Scenario og råd">
+    <div class="mobile-page-buttons"><button type="button" id="show-scenario" aria-controls="ctrl" aria-pressed="true">Scenario</button><button type="button" id="show-advice" aria-controls="out" aria-pressed="false">Råd</button></div>
+    <p>Sveip mellom scenario og råd</p>
+  </nav>
+  <div class="scenario-pages">
   <section id="ctrl" aria-label="Scenario">
     <div class="ctrl-heading"><p class="eyebrow">Scenario</p><h2>Tilpass veiledningen</h2><p>Velg plantype og legg til det som gjelder prosjektet ditt.</p></div>
     <div class="proj">
@@ -58,7 +63,8 @@
       <p id="eks-hint">Et eksempel fyller ut valgene for deg.</p>
     </div>
   </section>
-  <section id="out" aria-live="polite"></section>
+  <section id="out" aria-label="Råd" aria-live="polite"></section>
+  </div>
 </main>
 <main id="prosjekter" hidden>
   <div class="phead">

@@ -284,7 +284,7 @@ dd{margin:2px 0 0;color:var(--muted)}
 body:has(#veileder:not([hidden])){height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column}
 body:has(#veileder:not([hidden]))>.topbar{flex-shrink:0}
 #veileder{width:100%;flex:1;min-height:0;margin-top:20px;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:16px;overflow:hidden}
-#veileder>#ctrl,#veileder>#out{position:static;height:100%;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-gutter:stable}
+.scenario-pages>#ctrl,.scenario-pages>#out{position:static;height:100%;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-gutter:stable}
 body:has(#veileder:not([hidden]))>footer{width:100%;flex-shrink:0;margin-top:12px;margin-bottom:12px;font-size:.72rem}
 @media(min-width:56rem){#veileder{grid-template-rows:minmax(0,1fr);align-items:stretch;gap:20px}}
 
@@ -327,3 +327,19 @@ h2 .ref,h2 .cnt{letter-spacing:normal}
 
 /* Behold den opprinnelige skriften i sjekklistene og forklaringene. */
 #out>ul,#out>ol,.work-order p,.work-order ol{font-family:var(--sans);letter-spacing:normal}
+
+/* På mobil får scenario og råd hver sin side. */
+.mobile-pages{display:none}
+.scenario-pages{display:contents}
+@media(max-width:55.999rem){
+  #veileder{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .mobile-pages{display:block;flex-shrink:0}
+  .mobile-page-buttons{display:flex;gap:4px;padding:4px;background:var(--hover);border:1px solid var(--line);border-radius:12px}
+  .mobile-page-buttons button{flex:1;min-height:42px;border-color:transparent;background:transparent;color:var(--muted)}
+  .mobile-page-buttons button[aria-pressed=true]{background:var(--card);border-color:var(--line);color:var(--ink);box-shadow:0 2px 5px var(--shadow)}
+  .mobile-pages p{margin:5px 0 0;text-align:center;font-size:.68rem;color:var(--muted)}
+  .scenario-pages{display:flex;flex:1;min-height:0;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;border-radius:var(--radius)}
+  .scenario-pages::-webkit-scrollbar{display:none}
+  .scenario-pages>#ctrl,.scenario-pages>#out{flex:0 0 100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always;scrollbar-gutter:auto}
+  body:has(#veileder:not([hidden]))>footer{margin-top:8px;margin-bottom:8px;font-size:.65rem}
+}
