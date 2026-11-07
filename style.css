@@ -228,11 +228,10 @@ dd{margin:2px 0 0;color:var(--muted)}
 #splash .logo{animation:brand-logo-in 1s var(--ease) both}
 .wordmark{font-family:var(--sans);font-weight:400;letter-spacing:-.045em;line-height:1.2}
 .wordmark strong,.splash-wordmark strong{font-weight:750}
-#splash .splash-wordmark{display:flex;margin:0;font:400 clamp(2rem,6vw,3.25rem)/1.15 var(--sans);letter-spacing:-.055em}
-.splash-wordmark strong{animation:brand-text-in .8s .22s var(--ease) both}
-.splash-wordmark span{animation:brand-text-in .8s .38s var(--ease) both}
+#splash .splash-wordmark{display:block;margin:0;padding:.08em .12em;white-space:nowrap;font:400 clamp(2rem,6vw,3.25rem)/1.25 var(--sans);letter-spacing:-.055em;animation:brand-text-in .7s .2s var(--ease) both;will-change:transform,opacity}
+.splash-wordmark strong,.splash-wordmark span{animation:none}
 @keyframes brand-logo-in{from{opacity:0;transform:translateY(12px) scale(.92);filter:var(--logo-tone) blur(6px)}to{opacity:1;transform:translateY(0) scale(1);filter:var(--logo-tone) blur(0)}}
-@keyframes brand-text-in{from{opacity:0;transform:translateY(14px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes brand-text-in{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 
 /* Bevegelse */
 .enter-r{animation:panel-in-right .25s ease}
@@ -414,7 +413,7 @@ h2 .ref,h2 .cnt{letter-spacing:normal}
 
 @media(prefers-reduced-motion:reduce){
   #splash.user-requested{display:flex}
-  #splash.user-requested .logo,#splash.user-requested .splash-wordmark strong,#splash.user-requested .splash-wordmark span{animation:none;opacity:1;transform:none}
+  #splash.user-requested .logo,#splash.user-requested .splash-wordmark,#splash.user-requested .splash-wordmark strong,#splash.user-requested .splash-wordmark span{animation:none;opacity:1;transform:none}
 }
 
 /* Fagguider: stabil navigasjon og et tydelig lesehierarki. */
