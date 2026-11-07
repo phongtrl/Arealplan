@@ -57,6 +57,7 @@
         <div class="group-body"><p class="choice-hint">Du kan velge flere stedsforhold</p><div id="sted" class="seg stack" role="group" aria-label="Stedsforhold"></div></div>
       </details>
     </div>
+    <div class="scenario-save"><button id="save-scenario" class="pri" type="button" disabled>Lagre som prosjekt</button><p id="save-scenario-hint">Velg plantype for å lagre scenarioet. Øvrige valg er valgfrie.</p></div>
     <div class="scenario-examples">
       <label for="eks">Start med et eksempel</label>
       <select id="eks" aria-describedby="eks-hint"></select>
@@ -85,6 +86,7 @@
       <button type="button" class="icon" id="pdlg-x" aria-label="Lukk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="dbody">
+      <p id="scenario-project-summary" class="scenario-project-summary" hidden></p>
       <fieldset><legend>Prosjekt</legend>
         <div class="fg">
           <label class="full"><span>Prosjektnavn <span class="req" aria-hidden="true">*</span></span><input name="navn" required maxlength="120" autocomplete="off" placeholder="F.eks. Detaljregulering Storgata 12"></label>

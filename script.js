@@ -30,6 +30,8 @@ function mark() {
     summary.closest('details').classList.toggle('has-selection', selected.length > 0);
   });
   const example = D.eks.findIndex(x => x.plan === S.plan && x.akt === S.akt && x.sel.length === S.sel.size && x.sel.every(id => S.sel.has(id)));
+  $('#save-scenario').disabled = !S.plan;
+  $('#save-scenario-hint').textContent = S.plan ? 'Lagre plantype, rolle, formål og stedsforhold i et nytt prosjekt.' : 'Velg plantype for å lagre scenarioet. Øvrige valg er valgfrie.';
   $('#eks').value = example < 0 ? '' : String(example);
   $('#eks-hint').textContent = example < 0 ? 'Et eksempel fyller ut valgene for deg.' : D.eks[example].tekst;
 }
@@ -113,7 +115,7 @@ function popen(id) {
   psave(); mark(); render();
 }
 const PF = ['navn', 'nr', 'status', 'type', 'oppdragsgiver', 'kontakt', 'epost', 'tlf', 'leder', 'saksbeh', 'kommune', 'planid', 'gbnr', 'sted', 'start', 'vedtak', 'notat'];
-let pid = null, toastT;
+let pid = null, toastT, projectScenario = null;
 function toast(msg, undo) {
   const t = $('#toast'), hide = () => { t.hidden = true; };
   t.replaceChildren(Object.assign(document.createElement('span'), { textContent: msg }));
@@ -121,19 +123,23 @@ function toast(msg, undo) {
   t.hidden = false; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
   clearTimeout(toastT); toastT = setTimeout(hide, undo ? 7000 : 3000);
 }
-function pdialog(id) {
+function pdialog(id, fromScenario = false) {
+  projectScenario = fromScenario ? { plan: S.plan, akt: S.akt, sel: [...S.sel] } : null;
   const f = $('#pform'), p = id ? P.liste.find(x => x.id === id) : null;
   pid = p ? p.id : null;
   const info = p ? { ...p.info, navn: p.navn } : { status: 'Planlegging', start: new Date().toISOString().slice(0, 10) };
   PF.forEach(k => { f.elements[k].value = info[k] || ''; });
   if (!f.elements.status.value) f.elements.status.value = 'Planlegging';
-  f.elements.plan.value = p ? p.plan || '' : '';
+  f.elements.plan.value = p ? p.plan || '' : projectScenario?.plan || '';
   f.elements.akt.value = p ? p.akt || '' : S.akt || '';
   $('#pdlg-e').textContent = p ? 'Prosjekt' + (p.opprettet ? ' · opprettet ' + fmtD(p.opprettet) : '') : 'Prosjekt';
   $('#pdlg-t').textContent = p ? p.navn : 'Nytt prosjekt';
   $('#psubmit').textContent = p ? 'Lagre endringer' : 'Opprett prosjekt';
   $('#pslett').hidden = $('#popne').hidden = !p;
   $('#pfeil').hidden = true;
+  const summary = $('#scenario-project-summary');
+  summary.hidden = !projectScenario;
+  summary.textContent = projectScenario ? 'Scenarioet følger med: ' + [D.plantyper.find(x => x.id === projectScenario.plan)?.navn, D.aktorer.find(x => x.id === projectScenario.akt)?.navn, ...D.faktorer.filter(x => projectScenario.sel.includes(x.id)).map(x => x.navn)].filter(Boolean).join(' · ') : '';
   $('#pdlg').showModal();
   f.elements.navn.focus();
 }
@@ -153,7 +159,7 @@ function psubmit(e) {
     if (pid === P.aktiv) { S.plan = plan; S.akt = akt; }
     toast('Endringene er lagret.');
   } else {
-    const p = Object.assign(nytt(navn), { info, plan, akt });
+    const p = Object.assign(nytt(navn), { info, plan, akt, sel: projectScenario ? [...projectScenario.sel] : [] });
     P.liste.push(p); pid = p.id;
     psave(); P.aktiv = pid;
     toast(`«${navn}» er opprettet og satt som aktivt prosjekt.`);
@@ -205,6 +211,7 @@ function initProj() {
   $('#pdlg-x').onclick = $('#pdlg-avbryt').onclick = () => $('#pdlg').close();
   $('#pdlg').onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
   $('#pslett').onclick = pslett;
+  $('#save-scenario').onclick = () => pdialog(null, true);
   $('#pvelg').onchange = e => { psave(); popen(e.target.value); };
   $('#plist').onclick = e => {
     const b = e.target.closest('.pcard'); if (!b) return;
