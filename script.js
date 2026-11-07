@@ -377,7 +377,8 @@ $('#nav').addEventListener('keydown', e => {
 function renderGuide(g) {
   const list = (arr, tag = 'ul') => `<${tag}>${arr.map(x => `<li>${x}</li>`).join('')}</${tag}>`;
   const refs = g.hjemmel.map(r => { const u = refUrl(r); return u ? `<a class="ref" href="${u}" target="_blank" rel="noopener">${r}</a>` : `<span class="ref">${r}</span>`; }).join('');
-  $('#guide').innerHTML = `<h2>${g.navn}</h2><div class="refs">${refs}</div><p class="lead">${g.hva}</p>` +
+  const title = esc(g.navn).replace(/Reguleringsbestemmelser/g, 'Regulerings\u00adbestemmelser').replace(/Konsekvensutredning/g, 'Konsekvens\u00adutredning');
+  $('#guide').innerHTML = `<p class="guide-eyebrow">Fagguide</p><h2>${title}</h2><div class="refs">${refs}</div><p class="lead">${g.hva}</p>` +
     `<h3>Når kreves det?</h3>${list(g.nar)}` +
     `<h3>Hva skal det inneholde?</h3><dl>${g.innhold.map(([t, d]) => `<dt>${t}</dt><dd>${d}</dd>`).join('')}</dl>` +
     `<h3>Slik gjør du det</h3>${list(g.steg, 'ol')}` +
@@ -402,7 +403,8 @@ function route() {
   document.querySelectorAll('#nav a').forEach(l => l.removeAttribute('aria-current'));
   const cur = document.querySelector(`#nav a[data-p="${g ? g.id : pg ? 'prosjekter' : 'veileder'}"]`);
   if (cur) cur.setAttribute('aria-current', 'page');
-  ddb.textContent = g ? g.navn : 'Guider';
+  ddb.textContent = 'Fagguider';
+  ddb.setAttribute('aria-label', g ? 'Fagguider, valgt: ' + g.navn : 'Fagguider');
   ddb.classList.toggle('on', !!g);
   dd(false);
   window.scrollTo(0, 0);
