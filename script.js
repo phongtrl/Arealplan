@@ -409,13 +409,18 @@ function renderGuide(g) {
 
 let lastIx = null;
 function route() {
-  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter';
-  $('#veileder').hidden = !!g || pg;
+  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = h === 'om' || h === 'faq';
+  $('#veileder').hidden = !!g || pg || info;
   $('#prosjekter').hidden = !pg;
   $('#guide').hidden = !g;
+  $('#about').hidden = !info;
+  document.querySelectorAll('[data-info]').forEach(link => {
+    if (link.dataset.info === h) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
   if (g) renderGuide(g);
   if (pg) renderProj();
-  const ix = g ? 2 : pg ? 1 : 0, el = g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
+  const ix = info ? 3 : g ? 2 : pg ? 1 : 0, el = info ? $('#about') : g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
   if (lastIx !== null) {
     el.classList.remove('enter-l', 'enter-r', 'enter-f'); void el.offsetWidth;
     el.classList.add(ix > lastIx ? 'enter-r' : ix < lastIx ? 'enter-l' : 'enter-f');
@@ -423,12 +428,13 @@ function route() {
   lastIx = ix;
   document.querySelectorAll('#nav a').forEach(l => l.removeAttribute('aria-current'));
   const cur = document.querySelector(`#nav a[data-p="${g ? g.id : pg ? 'prosjekter' : 'veileder'}"]`);
-  if (cur) cur.setAttribute('aria-current', 'page');
+  if (cur && !info) cur.setAttribute('aria-current', 'page');
   ddb.textContent = 'Fagguider';
   ddb.setAttribute('aria-label', g ? 'Fagguider, valgt: ' + g.navn : 'Fagguider');
   ddb.classList.toggle('on', !!g);
   dd(false);
   window.scrollTo(0, 0);
+  if (h === 'faq') requestAnimationFrame(() => { if (location.hash === '#faq') $('#faq-content').scrollIntoView({block: 'start'}); });
 }
 
 if (D) { init(); initProj(); }
