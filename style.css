@@ -376,9 +376,10 @@ h2 .ref,h2 .cnt{letter-spacing:normal}
   #toggle-project-choices:hover{color:var(--ink)}
   #toggle-project-choices svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
   #veileder.choices-collapsed{grid-template-columns:0rem minmax(0,1fr);column-gap:0}
-  .scenario-pages>#ctrl{grid-column:1;grid-row:2;width:23rem;opacity:1;visibility:visible;transform:translateX(0);transition:opacity .22s ease,transform .4s var(--ease),visibility 0s}
+  .scenario-pages>#ctrl{grid-column:1;grid-row:2;width:auto;overflow-x:hidden;clip-path:inset(0);opacity:1;visibility:visible;transition:opacity .22s ease,visibility 0s}
+  .ctrl-content{width:calc(23rem - 2px)}
   .scenario-pages>#out{grid-column:2;grid-row:2}
-  #veileder.choices-collapsed #ctrl{opacity:0;visibility:hidden;pointer-events:none;transform:translateX(-20px);transition:opacity .18s ease,transform .4s var(--ease),visibility 0s .4s}
+  #veileder.choices-collapsed #ctrl{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility 0s .4s}
   .panel-arrow{transform-origin:14.5px 12px;transition:transform .3s var(--ease)}
   #toggle-project-choices[aria-expanded=false] .panel-arrow{transform:rotate(180deg)}
   .scenario-pages>#ctrl,.scenario-pages>#out{min-width:0}
