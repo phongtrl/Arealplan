@@ -374,7 +374,7 @@ function showSplash() {
   const splash = document.createElement('div');
   splash.id = 'splash';
   splash.setAttribute('aria-hidden', 'true');
-  splash.innerHTML = LOGO + '<p class="splash-wordmark"><strong>Areal</strong><span>plan</span></p>';
+  splash.innerHTML = LOGO + '<p class="splash-wordmark"><strong>Areal</strong><span>plan101</span></p>';
   splash.onclick = closeSplash;
   document.body.append(splash);
   splashTimer = setTimeout(closeSplash, 2100);
