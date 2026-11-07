@@ -457,6 +457,15 @@ const scenarioPages = $('.scenario-pages');
 const mobilePanels = [$('#ctrl'), $('#out')];
 const mobileButtons = [$('#show-scenario'), $('#show-advice')];
 let mobilePage = 0;
+function updatePageBlend() {
+  if (!mobileLayout.matches || !scenarioPages.clientWidth) return;
+  const width = scenarioPages.clientWidth;
+  const progress = Math.max(0, Math.min(1, scenarioPages.scrollLeft / width));
+  mobilePanels.forEach((panel, index) => {
+    panel.style.setProperty('--blend-shift', ((progress - index) * width * .94) + 'px');
+    panel.style.setProperty('--blend-opacity', 1 - Math.abs(progress - index));
+  });
+}
 function syncMobilePage() {
   mobileButtons.forEach((button, index) => button.setAttribute('aria-pressed', index === mobilePage));
   mobilePanels.forEach((panel, index) => { panel.inert = mobileLayout.matches && index !== mobilePage; });
@@ -478,11 +487,15 @@ mobileButtons.forEach((button, index) => {
 });
 scenarioPages.addEventListener('scroll', () => {
   if (!mobileLayout.matches || !scenarioPages.clientWidth) return;
+  updatePageBlend();
   mobilePage = Math.round(scenarioPages.scrollLeft / scenarioPages.clientWidth);
   syncMobilePage();
 }, {passive: true});
 new ResizeObserver(() => {
   if (mobileLayout.matches) scenarioPages.scrollLeft = mobilePage * scenarioPages.clientWidth;
+  updatePageBlend();
 }).observe(scenarioPages);
-mobileLayout.addEventListener('change', syncMobilePage);
+mobileLayout.addEventListener('change', () => { syncMobilePage(); updatePageBlend(); });
 syncMobilePage();
+
+updatePageBlend();
