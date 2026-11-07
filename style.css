@@ -344,8 +344,15 @@ h2 .ref,h2 .cnt{letter-spacing:normal}
   body:has(#veileder:not([hidden]))>footer{margin-top:8px;margin-bottom:8px;font-size:.65rem}
 }
 
-.scenario-save{padding:20px 24px 0}
-.scenario-save button{width:100%;min-height:44px}
-.scenario-save button:disabled{opacity:.45;cursor:not-allowed}
-.scenario-save p{margin:8px 0 0;font-size:.76rem;line-height:1.5;color:var(--muted)}
+.scenario-save{margin:20px 24px 0;padding:18px 0 20px;border-bottom:1px solid var(--line)}
+.scenario-save-heading{display:flex;align-items:center;gap:9px;font-size:.85rem;font-weight:500;letter-spacing:-.01em}
+.scenario-save svg{flex-shrink:0;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.scenario-save-heading>svg{color:var(--wood)}
+.scenario-save p{margin:7px 0 14px;font-size:.77rem;line-height:1.55;color:var(--muted);max-width:30ch}
+#save-scenario{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;min-height:44px;padding:10px 14px;font-size:.8rem;font-weight:500;background:transparent;border:1px solid var(--line-strong);border-radius:7px;transition:background .18s,border-color .18s,color .18s}
+#save-scenario>svg{width:16px;height:16px;color:var(--muted);transition:transform .18s var(--ease),color .18s}
+#save-scenario:hover:not(:disabled){background:var(--tint-bg);border-color:var(--tint-line)}
+#save-scenario:hover:not(:disabled)>svg{transform:translateX(3px);color:var(--ink)}
+#save-scenario:disabled{color:var(--muted);border-color:var(--line);cursor:not-allowed;opacity:.65}
+#save-scenario:disabled:hover{background:transparent}
 .scenario-project-summary{margin:0;padding:12px 14px;background:var(--tint-bg);border:1px solid var(--tint-line);border-radius:var(--r-sm);font-size:.82rem;line-height:1.6}

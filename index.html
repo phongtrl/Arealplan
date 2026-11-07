@@ -57,7 +57,11 @@
         <div class="group-body"><p class="choice-hint">Du kan velge flere stedsforhold</p><div id="sted" class="seg stack" role="group" aria-label="Stedsforhold"></div></div>
       </details>
     </div>
-    <div class="scenario-save"><button id="save-scenario" class="pri" type="button" disabled>Lagre som prosjekt</button><p id="save-scenario-hint">Velg plantype for å lagre scenarioet. Øvrige valg er valgfrie.</p></div>
+    <div class="scenario-save">
+      <div class="scenario-save-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v17l-7-4-7 4z"/></svg><span>Ta vare på scenarioet</span></div>
+      <p id="save-scenario-hint">Velg plantype først. Resten kan du fylle ut senere.</p>
+      <button id="save-scenario" type="button" aria-describedby="save-scenario-hint" disabled><span>Opprett prosjekt</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button>
+    </div>
     <div class="scenario-examples">
       <label for="eks">Start med et eksempel</label>
       <select id="eks" aria-describedby="eks-hint"></select>

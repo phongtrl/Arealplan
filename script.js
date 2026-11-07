@@ -31,7 +31,7 @@ function mark() {
   });
   const example = D.eks.findIndex(x => x.plan === S.plan && x.akt === S.akt && x.sel.length === S.sel.size && x.sel.every(id => S.sel.has(id)));
   $('#save-scenario').disabled = !S.plan;
-  $('#save-scenario-hint').textContent = S.plan ? 'Lagre plantype, rolle, formål og stedsforhold i et nytt prosjekt.' : 'Velg plantype for å lagre scenarioet. Øvrige valg er valgfrie.';
+  $('#save-scenario-hint').textContent = S.plan ? 'Valgene dine følger med, så du kan fortsette senere.' : 'Velg plantype først. Resten kan du fylle ut senere.';
   $('#eks').value = example < 0 ? '' : String(example);
   $('#eks-hint').textContent = example < 0 ? 'Et eksempel fyller ut valgene for deg.' : D.eks[example].tekst;
 }
