@@ -22,14 +22,24 @@ function mark() {
     const on = p === 'plan' ? S.plan === id : p === 'akt' ? S.akt === id : S.sel.has(id);
     b.setAttribute('aria-pressed', on);
   });
+  const groups = { plan: D.plantyper, akt: D.aktorer, formal: D.faktorer.filter(f => f.gr === 'formal'), sted: D.faktorer.filter(f => f.gr === 'sted') };
+  Object.entries(groups).forEach(([key, list]) => {
+    const selected = list.filter(x => key === 'plan' ? x.id === S.plan : key === 'akt' ? x.id === S.akt : S.sel.has(x.id));
+    const summary = $('#' + key + '-summary');
+    summary.textContent = selected.length ? selected.map(x => x.navn).join(', ') : (key === 'plan' || key === 'akt' ? 'Ikke valgt' : 'Ingen valgt');
+    summary.closest('details').classList.toggle('has-selection', selected.length > 0);
+  });
+  const example = D.eks.findIndex(x => x.plan === S.plan && x.akt === S.akt && x.sel.length === S.sel.size && x.sel.every(id => S.sel.has(id)));
+  $('#eks').value = example < 0 ? '' : String(example);
+  $('#eks-hint').textContent = example < 0 ? 'Et eksempel fyller ut valgene for deg.' : D.eks[example].tekst;
 }
 
 function init() {
   $('#ver').textContent = D.meta.versjon + ' (' + D.meta.oppdatert + ')';
-  $('#eks').innerHTML = D.eks.map((e, i) => `<button data-i="${i}">${e.navn}<small>${e.tekst}</small></button>`).join('');
-  $('#eks').onclick = e => {
-    const b = e.target.closest('button'); if (!b) return;
-    const x = D.eks[b.dataset.i];
+  $('#eks').replaceChildren(new Option('Velg eksempelscenario …', ''), ...D.eks.map((e, i) => new Option(e.navn, i)));
+  $('#eks').onchange = e => {
+    if (e.target.value === '') return;
+    const x = D.eks[Number(e.target.value)];
     S.plan = x.plan; S.akt = x.akt; S.sel = new Set(x.sel);
     psave(1); mark(); render();
   };

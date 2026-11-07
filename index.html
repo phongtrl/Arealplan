@@ -22,17 +22,36 @@
 </header>
 <main id="veileder">
   <section id="ctrl" aria-label="Scenario">
-    <h2>Prosjekt</h2>
+    <div class="ctrl-heading"><p class="eyebrow">Scenario</p><h2>Tilpass veiledningen</h2><p>Velg plantype og legg til det som gjelder prosjektet ditt.</p></div>
     <div class="proj">
+      <label class="eyebrow" for="pvelg">Prosjekt</label>
       <select id="pvelg" aria-label="Velg prosjekt"></select>
       <div id="pinfo" class="pinfo" hidden></div>
       <a href="#prosjekter" class="plink">Gå til mine prosjekter →</a>
     </div>
-    <h2>Eksempelscenarioer</h2><div id="eks" class="seg list"></div>
-    <h2>Plantype</h2><div id="plan" class="seg stack"></div>
-    <h2>Din rolle</h2><div id="akt" class="seg"></div>
-    <h2>Formål</h2><div id="formal" class="seg"></div>
-    <h2>Stedsforhold</h2><div id="sted" class="seg"></div>
+    <div class="scenario-groups">
+      <details class="scenario-group" open>
+        <summary><span class="step-number">01</span><span class="group-title">Plantype<small id="plan-summary">Ikke valgt</small></span></summary>
+        <div class="group-body"><p class="choice-hint">Velg én plantype</p><div id="plan" class="seg stack" role="group" aria-label="Plantype"></div></div>
+      </details>
+      <details class="scenario-group">
+        <summary><span class="step-number">02</span><span class="group-title">Din rolle<small id="akt-summary">Ikke valgt</small></span></summary>
+        <div class="group-body"><p class="choice-hint">Velg én rolle</p><div id="akt" class="seg stack" role="group" aria-label="Din rolle"></div></div>
+      </details>
+      <details class="scenario-group">
+        <summary><span class="step-number">03</span><span class="group-title">Formål<small id="formal-summary">Ingen valgt</small></span></summary>
+        <div class="group-body"><p class="choice-hint">Du kan velge flere formål</p><div id="formal" class="seg stack" role="group" aria-label="Formål"></div></div>
+      </details>
+      <details class="scenario-group">
+        <summary><span class="step-number">04</span><span class="group-title">Stedsforhold<small id="sted-summary">Ingen valgt</small></span></summary>
+        <div class="group-body"><p class="choice-hint">Du kan velge flere stedsforhold</p><div id="sted" class="seg stack" role="group" aria-label="Stedsforhold"></div></div>
+      </details>
+    </div>
+    <div class="scenario-examples">
+      <label for="eks">Start med et eksempel</label>
+      <select id="eks" aria-describedby="eks-hint"></select>
+      <p id="eks-hint">Et eksempel fyller ut valgene for deg.</p>
+    </div>
   </section>
   <section id="out" aria-live="polite"></section>
 </main>

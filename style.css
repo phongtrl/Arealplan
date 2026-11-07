@@ -107,8 +107,6 @@ footer{margin-top:48px;margin-bottom:32px;font-size:.8rem;color:var(--muted)}
 #plan button::before,#akt button::before{border-radius:50%}
 .seg button[aria-pressed=true]{background:var(--tint-bg);border-color:var(--tint-line)}
 .seg button[aria-pressed=true]::before{background:var(--ink);border-color:var(--ink);box-shadow:inset 0 0 0 2.5px var(--tint-bg)}
-#eks button::before{content:"→";top:9px;width:auto;height:auto;border:0;color:var(--wood)}
-#eks button:hover::before{transform:translateX(2px);transition:transform .2s var(--ease)}
 
 /* Prosjekt i sidepanel */
 .plink{display:inline-block;margin-top:10px;font-size:.85rem;font-weight:500;color:var(--muted);text-decoration:none}
@@ -241,3 +239,35 @@ dd{margin:2px 0 0;color:var(--muted)}
 @keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
 @keyframes fade{to{opacity:1}}
 @media(prefers-reduced-motion:reduce){#splash{display:none}*,::before,::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Strukturert scenariovalg */
+#ctrl{padding:0}
+#ctrl .ctrl-heading{padding:24px 24px 20px}
+#ctrl .ctrl-heading h2{margin:5px 0 8px;font:400 1.55rem/1.2 var(--serif);letter-spacing:0;text-transform:none;color:var(--ink)}
+#ctrl .ctrl-heading p:not(.eyebrow){margin:0;font-size:.86rem;line-height:1.5;color:var(--muted)}
+#ctrl .proj{margin:0 24px 20px;padding:16px;background:var(--page);border:1px solid var(--line);border-radius:var(--r-sm)}
+#ctrl .proj label{display:block;color:var(--muted)}
+.scenario-groups{border-top:1px solid var(--line)}
+.scenario-group{border-bottom:1px solid var(--line)}
+.scenario-group>summary{display:flex;align-items:flex-start;gap:12px;padding:18px 44px 18px 24px;min-height:78px}
+.scenario-group>summary:hover{background:var(--hover)}
+.scenario-group>summary::before{left:auto;right:25px;top:27px;transform:rotate(45deg)}
+.scenario-group[open]>summary::before{transform:rotate(225deg)}
+.step-number{display:grid;place-items:center;flex:0 0 26px;height:26px;margin-top:1px;border:1px solid var(--line);border-radius:50%;font-size:.68rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.has-selection .step-number{color:var(--ok);border-color:var(--tint-line);background:var(--tint-bg)}
+.group-title{min-width:0;font-size:.94rem;font-weight:600}
+.group-title small{display:block;margin-top:3px;font-size:.78rem;font-weight:400;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
+.has-selection .group-title small{color:var(--ok)}
+.group-body{padding:0 24px 20px}
+#ctrl .choice-hint{margin:0 0 10px;padding:0;font-size:.76rem;color:var(--muted)}
+#ctrl .seg{gap:6px}
+#ctrl .seg button{min-height:44px;padding-top:11px;padding-bottom:11px;font-size:.84rem}
+#ctrl .seg button::before{top:14px}
+.scenario-examples{padding:20px 24px 24px}
+.scenario-examples label{display:block;margin-bottom:8px;font-size:.8rem;font-weight:600}
+#eks{width:100%;min-height:44px;padding:10px 30px 10px 12px;background:var(--page);border:1px solid var(--line-strong);border-radius:var(--r-sm);font-size:.84rem;cursor:pointer}
+#eks-hint{margin:8px 0 0;font-size:.76rem;line-height:1.5;color:var(--muted)}
+@media(min-width:56rem){#veileder{grid-template-columns:23rem minmax(0,1fr)}}
+#veileder>section{min-width:0}
+#ctrl select{max-width:100%;min-width:0}
+@media(max-width:44rem){#out .ref{white-space:normal;overflow-wrap:anywhere;box-decoration-break:clone;-webkit-box-decoration-break:clone}}
