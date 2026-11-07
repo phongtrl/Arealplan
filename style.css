@@ -559,3 +559,14 @@ footer>p{margin:0}
 .pcard .project-start{margin:6px 0 0;width:100%;font-size:.74rem}
 .pc-navn,.pc-top>span:first-child{overflow-wrap:anywhere}
 @media(max-width:44rem){.pc-foot{flex-wrap:wrap;font-size:.71rem}}
+
+/* Litt mer luft rundt prosjektskjemaet i mobilnettleseren. */
+@media(max-width:44rem){
+  :root[data-app-mode="browser"] #pdlg{width:calc(100% - 48px);max-width:440px;max-height:80vh;max-height:80dvh;border-radius:14px}
+  :root[data-app-mode="browser"] #pform{max-height:80vh;max-height:80dvh}
+  :root[data-app-mode="browser"] #pdlg .dh{flex-shrink:0;padding:18px 16px 14px}
+  :root[data-app-mode="browser"] #pdlg .dh h2{font-size:1.25rem}
+  :root[data-app-mode="browser"] #pdlg .dbody{min-height:0;padding:18px 16px;gap:24px;overscroll-behavior:contain}
+  :root[data-app-mode="browser"] #pdlg .df{flex-shrink:0;padding:12px 16px;gap:8px}
+  :root[data-app-mode="browser"] #pdlg input,:root[data-app-mode="browser"] #pdlg select,:root[data-app-mode="browser"] #pdlg textarea{min-width:0;font-size:16px}
+}

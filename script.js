@@ -559,7 +559,9 @@ const installButton = $('#install-app');
 const installDialog = $('#install-dialog');
 const standalone = matchMedia('(display-mode: standalone)');
 function updateInstallButton() {
-  installButton.hidden = standalone.matches || navigator.standalone === true;
+  const installed = standalone.matches || navigator.standalone === true;
+  installButton.hidden = installed;
+  document.documentElement.dataset.appMode = installed ? 'standalone' : 'browser';
 }
 updateInstallButton();
 standalone.addEventListener('change', updateInstallButton);
