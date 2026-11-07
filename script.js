@@ -115,6 +115,13 @@ function popen(id) {
   pi.hidden = !i.status && !parts.length;
   psave(); mark(); render();
 }
+const projectTitle = project => [project.info?.nr, project.navn].filter(Boolean).join(' – ');
+function projectStamps(project, plan) {
+  return `<div class="project-stamps"><span class="project-stamp">${esc(plan?.navn || 'Plantype ikke valgt')}</span><span class="project-stamp">${esc(project.info?.type || 'Oppdragstype ikke angitt')}</span>${project.info?.status ? `<span class="badge" data-s="${esc(project.info.status)}">${esc(project.info.status)}</span>` : ''}</div>`;
+}
+function projectHeading(project, plan) {
+  return `<h2 class="project-main-title">${esc(projectTitle(project))}</h2>${projectStamps(project, plan)}`;
+}
 function closeProjectPicker(restoreFocus = false) {
   $('.project-menu').hidden = true;
   $('#project-picker').setAttribute('aria-expanded', 'false');
@@ -122,9 +129,10 @@ function closeProjectPicker(restoreFocus = false) {
 }
 function renderProjectPicker() {
   const project = cur();
-  $('#project-picker-name').textContent = project ? project.navn : 'Velg prosjekt';
-  $('#project-picker-meta').textContent = project ? [project.info?.nr, project.info?.kommune].filter(Boolean).join(' · ') || 'Aktivt prosjekt' : P.liste.length ? P.liste.length + ' lagrede prosjekter' : 'Start med valgene nedenfor';
-  const options = [{id: '', navn: 'Uten prosjekt', detail: 'Utforsk et nytt scenario'}, ...P.liste.map(p => ({id:p.id, navn:p.navn, detail:[p.info?.nr, p.info?.kommune, p.info?.status].filter(Boolean).join(' · ') || 'Lagret prosjekt'}))];
+  $('#project-picker-name').textContent = project ? projectTitle(project) : 'Velg prosjekt';
+  $('#project-picker-meta').textContent = project ? [D.plantyper.find(x => x.id === project.plan)?.navn, project.info?.type].filter(Boolean).join(' · ') || 'Aktivt prosjekt' : P.liste.length ? P.liste.length + ' lagrede prosjekter' : 'Start med valgene nedenfor';
+  $('#project-picker').dataset.projectStatus = project?.info?.status || '';
+  const options = [{id: '', navn: 'Uten prosjekt', detail: 'Utforsk et nytt scenario'}, ...P.liste.map(p => ({id:p.id, navn:projectTitle(p), detail:[D.plantyper.find(x => x.id === p.plan)?.navn, p.info?.type, p.info?.status].filter(Boolean).join(' · ') || 'Lagret prosjekt'}))];
   $('#project-options').innerHTML = options.map(p => `<button type="button" role="option" tabindex="-1" aria-selected="${p.id === (P.aktiv || '')}" data-project-id="${esc(p.id)}"><span><span class="project-option-name">${esc(p.navn)}</span><small>${esc(p.detail)}</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg></button>`).join('');
   closeProjectPicker();
 }
@@ -243,9 +251,9 @@ function renderProj() {
   $('#plist').innerHTML = ny + (list.length ? list.map(p => {
     const i = p.info || {}, pl = D.plantyper.find(x => x.id === p.plan), n = Object.keys(p.d || {}).length;
     const meta = [i.oppdragsgiver, i.kommune].filter(Boolean).map(esc).join(' · ');
-    return `<button class="pcard${p.id === P.aktiv ? ' on' : ''}" data-pid="${esc(p.id)}">` +
-      `<span class="pc-top"><span>${i.nr ? esc(i.nr) : 'Uten nummer'}</span>${i.status ? `<span class="badge" data-s="${esc(i.status)}">${esc(i.status)}</span>` : ''}${p.id === P.aktiv ? '<span class="pc-akt">Aktiv</span>' : ''}</span>` +
-      `<span class="pc-navn">${esc(p.navn)}</span>` +
+    return `<button class="pcard${p.id === P.aktiv ? ' on' : ''}" data-pid="${esc(p.id)}" data-project-status="${esc(i.status || '')}">` +
+      `<span class="pc-top"><span>${i.nr ? esc(i.nr) : 'Uten nummer'}</span>${p.id === P.aktiv ? '<span class="pc-akt">Aktiv</span>' : ''}</span>` +
+      `<span class="pc-navn">${esc(projectTitle(p))}</span>${projectStamps(p, pl)}` +
       `<span class="pc-meta">${meta || 'Ingen oppdragsgiver registrert'}</span>` +
       `<span class="pc-foot"><span>${pl ? pl.navn : 'Plantype ikke valgt'}${n ? ` · ${n} avkrysset` : ''}</span><span>${fmtD(p.endret)}</span></span></button>`;
   }).join('') : `<p class="pempty">${P.liste.length ? 'Ingen prosjekter samsvarer med søket.' : 'Du har ingen prosjekter ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
@@ -282,7 +290,10 @@ function renderTeam(plan) {
 function render() {
   const out = $('#out');
   const p = D.plantyper.find(x => x.id === S.plan);
-  if (!p) { out.innerHTML = '<p class="hint">Velg plantype for å få råd. Legg til formål og stedsforhold for et mer treffsikkert scenario.</p>'; return; }
+  const project = cur();
+  out.dataset.projectStatus = project?.info?.status || '';
+  renderProjectPicker();
+  if (!p) { out.innerHTML = (project ? projectHeading(project, p) : '') + '<p class="hint">Velg plantype for å få råd. Legg til formål og stedsforhold for et mer treffsikkert scenario.</p>'; return; }
   const f = D.faktorer.filter(x => S.sel.has(x.id));
   const kombo = D.kombo.filter(k => k.if.every(i => S.sel.has(i)));
   const ku = p.ku || f.some(x => x.ku);
@@ -306,7 +317,7 @@ function render() {
     (lang ? `<p>Lengste utredning i dette scenarioet: <b>${lang.navn}</b> (+${lang.uker[0]}–${lang.uker[1]} uker).</p>` : '') +
     `<p>Grovt anslag. Utredningene antas å løpe parallelt, og den lengste styrer. Faktisk tid avhenger av kommunens kapasitet, kvaliteten på underlaget og eventuelle innsigelser.</p></div>`;
   out.innerHTML =
-    `<h2>${p.navn}<span class="ref">${p.r}</span></h2><p class="sub">${p.beskrivelse}</p><button id="alle" class="link">Åpne alle beskrivelser</button>` + box +
+    (project ? projectHeading(project, p) : `<h2>${p.navn}<span class="ref">${p.r}</span></h2>`) + `<p class="sub">${p.beskrivelse}</p>${project ? `<p class="project-plan-ref">${esc(p.r)}</p>` : ''}<button id="alle" class="link">Åpne alle beskrivelser</button>` + box +
     sec('Gjenkjent scenario', signal) +
     renderTeam(p) +
     sec('Anbefalt prosess', steps.map(x => li(x, 'steg')), 'ol', 1) +

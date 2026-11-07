@@ -466,3 +466,27 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .team-plan .team-trigger{font-size:.7rem;color:var(--wood)}
 .team-management{font-size:.78rem;line-height:1.65}
 @media(max-width:44rem){.team-plan{padding:16px}.team-role-heading{flex-wrap:wrap;gap:4px 12px}.team-detail-note{display:block;margin:3px 0 0}}
+
+/* Prosjektidentitet og status følger valgt prosjekt. */
+[data-project-status],.badge[data-s]{--status-color:var(--muted)}
+[data-project-status="Tilbud"],.badge[data-s="Tilbud"]{--status-color:#52728F}
+[data-project-status="Planlegging"],.badge[data-s="Planlegging"]{--status-color:#8C7450}
+[data-project-status="Pågår"],.badge[data-s="Pågår"]{--status-color:#4F7358}
+[data-project-status="På vent"],.badge[data-s="På vent"]{--status-color:#A57232}
+[data-project-status="Avsluttet"],.badge[data-s="Avsluttet"]{--status-color:#747772}
+:root[data-theme=dark] [data-project-status="Tilbud"],:root[data-theme=dark] .badge[data-s="Tilbud"]{--status-color:#9FBDD5}
+:root[data-theme=dark] [data-project-status="Planlegging"],:root[data-theme=dark] .badge[data-s="Planlegging"]{--status-color:#C9B38D}
+:root[data-theme=dark] [data-project-status="Pågår"],:root[data-theme=dark] .badge[data-s="Pågår"]{--status-color:#A7C4A4}
+:root[data-theme=dark] [data-project-status="På vent"],:root[data-theme=dark] .badge[data-s="På vent"]{--status-color:#DBB077}
+:root[data-theme=dark] [data-project-status="Avsluttet"],:root[data-theme=dark] .badge[data-s="Avsluttet"]{--status-color:#B0B4AC}
+.badge[data-s]{color:var(--status-color);background:color-mix(in srgb,var(--status-color) 10%,var(--card));border-color:color-mix(in srgb,var(--status-color) 32%,var(--line))}
+.badge[data-s]::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;margin-right:6px}
+.project-stamps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0 14px}
+.project-stamp{max-width:100%;padding:3px 9px;font:400 .72rem/1.5 var(--sans);color:var(--muted);background:var(--hover);border:1px solid var(--line);border-radius:5px;overflow-wrap:anywhere}
+#out[data-project-status]:not([data-project-status=""]){border-top:3px solid var(--status-color)}
+#out .project-main-title{padding-left:13px;border-left:3px solid var(--status-color)}
+.project-plan-ref{margin:8px 0 0;font-size:.73rem;color:var(--muted)}
+.pcard[data-project-status]:not([data-project-status=""]){border-top:3px solid var(--status-color)}
+.pcard .project-stamps{margin:4px 0 6px}
+#project-picker[data-project-status]:not([data-project-status=""]){border-left:3px solid var(--status-color)}
+#project-picker[data-project-status]:not([data-project-status=""]) .project-picker-icon{color:var(--status-color)}
