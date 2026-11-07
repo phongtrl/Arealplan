@@ -409,7 +409,10 @@ function renderGuide(g) {
   const list = (arr, tag = 'ul') => `<${tag}>${arr.map(x => `<li>${x}</li>`).join('')}</${tag}>`;
   const refs = g.hjemmel.map(r => { const u = refUrl(r); return u ? `<a class="ref" href="${u}" target="_blank" rel="noopener">${r}</a>` : `<span class="ref">${r}</span>`; }).join('');
   const title = esc(g.navn).replace(/Reguleringsbestemmelser/g, 'Regulerings\u00adbestemmelser').replace(/Konsekvensutredning/g, 'Konsekvens\u00adutredning');
-  $('#guide').innerHTML = `<p class="guide-eyebrow">Plankunnskap</p><h2>${title}</h2><div class="refs">${refs}</div><p class="lead">${g.hva}</p>` +
+  const index = G.findIndex(item => item.id === g.id);
+  const previous = G[index - 1], next = G[index + 1];
+  const navigation = `<nav class="knowledge-nav" aria-label="Bla i Plankunnskap">${previous ? `<a href="#${previous.id}" rel="prev" aria-label="Forrige: ${esc(previous.navn)}"><span aria-hidden="true">←</span> Forrige</a>` : '<span class="knowledge-end" aria-disabled="true">← Forrige</span>'}<span class="knowledge-position">${index + 1} av ${G.length}</span>${next ? `<a href="#${next.id}" rel="next" aria-label="Neste: ${esc(next.navn)}">Neste <span aria-hidden="true">→</span></a>` : '<span class="knowledge-end" aria-disabled="true">Neste →</span>'}</nav>`;
+  $('#guide').innerHTML = navigation + `<p class="knowledge-swipe-hint">Sveip for å bla mellom dokumentene</p><p class="guide-eyebrow">Plankunnskap</p><h2>${title}</h2><div class="refs">${refs}</div><p class="lead">${g.hva}</p>` +
     `<h3>Når kreves det?</h3>${list(g.nar)}` +
     `<h3>Hva skal det inneholde?</h3><dl>${g.innhold.map(([t, d]) => `<dt>${t}</dt><dd>${d}</dd>`).join('')}</dl>` +
     `<h3>Slik gjør du det</h3>${list(g.steg, 'ol')}` +
@@ -417,7 +420,28 @@ function renderGuide(g) {
     `<h3>Dokumenter</h3><p class="lenker">${g.l.map(([t, u]) => a(t, u)).join('')}</p>`;
 }
 
-let lastIx = null;
+// Behold vertikal leserulling og nettleserens sveiping fra skjermkanten.
+let knowledgeTouch = null;
+$('#guide').addEventListener('touchstart', event => {
+  knowledgeTouch = null;
+  if (event.touches.length !== 1 || event.target.closest('a,button,input,select,textarea,summary')) return;
+  const touch = event.touches[0];
+  if (touch.clientX < 24 || touch.clientX > innerWidth - 24) return;
+  knowledgeTouch = {x:touch.clientX,y:touch.clientY,time:performance.now()};
+}, {passive:true});
+$('#guide').addEventListener('touchcancel', () => { knowledgeTouch = null; }, {passive:true});
+$('#guide').addEventListener('touchend', event => {
+  const start = knowledgeTouch;
+  knowledgeTouch = null;
+  if (!start || event.touches.length || event.changedTouches.length !== 1 || window.getSelection()?.toString()) return;
+  const touch = event.changedTouches[0], dx = touch.clientX - start.x, dy = touch.clientY - start.y;
+  if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.6 || performance.now() - start.time > 900) return;
+  const index = G.findIndex(item => item.id === location.hash.slice(1));
+  const next = G[index + (dx < 0 ? 1 : -1)];
+  if (index >= 0 && next) location.hash = next.id;
+}, {passive:true});
+
+let lastIx = null, lastGuideIndex = null;
 function route() {
   const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = h === 'om' || h === 'faq';
   $('#veileder').hidden = !!g || pg || info;
@@ -433,9 +457,12 @@ function route() {
   const ix = info ? 3 : g ? 2 : pg ? 1 : 0, el = info ? $('#about') : g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
   if (lastIx !== null) {
     el.classList.remove('enter-l', 'enter-r', 'enter-f'); void el.offsetWidth;
-    el.classList.add(ix > lastIx ? 'enter-r' : ix < lastIx ? 'enter-l' : 'enter-f');
+    const guideIndex = g ? G.indexOf(g) : null;
+    const direction = g && lastGuideIndex !== null ? guideIndex - lastGuideIndex : ix - lastIx;
+    el.classList.add(direction > 0 ? 'enter-r' : direction < 0 ? 'enter-l' : 'enter-f');
   }
   lastIx = ix;
+  lastGuideIndex = g ? G.indexOf(g) : null;
   document.querySelectorAll('#nav a').forEach(l => l.removeAttribute('aria-current'));
   const cur = document.querySelector(`#nav a[data-p="${g ? g.id : pg ? 'prosjekter' : 'veileder'}"]`);
   if (cur && !info) cur.setAttribute('aria-current', 'page');
