@@ -307,7 +307,9 @@ body:has(#veileder:not([hidden]))>footer{width:100%;flex-shrink:0;margin-top:12p
 #pvelg:focus{outline:none;border-color:var(--wood);box-shadow:0 0 0 3px color-mix(in srgb,var(--wood) 16%,transparent)}
 #ctrl .proj .plink{margin-top:9px;font-size:.76rem;font-weight:400}
 @media(forced-colors:active){#pvelg{appearance:auto}.project-select::after{display:none}}
-.install-app{align-self:center;white-space:nowrap;font-size:.76rem;padding:7px 11px}
+.install-app{align-self:center;gap:7px;min-height:44px;padding:8px;color:var(--muted);white-space:nowrap;font-size:.75rem;font-weight:400;background:transparent;border:0;border-radius:var(--r-sm)}
+.install-app svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.install-app:hover{color:var(--ink);background:var(--hover)}
 #install-dialog{width:min(480px,calc(100% - 32px));overflow-y:auto}
 .install-content{padding:24px}
 .install-content h2{margin:0 0 12px;font-size:1.5rem}
@@ -315,7 +317,7 @@ body:has(#veileder:not([hidden]))>footer{width:100%;flex-shrink:0;margin-top:12p
 .install-content p,.install-content li{font-size:.88rem}
 .install-content .install-note{margin-top:20px;color:var(--muted);font-size:.76rem}
 .install-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
-@media(max-width:44rem){.tb{gap:0 6px}.install-app{font-size:.7rem;padding:6px 8px}}
+@media(max-width:44rem){.tb{gap:0 6px}.install-app{width:44px;padding:0}.install-app span{display:none}}
 
 /* Rolig, moderne tittelhierarki */
 #out>h2:first-child{font-weight:450;letter-spacing:-.045em;line-height:1.25}
