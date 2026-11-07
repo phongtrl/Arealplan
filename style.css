@@ -502,11 +502,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #out>ol>li>.row>b,
 #out>ul>li>.row>b{font-weight:500;letter-spacing:-.01em}
 
-/* Smalere punkttitler og trygg orddeling på små skjermer. */
+/* Samme leseskrift som dokumentlenkene, med trygg orddeling. */
 #out>ol>li>details>summary>b,
 #out>ul>li>details>summary>b,
 #out>ol>li>.row>b,
-#out>ul>li>.row>b{font-family:"Roboto Compact",Arial,sans-serif;font-stretch:90%;font-weight:450;font-size:.98rem;letter-spacing:0;overflow-wrap:anywhere;hyphens:manual}
+#out>ul>li>.row>b{font-family:var(--sans);font-stretch:normal;font-weight:400;font-size:1rem;line-height:inherit;letter-spacing:normal;overflow-wrap:anywhere;hyphens:manual}
 #out>ul,#out>ol{min-width:0}
 #out li,#out summary,#out .row{min-width:0;overflow-wrap:anywhere}
 @media(max-width:44rem){#out{padding:20px 16px}#out .lenker a{max-width:100%;overflow-wrap:anywhere}}
