@@ -396,3 +396,48 @@ $('#out').addEventListener('change', e => {
 $('#out').addEventListener('click', e => {
   if (e.target.id === 'nullstill') { ST = { d: {}, t: null }; psave(1); render(); }
 });
+
+// Installering fra nettleser og hjemskjerm.
+let installPrompt = null;
+const installButton = $('#install-app');
+const installDialog = $('#install-dialog');
+const standalone = matchMedia('(display-mode: standalone)');
+function updateInstallButton() {
+  installButton.hidden = standalone.matches || navigator.standalone === true;
+}
+updateInstallButton();
+standalone.addEventListener('change', updateInstallButton);
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  installPrompt = event;
+  $('#install-confirm').hidden = false;
+});
+installButton.onclick = () => {
+  const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  $('#install-ios').hidden = !ios && /Android/.test(navigator.userAgent);
+  $('#install-android').hidden = ios;
+  installDialog.showModal();
+};
+$('#install-close').onclick = () => installDialog.close();
+$('#install-confirm').onclick = async () => {
+  if (!installPrompt) return;
+  const prompt = installPrompt;
+  installPrompt = null;
+  $('#install-confirm').hidden = true;
+  try {
+    await prompt.prompt();
+    const result = await prompt.userChoice;
+    if (result.outcome === 'accepted') installDialog.close();
+  } catch (error) { /* Manuell installasjonsveiledning er fortsatt tilgjengelig. */ }
+};
+window.addEventListener('appinstalled', () => {
+  installPrompt = null;
+  installButton.hidden = true;
+  $('#install-confirm').hidden = true;
+  installDialog.close();
+});
+if ('serviceWorker' in navigator && window.isSecureContext) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => { /* Siden fungerer også uten frakoblet modus. */ });
+  });
+}
