@@ -414,8 +414,10 @@ window.addEventListener('beforeinstallprompt', event => {
 });
 installButton.onclick = () => {
   const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  $('#install-ios').hidden = !ios && /Android/.test(navigator.userAgent);
-  $('#install-android').hidden = ios;
+  const android = /Android/.test(navigator.userAgent);
+  $('#install-ios').hidden = !ios;
+  $('#install-android').hidden = !android || ios;
+  $('#install-desktop').hidden = ios || android;
   installDialog.showModal();
 };
 $('#install-close').onclick = () => installDialog.close();

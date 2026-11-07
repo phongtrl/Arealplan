@@ -1,4 +1,4 @@
-const CACHE = 'arealplan-shell-v2';
+const CACHE = 'arealplan-shell-v3';
 const SHELL = ['./', 'index.html', 'style.css', 'script.js', 'data.js', 'guider.js', 'APlogo.png', 'manifest.webmanifest', 'fonts/Manrope-Variable.ttf', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));
