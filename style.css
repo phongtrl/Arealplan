@@ -220,7 +220,8 @@ dd{margin:2px 0 0;color:var(--muted)}
 @media(max-width:44rem){#guide{padding:22px 20px}}
 
 /* Logo og splash */
-.logo{display:block;object-fit:contain}
+.logo{display:block;object-fit:contain;--logo-tone:brightness(1) contrast(1) saturate(1);filter:var(--logo-tone)}
+:root[data-theme=dark] .logo{--logo-tone:brightness(1.8) contrast(.65) saturate(.8)}
 #splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--page);cursor:pointer;transition:opacity .4s ease,visibility .4s}
 #splash.out{opacity:0;visibility:hidden;pointer-events:none}
 #splash .logo{width:min(312px,80vw);height:auto}
@@ -230,7 +231,7 @@ dd{margin:2px 0 0;color:var(--muted)}
 #splash .splash-wordmark{display:flex;margin:0;font:400 clamp(2rem,6vw,3.25rem)/1.15 var(--sans);letter-spacing:-.055em}
 .splash-wordmark strong{animation:brand-text-in .8s .22s var(--ease) both}
 .splash-wordmark span{animation:brand-text-in .8s .38s var(--ease) both}
-@keyframes brand-logo-in{from{opacity:0;transform:translateY(12px) scale(.92);filter:blur(6px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes brand-logo-in{from{opacity:0;transform:translateY(12px) scale(.92);filter:var(--logo-tone) blur(6px)}to{opacity:1;transform:translateY(0) scale(1);filter:var(--logo-tone) blur(0)}}
 @keyframes brand-text-in{from{opacity:0;transform:translateY(14px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
 
 /* Bevegelse */
