@@ -468,7 +468,7 @@ function updateMobileIndicator() {
 }
 function syncMobilePage() {
   mobileButtons.forEach((button, index) => button.setAttribute('aria-pressed', index === mobilePage));
-  mobilePanels.forEach((panel, index) => { panel.inert = mobileLayout.matches && index !== mobilePage; });
+  mobilePanels.forEach((panel, index) => { panel.inert = mobileLayout.matches ? index !== mobilePage : index === 0 && $('#veileder').classList.contains('choices-collapsed'); });
 }
 function openMobilePage(index) {
   mobilePage = index;
@@ -506,6 +506,7 @@ let choicesCollapsed = false;
 try { choicesCollapsed = localStorage.getItem('a101:choices-collapsed') === 'true'; } catch (error) {}
 function syncChoicesPanel() {
   $('#veileder').classList.toggle('choices-collapsed', choicesCollapsed);
+  syncMobilePage();
   choicesToggle.setAttribute('aria-expanded', String(!choicesCollapsed));
   choicesToggle.querySelector('span').textContent = choicesCollapsed ? 'Vis prosjektvalg' : 'Skjul prosjektvalg';
 }
