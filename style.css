@@ -548,3 +548,14 @@ footer>p{margin:0}
 .knowledge-end{color:var(--muted);opacity:.4}
 #guide .knowledge-swipe-hint{display:none}
 @media(pointer:coarse){#guide .knowledge-swipe-hint{display:block;margin:-9px 0 22px;color:var(--muted);font-size:.69rem}}
+
+/* Oppstart samlet på en egen linje i prosjektvisningen. */
+.project-start{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:10px 0 14px;padding:10px 0;border-top:1px solid var(--line);font-size:.77rem;line-height:1.5}
+.project-start-date{color:var(--muted)}
+.project-start-date time{color:var(--ink);margin-left:4px;font-variant-numeric:tabular-nums}
+.project-start-relative{margin-left:auto;color:var(--wood);font-size:.74rem}
+.project-start-relative[data-start-direction="0"]{color:var(--ok)}
+.project-start-empty{color:var(--muted)}
+.pcard .project-start{margin:6px 0 0;width:100%;font-size:.74rem}
+.pc-navn,.pc-top>span:first-child{overflow-wrap:anywhere}
+@media(max-width:44rem){.pc-foot{flex-wrap:wrap;font-size:.71rem}}

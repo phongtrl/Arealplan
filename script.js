@@ -85,6 +85,23 @@ const cur = () => P.liste.find(x => x.id === P.aktiv) || null;
 const isClosed = project => project?.info?.status === 'Avsluttet';
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmtD = s => s ? new Date(s).toLocaleDateString('nb-NO') : '';
+function osloDateParts(now = new Date()) {
+  return Object.fromEntries(new Intl.DateTimeFormat('en-GB', {timeZone:'Europe/Oslo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now).filter(part => ['year','month','day'].includes(part.type)).map(part => [part.type, part.value]));
+}
+function projectStartInfo(value, now = new Date()) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null;
+  const date = new Date(value + 'T00:00:00Z');
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0,10) !== value) return null;
+  const today = osloDateParts(now);
+  const days = Math.round((date.getTime() - Date.UTC(+today.year, +today.month - 1, +today.day)) / 86400000);
+  const amount = Math.abs(days), weeks = Math.floor(amount / 7), rest = amount % 7;
+  const duration = amount < 30 ? amount + (amount === 1 ? ' dag' : ' dager') : weeks + (weeks === 1 ? ' uke' : ' uker') + (rest ? ' og ' + rest + (rest === 1 ? ' dag' : ' dager') : '');
+  return {date:new Intl.DateTimeFormat('nb-NO',{timeZone:'UTC',day:'2-digit',month:'2-digit',year:'numeric'}).format(date),relative:days === 0 ? 'Oppstart i dag' : days > 0 ? 'Om ' + duration : duration + ' siden',days};
+}
+function renderProjectStart(project) {
+  const start = projectStartInfo(project.info?.start);
+  return start ? `<span class="project-start"><span class="project-start-date">Oppstart <time datetime="${esc(project.info.start)}">${start.date}</time></span><span class="project-start-relative" data-start-direction="${Math.sign(start.days)}">${start.relative}</span></span>` : '<span class="project-start project-start-empty">Oppstart ikke angitt</span>';
+}
 function pload() {
   try { P = JSON.parse(localStorage.getItem(PK)); } catch (e) { P = null; }
   if (!P || !Array.isArray(P.liste)) P = { aktiv: null, liste: [] };
@@ -125,7 +142,7 @@ function projectStamps(project, plan) {
   return `<div class="project-stamps"><span class="project-stamp">${esc(plan?.navn || 'Plantype ikke valgt')}</span><span class="project-stamp">${esc(project.info?.type || 'Oppdragstype ikke angitt')}</span>${project.info?.status ? `<span class="badge" data-s="${esc(project.info.status)}">${esc(project.info.status)}</span>` : ''}</div>`;
 }
 function projectHeading(project, plan) {
-  return `<h2 class="project-main-title">${esc(projectTitle(project))}</h2>${projectStamps(project, plan)}`;
+  return `<h2 class="project-main-title">${esc(projectTitle(project))}</h2>${projectStamps(project, plan)}${renderProjectStart(project)}`;
 }
 function closeProjectPicker(restoreFocus = false) {
   $('.project-menu').hidden = true;
@@ -263,10 +280,10 @@ function renderProj() {
     const i = p.info || {}, pl = D.plantyper.find(x => x.id === p.plan), n = Object.keys(p.d || {}).length;
     const meta = [i.oppdragsgiver, i.kommune].filter(Boolean).map(esc).join(' · ');
     return `<button class="pcard${p.id === P.aktiv && !isClosed(p) ? ' on' : ''}" data-pid="${esc(p.id)}" data-project-status="${esc(i.status || '')}">` +
-      `<span class="pc-top"><span>${i.nr ? esc(i.nr) : 'Uten nummer'}</span>${p.id === P.aktiv && !isClosed(p) ? '<span class="pc-akt">Aktiv</span>' : isClosed(p) ? '<span class="pc-inactive">Inaktiv</span>' : ''}</span>` +
-      `<span class="pc-navn">${esc(projectTitle(p))}</span>${projectStamps(p, pl)}` +
+      `<span class="pc-top"><span>Prosjektnr: ${i.nr ? esc(i.nr) : 'Ikke angitt'}</span>${p.id === P.aktiv && !isClosed(p) ? '<span class="pc-akt">Aktiv</span>' : isClosed(p) ? '<span class="pc-inactive">Inaktiv</span>' : ''}</span>` +
+      `<span class="pc-navn">${esc(p.navn)}</span>${projectStamps(p, pl)}` +
       `<span class="pc-meta">${meta || 'Ingen oppdragsgiver registrert'}</span>` +
-      `<span class="pc-foot"><span>${pl ? pl.navn : 'Plantype ikke valgt'}${n ? ` · ${n} avkrysset` : ''}</span><span>${fmtD(p.endret)}</span></span></button>`;
+      `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span></button>`;
   }).join('') : `<p class="pempty">${P.liste.length ? 'Ingen prosjekter samsvarer med søket.' : 'Du har ingen prosjekter ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
 }
 function initProj() {
