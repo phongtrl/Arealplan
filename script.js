@@ -245,6 +245,19 @@ function render() {
     `<h2>${p.navn}<span class="ref">${p.r}</span></h2><p class="sub">${p.beskrivelse}</p><button id="alle" class="link">Åpne alle beskrivelser</button>` + box +
     sec('Gjenkjent scenario', signal) +
     sec('Anbefalt prosess', steps.map(x => li(x, 'steg')), 'ol', 1) +
+    `<aside class="work-order" aria-labelledby="work-order-title">
+      <h3 id="work-order-title">Hva gjør du først?</h3>
+      <p>Utredninger og plandokumenter utvikles delvis parallelt. Listene nedenfor er sjekklister, ikke en fast arbeidsrekkefølge.</p>
+      <ol>
+        <li><b>Innhent kunnskap og innspill.</b> Start medvirkning tidlig, og avklar barn og unges interesser før løsningen låses. Medvirkning fortsetter gjennom planarbeidet.</li>
+        <li><b>Avklar risiko og stedets forutsetninger.</b> Start ROS, klima- og overvannsvurderinger tidlig. Kartlegg også behov for universell utforming. Gjør relevante fagutredninger parallelt.</li>
+        <li><b>Prøv ut løsninger.</b> Bruk skisser og, der det er relevant, illustrasjonsplan og snitt. Juster arealbruk, terreng, adkomst og utearealer ut fra utredninger og innspill.</li>
+        <li><b>Utarbeid plankart og bestemmelser sammen.</b> Sikre nødvendige tiltak og rekkefølgekrav i de bindende plandokumentene.</li>
+        <li><b>Ferdigstill og kontroller helheten.</b> ${p.id === 'endring' ? 'Oppdater begrunnelsen og vurderingen av virkninger for endringen.' : 'Skriv planbeskrivelsen underveis, og ferdigstill den når løsningen er avklart.'} Oppdater ROS slik at den gjelder forslaget som sendes inn.</li>
+      </ol>
+      <p class="work-order-note"><b>Hvorfor står ROS begge steder?</b> Det er samme analyse: Den starter som utredning og oppdateres til et dokument som følger planforslaget. Avkryssingene skiller mellom gjennomført utredning og ferdig dokument i planforslaget.</p>
+      <p class="work-order-note">Illustrasjoner forklarer løsningen. Bindende krav må sikres i plankart og bestemmelser. Omfanget av arbeidet tilpasses plantype og tiltak.</p>
+    </aside>` +
     sec('Utredninger og tema', [...f.map(x => li(x, 'utr')), ...D.alltid.map(x => li(x, 'utr'))], 'ul', 1) +
     sec('Innhold i planforslaget', p.innhold.map(x => li(x, 'inn')), 'ul', 1) +
     sec('Risiko og fallgruver', risiko) +
