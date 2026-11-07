@@ -441,3 +441,29 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .dd .menu a{white-space:normal;overflow-wrap:anywhere}
   #guide{margin-top:20px;padding:24px 20px}
 }
+
+/* Bemanning og rolleavklaring */
+.team-plan{margin:26px 0;padding:20px;background:var(--page);border:1px solid var(--line);border-radius:var(--radius)}
+.team-plan>h2{margin:4px 0 16px;font:500 1.3rem/1.3 var(--heading);letter-spacing:-.025em}
+.team-plan p{margin:10px 0;font-size:.84rem;line-height:1.65}
+.team-overview{display:flex;align-items:center;gap:14px}
+.team-overview>strong{font:450 2.5rem/1.1 var(--heading);letter-spacing:-.05em;color:var(--ok);white-space:nowrap}
+.team-overview>span{font-size:.83rem;line-height:1.5}
+.team-overview small,.team-basis{color:var(--muted)}
+.team-plan .team-basis{font-size:.74rem}
+.team-plan>details{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.team-plan summary{font-size:.86rem;font-weight:500}
+.team-detail-note{font-size:.72rem;font-weight:400;color:var(--muted);margin-left:6px}
+.team-plan .team-note{padding-left:0;font-size:.77rem;color:var(--muted)}
+.team-roles{padding:0;list-style:none}
+.team-roles .team-role{margin:0;padding:15px 0;border-bottom:1px solid var(--line)}
+.team-roles .team-role:last-child{border-bottom:0;padding-bottom:0}
+.team-role-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:.83rem}
+.team-role-heading b{font-weight:550;overflow-wrap:anywhere}
+.team-count{flex-shrink:0;font-size:.72rem;color:var(--ok);white-space:nowrap}
+.team-plan .team-role p{padding:0;margin:6px 0;font-size:.78rem}
+.team-plan .team-when{color:var(--muted)}
+.team-when>span{font-weight:500;color:var(--ink);margin-right:5px}
+.team-plan .team-trigger{font-size:.7rem;color:var(--wood)}
+.team-management{font-size:.78rem;line-height:1.65}
+@media(max-width:44rem){.team-plan{padding:16px}.team-role-heading{flex-wrap:wrap;gap:4px 12px}.team-detail-note{display:block;margin:3px 0 0}}

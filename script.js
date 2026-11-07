@@ -271,6 +271,14 @@ function initProj() {
 }
 const sec = (h, items, tag = 'ul', cnt) => items.length ? `<h2>${h}${cnt ? '<span class="cnt"></span>' : ''}</h2><${tag}>${items.join('')}</${tag}>` : '';
 
+function renderTeam(plan) {
+  const team = window.recommendTeam(plan, S.sel, S.akt);
+  const project = cur();
+  const rows = roles => roles.map(role => `<li class="team-role"><div class="team-role-heading"><b>${esc(role.name)}</b><span class="team-count">${esc(role.count)}</span></div><p>${esc(role.task)}</p><p class="team-when"><span>Involveres</span> ${esc(role.when)}</p>${role.triggers?.length ? `<p class="team-trigger">Basert på: ${role.triggers.map(id => esc(D.faktorer.find(f => f.id === id).navn)).join(', ')}</p>` : ''}</li>`).join('');
+  const context = S.akt === 'kommune' ? 'For kommunen: skill mellom rollen som planmyndighet og eventuelt eget planarbeid. Avklar saksbehandler, interne sektorer og politiske beslutningspunkter.' : S.akt === 'utbygger' ? 'For forslagsstiller: utpek en prosjekteier som godkjenner rammer og beslutninger, og avklar grensesnittet mot kommunen.' : S.akt === 'konsulent' ? 'For konsulentteamet: avklar mandat og leveranser med oppdragsgiver. Oppdragsgiver og kommunen inngår normalt ikke i bemanningen til konsulentteamet.' : 'Avklar hvem som er prosjekteier, forslagsstiller og kommunens kontaktperson før oppstart.';
+  return `<aside class="team-plan" aria-labelledby="team-title"><p class="eyebrow">Ressursplanlegging</p><h2 id="team-title">Anbefalt team</h2><div class="team-overview"><strong>${team.min}–${team.max}</strong><span>personer i kjerneteamet<br><small>+ fagressurser etter behov</small></span></div><p>${esc(team.explanation)}</p><p class="team-basis">Et planleggingsanslag basert på plantype og valgene dine, ikke et bemanningskrav. Antall gjelder personer gjennom prosjektet, ikke årsverk eller samtidig fulltidsbemanning. Avklar omfang og timebudsjett før bestilling.</p>${project?.info?.leder ? `<p class="team-leader">Registrert prosjektleder: <b>${esc(project.info.leder)}</b></p>` : ''}<details open><summary>Kjerneteam <span class="team-detail-note">roller og ansvar</span></summary><p class="team-note">Én person kan dekke flere roller ved riktig kompetanse. Kvalitetssikring bør utføres av en annen enn forfatteren. Rolleantallene skal derfor ikke summeres direkte.</p><ul class="team-roles">${rows(team.core)}</ul></details><details><summary>Fagressurser <span class="team-detail-note">${team.specialists.length} anbefalte fagroller</span></summary>${team.specialists.length ? `<p class="team-note">Kobles inn for avgrensede leveranser. Roller kan kombineres der kompetansen dekker behovet; antallene skal ikke summeres ukritisk.</p><ul class="team-roles">${rows(team.specialists)}</ul>` : '<p class="team-note">Ingen ekstra fagroller er foreslått ut fra valgene ennå. Avklar fagbehov i oppstartsmøtet; ingen valgte stedsforhold betyr ikke at området er uten risiko.</p>'}</details><details><summary>Samordning og beslutninger</summary><p class="team-note">${context}</p><ul class="team-management"><li><b>Fordel tverrgående ansvar:</b> ROS, medvirkning, barn og unge, klima og universell utforming må ha en navngitt ansvarlig i teamet. Bruk fagstøtte ved behov.</li><li><b>Før oppstart:</b> avtal ansvarlig, leveranse, timebudsjett og frist for hver fagressurs.</li><li><b>Ved milepæler:</b> følg opp fremdrift, økonomi, avhengigheter og beslutninger. Samordne fag før høring og innsending.</li></ul></details></aside>`;
+}
+
 function render() {
   const out = $('#out');
   const p = D.plantyper.find(x => x.id === S.plan);
@@ -300,6 +308,7 @@ function render() {
   out.innerHTML =
     `<h2>${p.navn}<span class="ref">${p.r}</span></h2><p class="sub">${p.beskrivelse}</p><button id="alle" class="link">Åpne alle beskrivelser</button>` + box +
     sec('Gjenkjent scenario', signal) +
+    renderTeam(p) +
     sec('Anbefalt prosess', steps.map(x => li(x, 'steg')), 'ol', 1) +
     `<aside class="work-order" aria-labelledby="work-order-title">
       <h3 id="work-order-title">Hva gjør du først?</h3>
