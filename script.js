@@ -358,14 +358,35 @@ else $('#out').innerHTML = '<p class="err">Kunne ikke laste data.js. Sjekk at fi
 route();
 window.onhashchange = route;
 
-const sp = $('#splash');
-if (matchMedia('(prefers-reduced-motion: reduce)').matches) sp.remove();
-else {
-  sp.innerHTML = LOGO.replace('class="logo"', 'class="logo anim"') + '<p>Arealplan101</p>';
-  const close = () => { sp.classList.add('out'); setTimeout(() => sp.remove(), 600); };
-  sp.onclick = close;
-  setTimeout(close, 2400);
+let splashTimer, splashRemoval;
+function closeSplash() {
+  clearTimeout(splashTimer);
+  const splash = $('#splash');
+  if (!splash || splash.classList.contains('out')) return;
+  splash.classList.add('out');
+  splashRemoval = setTimeout(() => splash.remove(), 450);
 }
+function showSplash() {
+  clearTimeout(splashTimer);
+  clearTimeout(splashRemoval);
+  $('#splash')?.remove();
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const splash = document.createElement('div');
+  splash.id = 'splash';
+  splash.setAttribute('aria-hidden', 'true');
+  splash.innerHTML = LOGO + '<p class="splash-wordmark"><strong>Areal</strong><span>plan</span></p>';
+  splash.onclick = closeSplash;
+  document.body.append(splash);
+  splashTimer = setTimeout(closeSplash, 2100);
+}
+$('.brand').addEventListener('click', e => {
+  if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  showSplash();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' || e.key === 'Tab') closeSplash();
+});
+showSplash();
 
 $('#out').addEventListener('change', e => {
   const c = e.target.closest('.ck'); if (!c) return;
