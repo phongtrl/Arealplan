@@ -91,6 +91,7 @@
       <select id="psort" aria-label="Sorter prosjekter"><option value="endret">Sist endret</option><option value="navn">Navn</option><option value="nr">Prosjektnummer</option></select>
     </div>
   </div>
+  <div class="project-view-bar"><nav class="project-views" aria-label="Prosjektoversikt"><button type="button" id="view-projects" aria-pressed="true">Prosjekter <span id="projects-count">0</span></button><button type="button" id="view-archive" aria-pressed="false">Arkiv <span id="archive-count">0</span></button></nav><button id="archive-completed" type="button" hidden>Arkiver alle avsluttede</button></div>
   <div id="plist" class="pgrid"></div>
   <p class="pnote">Prosjektene lagres kun i denne nettleseren.</p>
 </main>
@@ -120,7 +121,7 @@
     <li><h3>Ta vare på scenarioet</h3><p>Når du har valgt plantype, trykker du <b>Opprett prosjekt</b> under «Ta vare på scenarioet». Gi prosjektet et navn, og fyll gjerne inn prosjektnummer, oppdragstype, status og oppstart. Scenariovalgene følger med.</p><p>Du kan også opprette og redigere prosjekter fra <b>Mine prosjekter</b>. Oppstart vises med dato og hvor lenge det er til eller siden oppstart.</p></li>
     <li><h3>Planlegg team og følg opp fremdriften</h3><p><b>Anbefalt team</b> viser forslag til kjerneteam og fagressurser basert på valgene dine. Åpne rollene for ansvar og tidspunkt for involvering, og avklar bemanning og timebudsjett i prosjektet.</p><p>Kryss av utførte oppgaver i sjekklistene. Fremdriftsoversikten oppdateres underveis. Når et prosjekt er valgt, lagres scenariovalg og avkrysninger automatisk lokalt. <b>Nullstill avkryssing</b> fjerner avkrysningene i det valgte prosjektet eller scenarioet.</p></li>
     <li><h3>Bruk Plankunnskap ved behov</h3><p>Velg et dokument fra <b>Plankunnskap</b> for å lære hva det betyr, når det trengs og hva det bør inneholde. På mobil sveiper du mot venstre for neste dokument og mot høyre for forrige. Du kan også bruke <b>Forrige</b> og <b>Neste</b>.</p></li>
-    <li><h3>Avslutt eller gjenåpne prosjektet</h3><p>Åpne prosjektet i <b>Mine prosjekter</b> og sett status til <b>Avsluttet</b> når arbeidet er ferdig. Prosjektet blir inaktivt, men beholder valg og fremdrift. Trykk <b>Gjenåpne prosjekt</b> for å sette det til «Pågår» og gjøre det aktivt igjen.</p></li>
+    <li><h3>Avslutt eller gjenåpne prosjektet</h3><p>Åpne prosjektet i <b>Mine prosjekter</b> og sett status til <b>Avsluttet</b> når arbeidet er ferdig. Prosjektet blir inaktivt, men beholder valg og fremdrift. Avsluttede prosjekter kan flyttes til <b>Arkiv</b> med «Arkiver prosjekt», eller samlet med «Arkiver alle avsluttede». Fra arkivet kan du hente prosjektet tilbake som avsluttet, eller trykke <b>Gjenåpne prosjekt</b> for å sette det til «Pågår» og gjøre det aktivt igjen.</p></li>
   </ol>
   <section class="howto-practical" aria-labelledby="howto-practical-title"><h3 id="howto-practical-title">Greit å vite</h3><dl><dt>Installere appen</dt><dd>Bruk installasjonsikonet i toppfeltet. På iPhone kan du bruke Chrome eller Safari: åpne Del-menyen og velg «Legg til på Hjem-skjerm». På Android og Chrome på datamaskin kan nettleseren tilby «Installer app».</dd><dt>Bruke uten nett</dt><dd>Appens sider kan brukes uten nett etter første fullførte innlasting. Eksterne kilder og dokumenter krever nett.</dd><dt>Hvor lagres prosjektene?</dt><dd>På denne enheten, i nettleseren eller den installerte appen. De synkroniseres ikke automatisk mellom enheter, og nettleser og app kan ha ulike lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</dd><dt>Vurdere rådene</dt><dd>Bruk anbefalingene som støtte. Tilpass dem til prosjektet, og kontroller krav med kommunen, aktuelle fagpersoner og gjeldende regelverk.</dd></dl><a href="#faq">Flere spørsmål? Se FAQ →</a></section>
 </article>
@@ -178,6 +179,8 @@
       <button type="button" id="pslett" class="danger">Slett prosjekt</button>
       <span class="sp"></span>
       <button type="button" id="pdlg-avbryt">Avbryt</button>
+      <button type="submit" id="parchive" hidden>Arkiver prosjekt</button>
+      <button type="submit" id="prestore" hidden>Hent fra arkiv</button>
       <button type="submit" id="preopen" hidden>Gjenåpne prosjekt</button>
       <button type="submit" id="popne">Lagre og åpne veileder</button>
       <button type="submit" class="pri" id="psubmit">Opprett prosjekt</button>

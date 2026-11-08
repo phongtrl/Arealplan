@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.2.0',
+    title: 'Prosjektarkiv',
+    description: 'Et eget arkiv holder avsluttede prosjekter adskilt fra den vanlige oversikten.',
+    changes: ['Arkiver avsluttede prosjekter enkeltvis eller samlet.', 'Hent prosjekter fra arkivet eller gjenåpne dem med valg og fremdrift bevart.']
+  },
+  {
     version: '1.1.2',
     title: 'Tydeligere prosjektskjema',
     description: 'Prosjektskjemaet har fått et klarere visuelt hierarki.',

@@ -107,11 +107,12 @@ function pload() {
   if (!P || !Array.isArray(P.liste)) P = { aktiv: null, liste: [] };
   // Fjerner det tidligere autogenererte standardprosjektet
   P.liste = P.liste.filter(p => !(p.navn === 'Mitt prosjekt' && !p.info));
-  if (isClosed(cur())) P.aktiv = null;
+  P.liste.filter(p => p.arkivert).forEach(p => { p.info = {...p.info, status:'Avsluttet'}; });
+  if (isClosed(cur()) || cur()?.arkivert) P.aktiv = null;
 }
 function psave(touch) {
   const c = cur();
-  if (c && !isClosed(c)) {
+  if (c && !isClosed(c) && !c.arkivert) {
     Object.assign(c, { plan: S.plan, akt: S.akt, sel: [...S.sel], d: ST.d, t: ST.t });
     if (touch) c.endret = new Date().toISOString();
   }
@@ -119,13 +120,13 @@ function psave(touch) {
 }
 function popen(id) {
   const requested = P.liste.find(x => x.id === id);
-  if (isClosed(requested)) { pdialog(id); return; }
+  if (isClosed(requested) || requested?.arkivert) { pdialog(id); return; }
   P.aktiv = P.liste.some(x => x.id === id) ? id : null;
   const c = cur() || {};
   S.plan = c.plan || null; S.akt = c.akt || null; S.sel = new Set(c.sel || []);
   ST = { d: c.d || {}, t: c.t || null };
   const sel = $('#pvelg');
-  sel.replaceChildren(new Option(P.liste.length ? 'Ingen prosjekt valgt' : 'Ingen prosjekter ennå', ''), ...P.liste.filter(x => !isClosed(x)).map(x => new Option((x.info && x.info.nr ? x.info.nr + ' – ' : '') + x.navn, x.id)));
+  sel.replaceChildren(new Option(P.liste.length ? 'Ingen prosjekt valgt' : 'Ingen prosjekter ennå', ''), ...P.liste.filter(x => !isClosed(x) && !x.arkivert).map(x => new Option((x.info && x.info.nr ? x.info.nr + ' – ' : '') + x.navn, x.id)));
   sel.value = P.aktiv || '';
   renderProjectPicker();
   $('.plink').textContent = P.liste.length ? 'Gå til mine prosjekter →' : 'Opprett et prosjekt →';
@@ -154,7 +155,7 @@ function renderProjectPicker() {
   $('#project-picker-name').textContent = project ? projectTitle(project) : 'Velg prosjekt';
   $('#project-picker-meta').textContent = project ? [D.plantyper.find(x => x.id === project.plan)?.navn, project.info?.type].filter(Boolean).join(' · ') || 'Aktivt prosjekt' : P.liste.length ? P.liste.length + ' lagrede prosjekter' : 'Start med valgene nedenfor';
   $('#project-picker').dataset.projectStatus = project?.info?.status || '';
-  const options = [{id: '', navn: 'Uten prosjekt', detail: 'Utforsk et nytt scenario'}, ...P.liste.filter(p => !isClosed(p)).map(p => ({id:p.id, navn:projectTitle(p), detail:[D.plantyper.find(x => x.id === p.plan)?.navn, p.info?.type, p.info?.status].filter(Boolean).join(' · ') || 'Lagret prosjekt'}))];
+  const options = [{id: '', navn: 'Uten prosjekt', detail: 'Utforsk et nytt scenario'}, ...P.liste.filter(p => !isClosed(p) && !p.arkivert).map(p => ({id:p.id, navn:projectTitle(p), detail:[D.plantyper.find(x => x.id === p.plan)?.navn, p.info?.type, p.info?.status].filter(Boolean).join(' · ') || 'Lagret prosjekt'}))];
   $('#project-options').innerHTML = options.map(p => `<button type="button" role="option" tabindex="-1" aria-selected="${p.id === (P.aktiv || '')}" data-project-id="${esc(p.id)}"><span><span class="project-option-name">${esc(p.navn)}</span><small>${esc(p.detail)}</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg></button>`).join('');
   closeProjectPicker();
 }
@@ -216,6 +217,8 @@ function pdialog(id, fromScenario = false) {
   $('#pslett').hidden = !p;
   $('#popne').hidden = !p || isClosed(p);
   $('#preopen').hidden = !isClosed(p);
+  $('#parchive').hidden = !isClosed(p) || !!p?.arkivert;
+  $('#prestore').hidden = !p?.arkivert;
   $('#pfeil').hidden = true;
   const summary = $('#scenario-project-summary');
   summary.hidden = !projectScenario;
@@ -233,14 +236,18 @@ function psubmit(e) {
   }
   psave();
   if (e.submitter?.id === 'preopen') f.elements.status.value = 'Pågår';
+  if (e.submitter?.id === 'parchive') f.elements.status.value = 'Avsluttet';
   const info = Object.fromEntries(PF.map(k => [k, f.elements[k].value.trim()]));
   const navn = info.navn; delete info.navn;
   const plan = f.elements.plan.value || null, akt = f.elements.akt.value || null;
   if (pid) {
     Object.assign(P.liste.find(x => x.id === pid), { navn, info, plan, akt, endret: new Date().toISOString() });
+    const saved = P.liste.find(x => x.id === pid);
+    if (e.submitter?.id === 'parchive') { saved.arkivert = true; saved.arkivertDato = new Date().toISOString(); }
+    if (e.submitter?.id === 'prestore' || info.status !== 'Avsluttet') { saved.arkivert = false; delete saved.arkivertDato; }
     if (pid === P.aktiv) { S.plan = plan; S.akt = akt; }
     if (info.status === 'Avsluttet' && pid === P.aktiv) P.aktiv = null;
-    toast(e.submitter?.id === 'preopen' ? 'Prosjektet er gjenåpnet.' : info.status === 'Avsluttet' ? 'Prosjektet er avsluttet og inaktivt.' : 'Endringene er lagret.');
+    toast(e.submitter?.id === 'parchive' ? 'Prosjektet er flyttet til arkivet.' : e.submitter?.id === 'prestore' ? 'Prosjektet er hentet fra arkivet og er fortsatt avsluttet.' : e.submitter?.id === 'preopen' ? 'Prosjektet er gjenåpnet.' : info.status === 'Avsluttet' ? 'Prosjektet er avsluttet og inaktivt.' : 'Endringene er lagret.');
   } else {
     const p = Object.assign(nytt(navn), { info, plan, akt, sel: projectScenario ? [...projectScenario.sel] : [] });
     P.liste.push(p); pid = p.id;
@@ -266,17 +273,24 @@ function pslett() {
     renderProj();
   });
 }
+let projectArchiveView = false;
 function renderProj() {
   if (!P) return;
   const q = $('#psok').value.trim().toLowerCase(), s = $('#psort').value;
   const hay = p => [p.navn, ...Object.values(p.info || {})].join(' ').toLowerCase();
-  const list = P.liste.filter(p => !q || hay(p).includes(q)).sort((a, b) =>
+  const visible = P.liste.filter(p => !!p.arkivert === projectArchiveView);
+  const list = visible.filter(p => !q || hay(p).includes(q)).sort((a, b) =>
     s === 'navn' ? a.navn.localeCompare(b.navn, 'nb') :
     s === 'nr' ? ((a.info || {}).nr || '\uffff').localeCompare((b.info || {}).nr || '\uffff', 'nb', { numeric: true }) :
     (b.endret || '').localeCompare(a.endret || ''));
-  $('#pantall').textContent = !P.liste.length ? 'Ingen prosjekter ennå' : P.liste.length === 1 ? '1 prosjekt' : P.liste.length + ' prosjekter';
+  $('#pantall').textContent = projectArchiveView ? visible.length + ' arkiverte prosjekter' : visible.length === 1 ? '1 prosjekt' : visible.length + ' prosjekter';
+  $('#projects-count').textContent = P.liste.filter(p => !p.arkivert).length;
+  $('#archive-count').textContent = P.liste.filter(p => p.arkivert).length;
+  $('#view-projects').setAttribute('aria-pressed', !projectArchiveView);
+  $('#view-archive').setAttribute('aria-pressed', projectArchiveView);
+  $('#archive-completed').hidden = projectArchiveView || !P.liste.some(p => isClosed(p) && !p.arkivert);
   const ny = '<button class="pcard pnew" data-ny="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Opprett nytt prosjekt</button>';
-  $('#plist').innerHTML = ny + (list.length ? list.map(p => {
+  $('#plist').innerHTML = (projectArchiveView ? '' : ny) + (list.length ? list.map(p => {
     const i = p.info || {}, pl = D.plantyper.find(x => x.id === p.plan), n = Object.keys(p.d || {}).length;
     const meta = [i.oppdragsgiver, i.kommune].filter(Boolean).map(esc).join(' · ');
     return `<button class="pcard${p.id === P.aktiv && !isClosed(p) ? ' on' : ''}" data-pid="${esc(p.id)}" data-project-status="${esc(i.status || '')}">` +
@@ -284,7 +298,7 @@ function renderProj() {
       `<span class="pc-navn">${esc(p.navn)}</span>${projectStamps(p, pl)}` +
       `<span class="pc-meta">${meta || 'Ingen oppdragsgiver registrert'}</span>` +
       `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span></button>`;
-  }).join('') : `<p class="pempty">${P.liste.length ? 'Ingen prosjekter samsvarer med søket.' : 'Du har ingen prosjekter ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
+  }).join('') : `<p class="pempty">${q ? 'Ingen prosjekter samsvarer med søket.' : projectArchiveView ? 'Arkivet er tomt. Avsluttede prosjekter kan arkiveres fra prosjektvinduet eller med «Arkiver alle avsluttede».' : 'Du har ingen prosjekter her ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
 }
 function initProj() {
   pload();
@@ -301,6 +315,18 @@ function initProj() {
   $('#plist').onclick = e => {
     const b = e.target.closest('.pcard'); if (!b) return;
     pdialog(b.dataset.ny ? null : b.dataset.pid);
+  };
+  $('#view-projects').onclick = () => { projectArchiveView = false; renderProj(); };
+  $('#view-archive').onclick = () => { projectArchiveView = true; renderProj(); };
+  $('#archive-completed').onclick = () => {
+    const projects = P.liste.filter(p => isClosed(p) && !p.arkivert);
+    const archivedAt = new Date().toISOString();
+    projects.forEach(p => { p.arkivert = true; p.arkivertDato = archivedAt; });
+    psave(); renderProj();
+    toast(projects.length + ' prosjekter er arkivert.', () => {
+      projects.forEach(p => { const saved = P.liste.find(x => x.id === p.id); if (saved?.arkivertDato === archivedAt) { saved.arkivert = false; delete saved.arkivertDato; } });
+      psave(); renderProj();
+    });
   };
   $('#psok').oninput = $('#psort').onchange = renderProj;
   popen(P.aktiv);
