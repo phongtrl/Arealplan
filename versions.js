@@ -1,6 +1,16 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.1.0',
+    title: 'Brukerveiledning',
+    description: 'En samlet introduksjon til hvordan du bruker Arealplan.',
+    changes: [
+      'Ny side: Hvordan bruke appen, med sju trinn fra prosjektvalg til avslutning.',
+      'Forklaringer på prosjektlagring, fremdrift, teamplanlegging og Plankunnskap.',
+      'Praktiske tips om installasjon, bruk uten nett og lokal lagring.'
+    ]
+  },
+  {
     version: '1.0.0',
     title: 'Versjonsoversikt og forbedret mobilbruk',
     description: 'Første appversjon med dokumentert endringslogg. Den samler funksjonene som er utviklet frem til nå.',

@@ -35,7 +35,7 @@
   <div class="scenario-pages">
   <section id="ctrl" aria-label="Prosjektvalg">
     <div class="ctrl-content">
-    <div class="ctrl-heading"><p class="eyebrow">Prosjektvalg</p><h2>Tilpass veiledningen</h2><p>Velg plantype og legg til det som gjelder prosjektet ditt.</p></div>
+    <div class="ctrl-heading"><p class="eyebrow">Prosjektvalg</p><h2>Tilpass veiledningen</h2><p>Velg plantype og legg til det som gjelder prosjektet ditt.</p><a class="howto-inline" href="#bruk">Ny her? Slik bruker du appen →</a></div>
     <div class="proj">
       <span class="eyebrow" id="project-picker-label">Prosjekt</span>
       <div class="project-select">
@@ -111,6 +111,19 @@
     <details><summary>Erstatter appen faglige vurderinger og kommunens avklaringer?</summary><p>Arealplan gir støtte til planarbeidet. Kontroller alltid rådene mot gjeldende regelverk og prosjektets forutsetninger, og avklar krav med kommunen og aktuelle fagpersoner.</p></details>
   </section>
 </article>
+<article id="howto" hidden aria-labelledby="howto-title">
+  <header class="howto-intro"><p class="eyebrow">Kom i gang</p><h2 id="howto-title">Hvordan bruke appen</h2><p>Fra de første valgene til et lagret prosjekt. Du kan utforske veiledningen før du oppretter et prosjekt.</p><a class="howto-start" href="#veileder">Åpne veilederen <span aria-hidden="true">→</span></a></header>
+  <ol class="howto-steps">
+    <li><h3>Velg utgangspunkt</h3><p>Åpne <b>Veileder</b>. Har du et prosjekt fra før, velger du det i prosjektvelgeren. Velg <b>Uten prosjekt</b> for å utforske et nytt scenario.</p></li>
+    <li><h3>Tilpass prosjektvalgene</h3><p>Velg én <b>plantype</b> og eventuelt én <b>rolle</b>. Åpne Formål og Stedsforhold for å velge det som er relevant; her kan du velge flere alternativer. Du trenger ikke velge noe i alle kategoriene.</p><p class="howto-tip">Prøv «Start med et eksempel» hvis du vil se et ferdig utfylt scenario. Eksempelet erstatter de gjeldende scenariovalgene.</p></li>
+    <li><h3>Les den tilpassede veiledningen</h3><p>På mobil sveiper du mellom <b>Prosjektvalg</b> og <b>Veiledning</b>, eller trykker på fanene øverst. På desktop vises de ved siden av hverandre. Bruk <b>Skjul prosjektvalg</b> for å gi veiledningen hele bredden.</p><p>Åpne punktene under prosess, utredninger og planinnhold for forklaringer og kilder. «Hva gjør du først?» forklarer arbeidsrekkefølgen og hvilke oppgaver som foregår parallelt.</p></li>
+    <li><h3>Ta vare på scenarioet</h3><p>Når du har valgt plantype, trykker du <b>Opprett prosjekt</b> under «Ta vare på scenarioet». Gi prosjektet et navn, og fyll gjerne inn prosjektnummer, oppdragstype, status og oppstart. Scenariovalgene følger med.</p><p>Du kan også opprette og redigere prosjekter fra <b>Mine prosjekter</b>. Oppstart vises med dato og hvor lenge det er til eller siden oppstart.</p></li>
+    <li><h3>Planlegg team og følg opp fremdriften</h3><p><b>Anbefalt team</b> viser forslag til kjerneteam og fagressurser basert på valgene dine. Åpne rollene for ansvar og tidspunkt for involvering, og avklar bemanning og timebudsjett i prosjektet.</p><p>Kryss av utførte oppgaver i sjekklistene. Fremdriftsoversikten oppdateres underveis. Når et prosjekt er valgt, lagres scenariovalg og avkrysninger automatisk lokalt. <b>Nullstill avkryssing</b> fjerner avkrysningene i det valgte prosjektet eller scenarioet.</p></li>
+    <li><h3>Bruk Plankunnskap ved behov</h3><p>Velg et dokument fra <b>Plankunnskap</b> for å lære hva det betyr, når det trengs og hva det bør inneholde. På mobil sveiper du mot venstre for neste dokument og mot høyre for forrige. Du kan også bruke <b>Forrige</b> og <b>Neste</b>.</p></li>
+    <li><h3>Avslutt eller gjenåpne prosjektet</h3><p>Åpne prosjektet i <b>Mine prosjekter</b> og sett status til <b>Avsluttet</b> når arbeidet er ferdig. Prosjektet blir inaktivt, men beholder valg og fremdrift. Trykk <b>Gjenåpne prosjekt</b> for å sette det til «Pågår» og gjøre det aktivt igjen.</p></li>
+  </ol>
+  <section class="howto-practical" aria-labelledby="howto-practical-title"><h3 id="howto-practical-title">Greit å vite</h3><dl><dt>Installere appen</dt><dd>Bruk installasjonsikonet i toppfeltet. På iPhone: åpne siden i Safari og velg Del → Legg til på Hjem-skjerm. På Android og Chrome på datamaskin kan nettleseren tilby «Installer app».</dd><dt>Bruke uten nett</dt><dd>Appens sider kan brukes uten nett etter første fullførte innlasting. Eksterne kilder og dokumenter krever nett.</dd><dt>Hvor lagres prosjektene?</dt><dd>På denne enheten, i nettleseren eller den installerte appen. De synkroniseres ikke automatisk mellom enheter, og nettleser og app kan ha ulike lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</dd><dt>Vurdere rådene</dt><dd>Bruk anbefalingene som støtte. Tilpass dem til prosjektet, og kontroller krav med kommunen, aktuelle fagpersoner og gjeldende regelverk.</dd></dl><a href="#faq">Flere spørsmål? Se FAQ →</a></section>
+</article>
 <article id="versions" hidden aria-labelledby="versions-title"></article>
 <dialog id="pdlg" aria-labelledby="pdlg-t">
   <form id="pform" novalidate>
@@ -183,7 +196,7 @@
   </div>
 </dialog>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-<footer><nav class="footer-links" aria-label="Om produktet"><a href="#om" data-info="om">Om Arealplan</a><a href="#faq" data-info="faq">FAQ</a><a href="#versjoner" data-info="versjoner">Versjoner <span id="app-version"></span></a><span>Utviklet i 2026</span></nav><p>Veiledende råd. Kontroller alltid mot gjeldende lov, forskrift og kommunens krav. Data v<span id="ver"></span></p></footer>
+<footer><nav class="footer-links" aria-label="Om produktet"><a href="#bruk" data-info="bruk">Hvordan bruke appen</a><a href="#om" data-info="om">Om Arealplan</a><a href="#faq" data-info="faq">FAQ</a><a href="#versjoner" data-info="versjoner">Versjoner <span id="app-version"></span></a><span>Utviklet i 2026</span></nav><p>Veiledende råd. Kontroller alltid mot gjeldende lov, forskrift og kommunens krav. Data v<span id="ver"></span></p></footer>
 <script src="data.js"></script>
 <script src="guider.js"></script>
 <script src="team.js"></script>

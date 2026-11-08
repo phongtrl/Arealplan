@@ -517,11 +517,12 @@ function renderVersions() {
 let lastIx = null, lastGuideIndex = null;
 function route() {
   resetKnowledgeSwipe();
-  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = h === 'om' || h === 'faq' || h === 'versjoner';
+  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = ['om', 'faq', 'versjoner', 'bruk'].includes(h);
   $('#veileder').hidden = !!g || pg || info;
   $('#prosjekter').hidden = !pg;
   $('#guide').hidden = !g;
-  $('#about').hidden = !info || h === 'versjoner';
+  $('#about').hidden = h !== 'om' && h !== 'faq';
+  $('#howto').hidden = h !== 'bruk';
   $('#versions').hidden = h !== 'versjoner';
   document.querySelectorAll('[data-info]').forEach(link => {
     if (link.dataset.info === h) link.setAttribute('aria-current', 'page');
@@ -529,7 +530,7 @@ function route() {
   });
   if (g) renderGuide(g);
   if (pg) renderProj();
-  const ix = info ? 3 : g ? 2 : pg ? 1 : 0, el = h === 'versjoner' ? $('#versions') : info ? $('#about') : g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
+  const ix = info ? 3 : g ? 2 : pg ? 1 : 0, el = h === 'bruk' ? $('#howto') : h === 'versjoner' ? $('#versions') : info ? $('#about') : g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
   if (lastIx !== null) {
     el.classList.remove('enter-l', 'enter-r', 'enter-f'); void el.offsetWidth;
     const guideIndex = g ? G.indexOf(g) : null;
