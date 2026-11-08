@@ -133,7 +133,7 @@
     </div>
     <div class="dbody">
       <p id="scenario-project-summary" class="scenario-project-summary" hidden></p>
-      <fieldset><legend>Prosjekt</legend>
+      <fieldset class="project-form-section"><legend><span class="form-section-number" aria-hidden="true">01</span><span>Prosjekt</span></legend>
         <div class="fg">
           <label class="full"><span>Prosjektnavn <span class="req" aria-hidden="true">*</span></span><input name="navn" required maxlength="120" autocomplete="off" placeholder="F.eks. Detaljregulering Storgata 12"></label>
           <label>Prosjektnummer<input name="nr" maxlength="40" autocomplete="off" placeholder="F.eks. 2026-014"></label>
@@ -142,7 +142,7 @@
           <label>Plantype<select name="plan"></select></label>
         </div>
       </fieldset>
-      <fieldset><legend>Oppdragsgiver</legend>
+      <fieldset class="project-form-section"><legend><span class="form-section-number" aria-hidden="true">02</span><span>Oppdragsgiver</span></legend>
         <div class="fg">
           <label class="full">Oppdragsgiver<input name="oppdragsgiver" maxlength="120" autocomplete="organization" placeholder="Firma eller kommune"></label>
           <label>Kontaktperson<input name="kontakt" maxlength="80" autocomplete="off"></label>
@@ -150,14 +150,14 @@
           <label>Telefon<input name="tlf" type="tel" maxlength="30" autocomplete="off"></label>
         </div>
       </fieldset>
-      <fieldset><legend>Ansvar</legend>
+      <fieldset class="project-form-section"><legend><span class="form-section-number" aria-hidden="true">03</span><span>Ansvar</span></legend>
         <div class="fg">
           <label>Prosjektleder<input name="leder" maxlength="80" autocomplete="off"></label>
           <label>Din rolle<select name="akt"></select></label>
           <label>Saksbehandler i kommunen<input name="saksbeh" maxlength="80" autocomplete="off"></label>
         </div>
       </fieldset>
-      <fieldset><legend>Planområde</legend>
+      <fieldset class="project-form-section"><legend><span class="form-section-number" aria-hidden="true">04</span><span>Planområde</span></legend>
         <div class="fg">
           <label>Kommune<input name="kommune" maxlength="60" autocomplete="off"></label>
           <label>Plan-ID<input name="planid" maxlength="40" autocomplete="off"></label>
@@ -165,7 +165,7 @@
           <label>Adresse / stedsnavn<input name="sted" maxlength="120" autocomplete="off"></label>
         </div>
       </fieldset>
-      <fieldset><legend>Fremdrift</legend>
+      <fieldset class="project-form-section"><legend><span class="form-section-number" aria-hidden="true">05</span><span>Fremdrift</span></legend>
         <div class="fg">
           <label>Oppstart<input name="start" type="date"></label>
           <label>Ønsket vedtak<input name="vedtak" type="date"></label>

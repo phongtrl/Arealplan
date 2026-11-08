@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.1.2',
+    title: 'Tydeligere prosjektskjema',
+    description: 'Prosjektskjemaet har fått et klarere visuelt hierarki.',
+    changes: ['Nummererte overskriftsfelt og tydeligere skiller mellom Prosjekt, Oppdragsgiver, Ansvar, Planområde og Fremdrift.']
+  },
+  {
     version: '1.1.1',
     title: 'Tydeligere installasjon på iPhone',
     description: 'Installasjonsveiledningen omfatter nå både Chrome og Safari på iPhone og iPad.',

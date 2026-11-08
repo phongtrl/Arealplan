@@ -614,3 +614,10 @@ body:has(#guide:not([hidden])){overflow-x:clip}
 .howto-practical dt{font-size:.85rem;font-weight:550}
 .howto-practical>a{display:inline-block;margin-top:24px;font-size:.8rem}
 @media(max-width:44rem){#howto{margin-top:20px}.howto-intro,.howto-practical{padding:24px 20px}.howto-steps>li{padding:24px 20px 24px 50px}.howto-steps>li::before{left:18px;top:27px}}
+
+/* Tydeligere grupper i prosjektskjemaet. */
+#pdlg .project-form-section{padding:0 0 24px;border-bottom:1px solid var(--line)}
+#pdlg .project-form-section legend{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 20px;padding:10px 12px;background:var(--page);border:1px solid var(--line);border-left:3px solid var(--wood);border-radius:6px;color:var(--ink);font-size:.73rem;font-weight:550;line-height:1.4;letter-spacing:.09em}
+#pdlg .form-section-number{display:inline-grid;place-items:center;flex:0 0 24px;height:24px;border:1px solid var(--line-strong);border-radius:50%;font-size:.65rem;letter-spacing:0;font-weight:400;color:var(--wood);font-variant-numeric:tabular-nums}
+#pdlg .project-form-section .fg{padding:0 4px}
+#pdlg .project-form-section:last-of-type{padding-bottom:8px;border-bottom:0}
