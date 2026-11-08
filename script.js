@@ -507,21 +507,29 @@ $('#guide').addEventListener('touchend', event => {
   knowledgeReleaseTimer = setTimeout(() => { location.hash = target.id; }, 160);
 }, {passive:true});
 
+function renderVersions() {
+  const releases = window.APP_RELEASES || [];
+  const latest = releases[0];
+  $('#app-version').textContent = latest ? 'v' + latest.version : '';
+  $('#versions').innerHTML = `<header class="versions-intro"><p class="eyebrow">Produktutvikling</p><h2 id="versions-title">Versjoner</h2><p>Se hva som er nytt i Arealplan.</p><p class="versions-explanation">Appversjonen beskriver funksjoner og grensesnitt. Fagdata har eget versjonsnummer: ${esc(D.meta.versjon)} (${esc(D.meta.oppdatert)}).</p></header><ol class="release-list">${releases.map((release, index) => `<li class="release-entry"><div class="release-heading"><span class="release-version">v${esc(release.version)}</span>${index === 0 ? '<span class="badge">Denne appversjonen</span>' : ''}</div><h3>${esc(release.title)}</h3><p>${esc(release.description)}</p><ul>${release.changes.map(change => `<li>${esc(change)}</li>`).join('')}</ul></li>`).join('')}</ol><p class="versions-footnote">Nye endringer føres her fra og med v1.0.0. Eldre utviklingsarbeid har ikke en egen dokumentert appversjon. En installert app kan trenge at alle appvinduer lukkes og åpnes igjen før en oppdatering tas i bruk.</p>`;
+}
+
 let lastIx = null, lastGuideIndex = null;
 function route() {
   resetKnowledgeSwipe();
-  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = h === 'om' || h === 'faq';
+  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = h === 'om' || h === 'faq' || h === 'versjoner';
   $('#veileder').hidden = !!g || pg || info;
   $('#prosjekter').hidden = !pg;
   $('#guide').hidden = !g;
-  $('#about').hidden = !info;
+  $('#about').hidden = !info || h === 'versjoner';
+  $('#versions').hidden = h !== 'versjoner';
   document.querySelectorAll('[data-info]').forEach(link => {
     if (link.dataset.info === h) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
   if (g) renderGuide(g);
   if (pg) renderProj();
-  const ix = info ? 3 : g ? 2 : pg ? 1 : 0, el = info ? $('#about') : g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
+  const ix = info ? 3 : g ? 2 : pg ? 1 : 0, el = h === 'versjoner' ? $('#versions') : info ? $('#about') : g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
   if (lastIx !== null) {
     el.classList.remove('enter-l', 'enter-r', 'enter-f'); void el.offsetWidth;
     const guideIndex = g ? G.indexOf(g) : null;
@@ -544,6 +552,7 @@ function route() {
 if (D) { init(); initProj(); }
 else $('#out').innerHTML = '<p class="err">Kunne ikke laste data.js. Sjekk at filen ligger i samme mappe som index.html.</p>';
 
+renderVersions();
 route();
 window.onhashchange = route;
 

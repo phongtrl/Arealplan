@@ -11,3 +11,10 @@ Publiser filene på HTTPS (for eksempel GitHub Pages). Manifest, service worker 
 - Prosjekter lagres lokalt; nettleser og installert app kan ha separate lagringsområder.
 
 Ved endringer i filene som forhåndslagres, øk versjonen i `CACHE` i `sw.js`. En ny service worker aktiveres når tidligere appvinduer er lukket.
+
+
+## Appversjoner
+
+`versions.js` er kilden for appens versjonsnummer og endringslogg. Nyeste oppføring står først og vises i bunnmenyen og på `#versjoner`. Fra og med 1.0.0 registreres nye utgivelser her; tidligere appversjoner er ikke rekonstruert.
+
+Ved neste funksjonsendring: legg til en ny oppføring med økt minor-versjon (for eksempel 1.1.0). Ved feilretting: øk patch-versjonen (for eksempel 1.0.1). Skriv konkrete brukerrettede endringer og øk cache-versjonen i `sw.js` samtidig. `DATA.meta.versjon` gjelder bare fagdata og er uavhengig av appversjonen.
