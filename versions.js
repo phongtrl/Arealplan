@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.1.1',
+    title: 'Tydeligere installasjon på iPhone',
+    description: 'Installasjonsveiledningen omfatter nå både Chrome og Safari på iPhone og iPad.',
+    changes: ['Oppdatert installasjonsdialog, FAQ og brukerveiledning slik at Safari ikke fremstilles som eneste alternativ.']
+  },
+  {
     version: '1.1.0',
     title: 'Brukerveiledning',
     description: 'En samlet introduksjon til hvordan du bruker Arealplan.',
