@@ -437,29 +437,79 @@ function renderGuide(g) {
     `<h3>Dokumenter</h3><p class="lenker">${g.l.map(([t, u]) => a(t, u)).join('')}</p>`;
 }
 
-// Behold vertikal leserulling og nettleserens sveiping fra skjermkanten.
-let knowledgeTouch = null;
-$('#guide').addEventListener('touchstart', event => {
+// Lås først sveipretningen: vertikal lesing skal aldri bytte dokument.
+let knowledgeTouch = null, knowledgeReleaseTimer;
+const knowledgeFeedback = document.createElement('div');
+knowledgeFeedback.id = 'knowledge-swipe-feedback';
+knowledgeFeedback.hidden = true;
+knowledgeFeedback.setAttribute('aria-hidden', 'true');
+document.body.append(knowledgeFeedback);
+function resetKnowledgeSwipe() {
+  clearTimeout(knowledgeReleaseTimer);
   knowledgeTouch = null;
-  if (event.touches.length !== 1 || event.target.closest('a,button,input,select,textarea,summary')) return;
+  $('#guide').classList.remove('knowledge-dragging', 'knowledge-releasing');
+  $('#guide').style.removeProperty('--guide-drag');
+  $('#guide').style.removeProperty('--guide-opacity');
+  knowledgeFeedback.hidden = true;
+}
+function settleKnowledgeSwipe() {
+  $('#guide').classList.replace('knowledge-dragging', 'knowledge-releasing');
+  $('#guide').style.setProperty('--guide-drag', '0px');
+  $('#guide').style.setProperty('--guide-opacity', '1');
+  knowledgeFeedback.hidden = true;
+  knowledgeReleaseTimer = setTimeout(resetKnowledgeSwipe, 220);
+}
+$('#guide').addEventListener('touchstart', event => {
+  resetKnowledgeSwipe();
+  if (event.touches.length !== 1 || event.target.closest('a,button,input,select,textarea,summary') || window.getSelection()?.toString()) return;
   const touch = event.touches[0];
   if (touch.clientX < 24 || touch.clientX > innerWidth - 24) return;
-  knowledgeTouch = {x:touch.clientX,y:touch.clientY,time:performance.now()};
+  knowledgeTouch = {x:touch.clientX,y:touch.clientY,time:performance.now(),axis:null};
 }, {passive:true});
-$('#guide').addEventListener('touchcancel', () => { knowledgeTouch = null; }, {passive:true});
+$('#guide').addEventListener('touchmove', event => {
+  const start = knowledgeTouch;
+  if (!start) return;
+  if (event.touches.length !== 1) { resetKnowledgeSwipe(); return; }
+  const touch = event.touches[0], dx = touch.clientX - start.x, dy = touch.clientY - start.y;
+  if (!start.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 10) {
+    start.axis = Math.abs(dx) > Math.abs(dy) * 1.35 ? 'horizontal' : 'vertical';
+  }
+  if (start.axis !== 'horizontal') return;
+  if (!event.cancelable) { resetKnowledgeSwipe(); return; }
+  event.preventDefault();
+  const index = G.findIndex(item => item.id === location.hash.slice(1));
+  const target = G[index + (dx < 0 ? 1 : -1)];
+  $('#guide').classList.remove('enter-r', 'enter-l', 'enter-f');
+  $('#guide').classList.add('knowledge-dragging');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const offset = Math.sign(dx) * Math.min(Math.abs(dx) * (target ? .38 : .1), target ? 110 : 24);
+  $('#guide').style.setProperty('--guide-drag', (reduced ? 0 : offset) + 'px');
+  $('#guide').style.setProperty('--guide-opacity', reduced ? 1 : 1 - Math.min(Math.abs(dx) / innerWidth, 1) * .15);
+  knowledgeFeedback.textContent = target ? (dx < 0 ? 'Neste: ' : 'Forrige: ') + target.navn : dx < 0 ? 'Siste dokument' : 'Første dokument';
+  knowledgeFeedback.hidden = false;
+}, {passive:false});
+$('#guide').addEventListener('touchcancel', settleKnowledgeSwipe, {passive:true});
 $('#guide').addEventListener('touchend', event => {
   const start = knowledgeTouch;
   knowledgeTouch = null;
-  if (!start || event.touches.length || event.changedTouches.length !== 1 || window.getSelection()?.toString()) return;
-  const touch = event.changedTouches[0], dx = touch.clientX - start.x, dy = touch.clientY - start.y;
-  if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.6 || performance.now() - start.time > 900) return;
+  if (!start || start.axis !== 'horizontal' || event.touches.length || event.changedTouches.length !== 1 || window.getSelection()?.toString()) { settleKnowledgeSwipe(); return; }
+  const dx = event.changedTouches[0].clientX - start.x;
+  const elapsed = Math.max(performance.now() - start.time, 1);
+  const distance = Math.min(110, Math.max(60, $('#guide').clientWidth * .22));
+  const committed = Math.abs(dx) >= distance || (Math.abs(dx) >= 35 && Math.abs(dx) / elapsed > .5);
   const index = G.findIndex(item => item.id === location.hash.slice(1));
-  const next = G[index + (dx < 0 ? 1 : -1)];
-  if (index >= 0 && next) location.hash = next.id;
+  const target = G[index + (dx < 0 ? 1 : -1)];
+  if (!committed || index < 0 || !target) { settleKnowledgeSwipe(); return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { resetKnowledgeSwipe(); location.hash = target.id; return; }
+  $('#guide').classList.replace('knowledge-dragging', 'knowledge-releasing');
+  $('#guide').style.setProperty('--guide-drag', (Math.sign(dx) * 150) + 'px');
+  $('#guide').style.setProperty('--guide-opacity', '.15');
+  knowledgeReleaseTimer = setTimeout(() => { location.hash = target.id; }, 160);
 }, {passive:true});
 
 let lastIx = null, lastGuideIndex = null;
 function route() {
+  resetKnowledgeSwipe();
   const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = h === 'om' || h === 'faq';
   $('#veileder').hidden = !!g || pg || info;
   $('#prosjekter').hidden = !pg;
