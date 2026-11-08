@@ -1,16 +1,6 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
-    version: '1.1.0',
-    title: 'Hele utviklingshistorikken',
-    description: 'Versjonssiden viser nå alle tidligere Git-revisjoner tilbake til den første innleggingen.',
-    changes: [
-      'Komplett revisjonsoversikt med dato, endringstittel og lenke til hver revisjon.',
-      'Filoversikt for hver endring, også tidlige oppdateringer med korte commitmeldinger.',
-      'Tidligere revisjoner vises separat fra nummererte apputgivelser.'
-    ]
-  },
-  {
     version: '1.0.0',
     title: 'Versjonsoversikt og forbedret mobilbruk',
     description: 'Første appversjon med dokumentert endringslogg. Den samler funksjonene som er utviklet frem til nå.',
