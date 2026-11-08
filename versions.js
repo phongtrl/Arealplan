@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.2.1',
+    title: 'Nytt handlingsfelt i prosjektvinduet',
+    description: 'Prosjekthandlingene har fått et renere og mer responsivt uttrykk.',
+    changes: ['Tydeligere hovedhandling, diskrete ikoner og myk respons ved trykk.', 'Ryddigere gruppering og bedre plassering av knappene på mobil.']
+  },
+  {
     version: '1.2.0',
     title: 'Prosjektarkiv',
     description: 'Et eget arkiv holder avsluttede prosjekter adskilt fra den vanlige oversikten.',
