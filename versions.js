@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.7',
+    title: 'Tydelig betamerking',
+    description: 'Arealplan er merket som betaversjon.',
+    changes: ['Diskret Betaversjon-tekst under produktnavnet i toppfeltet og Om Arealplan.']
+  },
+  {
     version: '1.5.6',
     title: 'Tydeligere profiltitler',
     description: 'Utdanning og erfaring er tydeligere markert som seksjoner i Om Arealplan.',
