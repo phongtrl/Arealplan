@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.3.4',
+    title: 'Utfyllende produktutviklerprofil',
+    description: 'Introduksjonen omtaler erfaring fra både privat og offentlig sektor, samt ledelse og entreprenørskap.',
+    changes: ['Presisert erfaringsgrunnlaget i Om Arealplan.']
+  },
+  {
     version: '1.3.3',
     title: 'Fornyet produktpresentasjon',
     description: 'Om Arealplan har fått et renere uttrykk med produktets logo og navn.',
