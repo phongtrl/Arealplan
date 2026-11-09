@@ -299,18 +299,18 @@ function renderProj() {
       `<span class="pc-top"><span>Prosjektnr: ${i.nr ? esc(i.nr) : 'Ikke angitt'}</span>${p.id === P.aktiv && !isClosed(p) ? '<span class="pc-akt">Aktiv</span>' : isClosed(p) ? '<span class="pc-inactive">Inaktiv</span>' : ''}</span>` +
       `${isClosed(p) || p.arkivert ? `<span class="pc-navn">${esc(p.navn)}</span>` : `<a class="pc-navn pc-title-link" href="#veileder" aria-label="Åpne ${esc(p.navn)} i veilederen">${esc(p.navn)}</a>`}${projectStamps(p, pl)}` +
       `<span class="pc-meta">${meta || 'Ingen oppdragsgiver registrert'}</span>` +
-      `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span><span class="pc-card-actions"><button type="button" data-card-action="edit" aria-label="Rediger ${esc(p.navn)}" title="Rediger prosjekt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15z"/></svg></button></span></article>`;
+      `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span><span class="pc-card-actions"><button type="button" data-card-action="edit" aria-label="Rediger ${esc(p.navn)}" title="Rediger prosjekt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15z"/></svg></button><button type="button" data-card-action="share" aria-label="Del ${esc(p.navn)}" title="Del prosjekt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-4 4 4-4 4 4M5 13v7h14v-7"/></svg></button></span></article>`;
   }).join('') : `<p class="pempty">${q ? 'Ingen prosjekter samsvarer med søket.' : projectArchiveView ? 'Arkivet er tomt. Avsluttede prosjekter kan arkiveres fra prosjektvinduet eller med «Arkiver alle avsluttede».' : 'Du har ingen prosjekter her ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
 }
 let pendingProjectShare = null;
-function shareProject() {
-  const saved = P.liste.find(project => project.id === pid);
+function shareProject(projectId = null) {
+  const saved = P.liste.find(project => project.id === (projectId || pid));
   if (!saved) return;
   const form = $('#pform');
-  if (!form.reportValidity() || !form.elements.navn.value.trim()) return;
+  if (!projectId && (!form.reportValidity() || !form.elements.navn.value.trim())) return;
   psave();
-  const info = Object.fromEntries(PF.filter(key => key !== 'navn').map(key => [key, form.elements[key].value.trim()]));
-  const project = {...saved, navn:form.elements.navn.value.trim(), info, plan:form.elements.plan.value || null, akt:form.elements.akt.value || null};
+  const info = projectId ? {...saved.info} : Object.fromEntries(PF.filter(key => key !== 'navn').map(key => [key, form.elements[key].value.trim()]));
+  const project = projectId ? {...saved,info} : {...saved, navn:form.elements.navn.value.trim(), info, plan:form.elements.plan.value || null, akt:form.elements.akt.value || null};
   if (project.info.status !== 'Avsluttet') { project.arkivert = false; delete project.arkivertDato; }
   const payload = {format:'arealplan-project',version:1,exportedAt:new Date().toISOString(),project};
   const filename = (projectTitle(project).replace(/[^a-zA-Z0-9æøåÆØÅ._ -]/g, '').slice(0,100) || 'prosjekt') + '.arealplan.json';
@@ -410,7 +410,7 @@ function initProj() {
   $('#pdlg-x').onclick = $('#pdlg-avbryt').onclick = () => $('#pdlg').close();
   $('#pdlg').onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
   $('#pslett').onclick = pslett;
-  $('#share-project').onclick = shareProject;
+  $('#share-project').onclick = () => shareProject();
   $('#download-project').onclick = () => { downloadProjectCopy(); $('#share-choice').close(); };
   $('#email-project').onclick = emailProjectCopy;
   $('#email-fallback-download').onclick = () => { downloadProjectCopy(); $('#email-download-status').textContent = 'Nedlastingen er startet. Åpne e-posten og legg ved prosjektfilen før du sender.'; };
@@ -426,6 +426,7 @@ function initProj() {
     const project = P.liste.find(item => item.id === b.dataset.pid);
     if (!project) return;
     const action = e.target.closest('[data-card-action]');
+    if (action?.dataset.cardAction === 'share') { shareProject(project.id); return; }
     if (action?.dataset.cardAction === 'edit' || isClosed(project) || project.arkivert) { pdialog(project.id); return; }
     e.preventDefault();
     psave(); popen(project.id); location.hash = 'veileder';

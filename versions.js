@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.1',
+    title: 'Deling direkte fra prosjektkort',
+    description: 'Delingsikonet ligger nå ved siden av redigering.',
+    changes: ['Åpne JSON-nedlasting eller e-post direkte fra prosjektkortet, også for avsluttede og arkiverte prosjekter.']
+  },
+  {
     version: '1.5.0',
     title: 'Moderne nedtrekksmenyer på desktop',
     description: 'Eksempelscenarioer, sortering og skjemavalg følger samme rolige formspråk.',
