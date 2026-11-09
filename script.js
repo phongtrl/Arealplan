@@ -557,7 +557,6 @@ function setTheme(t, persist = true) {
   if (persist) { try { localStorage.setItem('theme', t); } catch (e) {} }
   document.documentElement.style.colorScheme = t;
   document.querySelector('meta[name="color-scheme"]').content = t;
-  document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = t === 'dark' ? 'black-translucent' : 'default';
   $('#tema').setAttribute('aria-label', t === 'dark' ? 'Bytt til lys modus' : 'Bytt til mørk modus');
   document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#171615' : '#F2EFE8';
 }

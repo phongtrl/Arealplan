@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.10',
+    title: 'Temabytte på iPhone som i Valtrack',
+    description: 'iPhone bruker samme tematilnærming som Valtrack.',
+    changes: ['Fjernet eldre statusfelt-overstyringer som kunne låse utseendet ved oppstart.', 'Ensartet toppbakgrunn og dynamisk theme-color ved bytte mellom lys og mørk modus.']
+  },
+  {
     version: '1.5.9',
     title: 'Oppdatert presentasjon',
     description: 'Produktutviklerens satsingsområder er presisert.',
