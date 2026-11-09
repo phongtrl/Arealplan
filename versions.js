@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.4.0',
+    title: 'Del prosjekter',
+    description: 'Overfør prosjektkopier til andre brukere eller egne enheter.',
+    changes: ['Del prosjektfil fra prosjektvinduet, eller last den ned og send den videre.', 'Importer prosjektfiler i Mine prosjekter uten å overskrive eksisterende prosjekter.', 'Prosjektopplysninger, scenariovalg og fremdrift følger med. Kopiene synkroniseres ikke.']
+  },
+  {
     version: '1.3.4',
     title: 'Utfyllende produktutviklerprofil',
     description: 'Introduksjonen omtaler erfaring fra både privat og offentlig sektor, samt ledelse og entreprenørskap.',

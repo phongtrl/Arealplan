@@ -215,6 +215,8 @@ function pdialog(id, fromScenario = false) {
   $('#pdlg-t').textContent = p ? p.navn : 'Nytt prosjekt';
   $('#psubmit .action-label').textContent = p ? 'Lagre endringer' : 'Opprett prosjekt';
   $('#pslett').hidden = !p;
+  $('#share-project').hidden = !p;
+  $('#project-sharing-note').hidden = !p;
   $('#popne').hidden = !p || isClosed(p);
   $('#preopen').hidden = !isClosed(p);
   $('#parchive').hidden = !isClosed(p) || !!p?.arkivert;
@@ -300,6 +302,80 @@ function renderProj() {
       `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span></button>`;
   }).join('') : `<p class="pempty">${q ? 'Ingen prosjekter samsvarer med søket.' : projectArchiveView ? 'Arkivet er tomt. Avsluttede prosjekter kan arkiveres fra prosjektvinduet eller med «Arkiver alle avsluttede».' : 'Du har ingen prosjekter her ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
 }
+async function shareProject() {
+  const saved = P.liste.find(project => project.id === pid);
+  if (!saved) return;
+  const form = $('#pform');
+  if (!form.reportValidity() || !form.elements.navn.value.trim()) return;
+  psave();
+  const info = Object.fromEntries(PF.filter(key => key !== 'navn').map(key => [key, form.elements[key].value.trim()]));
+  const project = {...saved, navn:form.elements.navn.value.trim(), info, plan:form.elements.plan.value || null, akt:form.elements.akt.value || null};
+  if (project.info.status !== 'Avsluttet') { project.arkivert = false; delete project.arkivertDato; }
+  const payload = {format:'arealplan-project',version:1,exportedAt:new Date().toISOString(),project};
+  const filename = (projectTitle(project).replace(/[^a-zA-Z0-9æøåÆØÅ._ -]/g, '').slice(0,100) || 'prosjekt') + '.arealplan.json';
+  const file = new File([JSON.stringify(payload,null,2)], filename, {type:'application/json'});
+  const button = $('#share-project');
+  button.disabled = true;
+  try {
+    if (navigator.canShare?.({files:[file]})) {
+      await navigator.share({files:[file],title:project.navn});
+      toast('Prosjektkopien er delt.');
+    } else {
+      const url = URL.createObjectURL(file), link = document.createElement('a');
+      link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+      toast('Prosjektfilen er klar for nedlasting. Send filen til mottakeren.');
+    }
+  } catch (error) {
+    if (error.name !== 'AbortError') toast('Kunne ikke dele prosjektet. Prøv igjen i nettleseren.');
+  } finally { button.disabled = false; }
+}
+function readSharedProject(payload) {
+  const invalid = () => { throw new Error('Filen er ikke en gyldig Arealplan-prosjektfil.'); };
+  if (!payload || payload.format !== 'arealplan-project' || payload.version !== 1) invalid();
+  const raw = payload.project;
+  if (!raw || typeof raw.navn !== 'string' || !raw.navn.trim() || raw.navn.length > 120) invalid();
+  if (raw.plan !== null && !D.plantyper.some(p => p.id === raw.plan)) invalid();
+  if (raw.akt !== null && !D.aktorer.some(a => a.id === raw.akt)) invalid();
+  if (!Array.isArray(raw.sel) || raw.sel.length > 100 || raw.sel.some(id => !D.faktorer.some(f => f.id === id))) invalid();
+  if (!raw.info || typeof raw.info !== 'object' || Array.isArray(raw.info)) invalid();
+  const info = {};
+  PF.filter(key => key !== 'navn').forEach(key => {
+    const value = raw.info[key] ?? '';
+    const element = $('#pform').elements[key];
+    if (typeof value !== 'string' || value.length > (element.maxLength > 0 ? element.maxLength : 2000)) invalid();
+    if (element.tagName === 'SELECT' && value && ![...element.options].some(option => option.value === value)) invalid();
+    if (element.type === 'date' && value && !projectStartInfo(value)) invalid();
+    info[key] = value;
+  });
+  if (raw.arkivert && info.status !== 'Avsluttet') invalid();
+  if (!raw.d || typeof raw.d !== 'object' || Array.isArray(raw.d) || Object.keys(raw.d).length > 1000) invalid();
+  const allowed = new Set(D.plantyper.flatMap(p => [...p.steg.map(i => 'steg:' + i.t), ...p.innhold.map(i => 'inn:' + i.t)]).concat([...D.faktorer,...D.alltid].map(i => 'utr:' + i.t)));
+  const done = Object.fromEntries(Object.entries(raw.d).filter(([key,value]) => allowed.has(key) && (value === 1 || value === true)).map(([key]) => [key,1]));
+  const project = {...nytt(raw.navn.trim()),info,plan:raw.plan,akt:raw.akt,sel:[...new Set(raw.sel)],d:done,arkivert:!!raw.arkivert};
+  ['opprettet','endret','t'].forEach(key => { if (typeof raw[key] === 'string' && raw[key].length <= 40 && Number.isFinite(Date.parse(raw[key]))) project[key] = raw[key]; });
+  if (project.arkivert) project.arkivertDato = new Date().toISOString();
+  if (P.liste.some(p => p.navn === project.navn)) project.navn = project.navn.slice(0,109) + ' (importert)';
+  return project;
+}
+async function importProjectFile(event) {
+  const file = event.target.files?.[0];
+  event.target.value = '';
+  if (!file) return;
+  try {
+    if (file.size > 2 * 1024 * 1024) throw new Error('Prosjektfilen er for stor. Maksimal størrelse er 2 MB.');
+    const project = readSharedProject(JSON.parse(await file.text()));
+    psave();
+    P.liste.push(project);
+    try { localStorage.setItem(PK,JSON.stringify(P)); }
+    catch (error) { P.liste.pop(); throw new Error('Det er ikke plass til prosjektet i lokal lagring.'); }
+    projectArchiveView = project.arkivert;
+    $('#psok').value = '';
+    renderProj();
+    toast('«' + project.navn + '» er importert som en ny kopi.');
+  } catch (error) { toast(error instanceof SyntaxError ? 'Filen inneholder ikke gyldige prosjektdata.' : error.message); }
+}
+
 function initProj() {
   pload();
   initProjectPicker();
@@ -310,6 +386,9 @@ function initProj() {
   $('#pdlg-x').onclick = $('#pdlg-avbryt').onclick = () => $('#pdlg').close();
   $('#pdlg').onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
   $('#pslett').onclick = pslett;
+  $('#share-project').onclick = shareProject;
+  $('#import-project').onclick = () => $('#project-file').click();
+  $('#project-file').onchange = importProjectFile;
   $('#save-scenario').onclick = () => pdialog(null, true);
   $('#pvelg').onchange = e => { psave(); popen(e.target.value); };
   $('#plist').onclick = e => {

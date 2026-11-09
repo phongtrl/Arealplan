@@ -721,3 +721,8 @@ body:has(#guide:not([hidden])){overflow-x:clip}
   #about .about-education li{grid-template-columns:minmax(0,1fr)}
   #about .about-education span{text-align:left}
 }
+
+#import-project{min-height:42px;white-space:nowrap;font-size:.8rem}
+#pdlg .project-sharing-note{margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--muted);font-size:.75rem;line-height:1.6}
+#share-project:disabled{opacity:.5;cursor:wait}
+@media(max-width:44rem){.project-secondary-actions{flex-wrap:wrap}#pdlg .project-dialog-actions{max-width:100%}}

@@ -86,7 +86,7 @@
 <main id="prosjekter" hidden>
   <div class="phead">
     <div><h2>Mine prosjekter</h2><p class="sub" id="pantall"></p></div>
-    <div class="ptools">
+    <div class="ptools"><button id="import-project" type="button">Importer prosjekt</button><input id="project-file" type="file" accept=".json,application/json" hidden>
       <input id="psok" type="search" placeholder="Søk etter navn, nummer, kommune …" aria-label="Søk i prosjekter">
       <select id="psort" aria-label="Sorter prosjekter"><option value="endret">Sist endret</option><option value="navn">Navn</option><option value="nr">Prosjektnummer</option></select>
     </div>
@@ -105,7 +105,8 @@
   <section id="faq-content" class="about-section faq-section" aria-labelledby="faq-title"><p class="eyebrow">Spørsmål og svar</p><h3 id="faq-title">Ofte stilte spørsmål</h3>
     <details><summary>Hva kan jeg bruke Arealplan til?</summary><p>Du kan tilpasse veiledningen etter plantype, rolle, formål og stedsforhold, lese forklaringer i Plankunnskap og lagre prosjektvalg og fremdrift. Appen foreslår også roller og fagressurser som støtte for ressursplanlegging.</p></details>
     <details><summary>Når ble Arealplan utviklet, og hvem står bak?</summary><p>Arealplan ble utviklet i 2026 og er laget av Phong Vuoc Tran. Du finner hans bakgrunn og erfaring ovenfor.</p></details>
-    <details><summary>Hvor lagres prosjektene mine?</summary><p>Prosjektene lagres lokalt i nettleseren eller appen på enheten du bruker. De synkroniseres ikke automatisk mellom enheter. Nettleser og installert app kan ha separate lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</p></details>
+    <details><summary>Hvor lagres prosjektene mine?</summary><p>Prosjektene lagres lokalt i nettleseren eller appen på enheten du bruker. De synkroniseres ikke automatisk mellom enheter. Du kan overføre en kopi med «Del prosjekt» og «Importer prosjekt». Nettleser og installert app kan ha separate lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</p></details>
+    <details><summary>Hvordan deler jeg et prosjekt?</summary><p>Åpne prosjektet i Mine prosjekter og trykk «Del prosjekt». Velg en mottaker i enhetens delingsmeny, eller last ned prosjektfilen og send den videre. Mottakeren velger «Importer prosjekt» i Mine prosjekter og åpner filen. Delingen tar med prosjektopplysninger, kontaktopplysninger, notater, scenariovalg og avkrysninger. Det opprettes en ny kopi; senere endringer synkroniseres ikke.</p></details>
     <details><summary>Hvordan installerer jeg appen?</summary><p>Bruk installasjonsikonet i toppfeltet for veiledning. På Android og i Chrome på datamaskin kan nettleseren tilby installasjon. På iPhone og iPad kan du bruke Chrome eller Safari: åpne Del-menyen og velg «Legg til på Hjem-skjerm».</p></details>
     <details><summary>Kan jeg bruke Arealplan uten nett?</summary><p>Etter første fullførte innlasting kan appens sider og veiledning brukes uten nett. Eksterne dokumenter og lenker krever nettilgang.</p></details>
     <details><summary>Er anbefalt team og tidsbruk bindende?</summary><p>Nei. Anbefalingene er planleggingsanslag basert på valgene dine. Tilpass bemanning, kompetanse, timebudsjett og fremdrift til prosjektets omfang, faglige behov og avklaringer med kommunen.</p></details>
@@ -123,7 +124,7 @@
     <li><h3>Bruk Plankunnskap ved behov</h3><p>Velg et dokument fra <b>Plankunnskap</b> for å lære hva det betyr, når det trengs og hva det bør inneholde. På mobil sveiper du mot venstre for neste dokument og mot høyre for forrige. Du kan også bruke <b>Forrige</b> og <b>Neste</b>.</p></li>
     <li><h3>Avslutt eller gjenåpne prosjektet</h3><p>Åpne prosjektet i <b>Mine prosjekter</b> og sett status til <b>Avsluttet</b> når arbeidet er ferdig. Prosjektet blir inaktivt, men beholder valg og fremdrift. Avsluttede prosjekter kan flyttes til <b>Arkiv</b> med «Arkiver prosjekt», eller samlet med «Arkiver alle avsluttede». Fra arkivet kan du hente prosjektet tilbake som avsluttet, eller trykke <b>Gjenåpne prosjekt</b> for å sette det til «Pågår» og gjøre det aktivt igjen.</p></li>
   </ol>
-  <section class="howto-practical" aria-labelledby="howto-practical-title"><h3 id="howto-practical-title">Greit å vite</h3><dl><dt>Installere appen</dt><dd>Bruk installasjonsikonet i toppfeltet. På iPhone kan du bruke Chrome eller Safari: åpne Del-menyen og velg «Legg til på Hjem-skjerm». På Android og Chrome på datamaskin kan nettleseren tilby «Installer app».</dd><dt>Bruke uten nett</dt><dd>Appens sider kan brukes uten nett etter første fullførte innlasting. Eksterne kilder og dokumenter krever nett.</dd><dt>Hvor lagres prosjektene?</dt><dd>På denne enheten, i nettleseren eller den installerte appen. De synkroniseres ikke automatisk mellom enheter, og nettleser og app kan ha ulike lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</dd><dt>Vurdere rådene</dt><dd>Bruk anbefalingene som støtte. Tilpass dem til prosjektet, og kontroller krav med kommunen, aktuelle fagpersoner og gjeldende regelverk.</dd></dl><a href="#faq">Flere spørsmål? Se FAQ →</a></section>
+  <section class="howto-practical" aria-labelledby="howto-practical-title"><h3 id="howto-practical-title">Greit å vite</h3><dl><dt>Installere appen</dt><dd>Bruk installasjonsikonet i toppfeltet. På iPhone kan du bruke Chrome eller Safari: åpne Del-menyen og velg «Legg til på Hjem-skjerm». På Android og Chrome på datamaskin kan nettleseren tilby «Installer app».</dd><dt>Bruke uten nett</dt><dd>Appens sider kan brukes uten nett etter første fullførte innlasting. Eksterne kilder og dokumenter krever nett.</dd><dt>Hvor lagres prosjektene?</dt><dd>På denne enheten, i nettleseren eller den installerte appen. De synkroniseres ikke automatisk mellom enheter, og nettleser og app kan ha ulike lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</dd><dt>Dele et prosjekt</dt><dd>Åpne prosjektet i Mine prosjekter og trykk «Del prosjekt». Send prosjektfilen videre. Mottakeren velger «Importer prosjekt» og åpner filen. En ny kopi opprettes, med opplysninger, valg og fremdrift. Senere endringer synkroniseres ikke mellom kopiene.</dd><dt>Vurdere rådene</dt><dd>Bruk anbefalingene som støtte. Tilpass dem til prosjektet, og kontroller krav med kommunen, aktuelle fagpersoner og gjeldende regelverk.</dd></dl><a href="#faq">Flere spørsmål? Se FAQ →</a></section>
 </article>
 <article id="versions" hidden aria-labelledby="versions-title"></article>
 <dialog id="pdlg" aria-labelledby="pdlg-t">
@@ -173,12 +174,13 @@
         </div>
       </fieldset>
       <label>Beskrivelse og notater<textarea name="notat" rows="3" maxlength="2000"></textarea></label>
+      <p id="project-sharing-note" class="project-sharing-note" hidden>Deling sender en kopi som prosjektfil, inkludert kontaktopplysninger og notater. Mottakeren velger «Importer prosjekt» i Mine prosjekter. Endringer synkroniseres ikke.</p>
       <p id="pfeil" class="err" role="alert" hidden></p>
     </div>
     <div class="df project-dialog-actions">
       <div class="project-secondary-actions">
         <button type="button" id="pslett" class="danger" aria-label="Slett prosjekt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5m4-5v5"/></svg><span>Slett</span></button>
-        <button type="button" id="pdlg-avbryt">Avbryt</button>
+        <button type="button" id="share-project" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-4 4 4-4 4 4M5 13v7h14v-7"/></svg><span>Del prosjekt</span></button><button type="button" id="pdlg-avbryt">Avbryt</button>
       </div>
       <div class="project-primary-actions">
         <button type="submit" id="parchive" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v11H4zM3 4h18v5H3zM10 13h4"/></svg><span>Arkiver</span></button>
