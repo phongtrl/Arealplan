@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.9',
+    title: 'Oppdatert presentasjon',
+    description: 'Produktutviklerens satsingsområder er presisert.',
+    changes: ['Presentasjonen omfatter ingeniørbransjen, produktutvikling, KI-strategier, forretningsutvikling og ledelse.']
+  },
+  {
     version: '1.5.8',
     title: 'Hele bunnmenyen på Android',
     description: 'Mobilvisningen tar hensyn til den synlige appflaten og navigasjonsfeltet.',
