@@ -6,6 +6,7 @@
   --ok:#4F7358;--danger:#A9503F;--wood:#8D7857;--tint-bg:#E6EBE3;--tint-line:#C5D0C4;--warn-bg:#F3ECDD;--warn-line:#D3BF97;
   --shadow:rgba(35,37,31,.14);
   --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho","Iowan Old Style",Georgia,serif;
+  --brand:Manrope,"Helvetica Neue",Arial,sans-serif;
   --heading:Manrope,"Avenir Next","Helvetica Neue",system-ui,sans-serif;
   --sans:"Hiragino Sans","Yu Gothic UI","Avenir Next","Helvetica Neue",system-ui,sans-serif;
   --radius:10px;--r-sm:8px;--edge:24px;--ease:cubic-bezier(.2,.7,.2,1);
@@ -228,9 +229,9 @@ dd{margin:2px 0 0;color:var(--muted)}
 #splash .logo{width:min(312px,80vw);height:auto}
 #splash .logo{opacity:0}
 #splash.ready .logo{animation:brand-logo-in .7s var(--ease) both}
-.wordmark{font-family:var(--sans);font-weight:400;letter-spacing:-.045em;line-height:1.2}
+.wordmark{font-family:var(--brand);font-weight:400;letter-spacing:-.045em;line-height:1.2}
 .wordmark strong,.splash-wordmark strong{font-weight:750}
-#splash .splash-wordmark{display:block;margin:0;padding:.08em .12em;white-space:nowrap;font:400 clamp(2rem,6vw,3.25rem)/1.25 var(--sans);letter-spacing:-.055em}
+#splash .splash-wordmark{display:block;margin:0;padding:.08em .12em;white-space:nowrap;font:400 clamp(2rem,6vw,3.25rem)/1.25 var(--brand);letter-spacing:-.055em}
 .splash-wordmark strong,.splash-wordmark span{opacity:0;will-change:opacity}
 #splash.ready .splash-wordmark strong{animation:brand-word-in .55s .75s ease both}
 #splash.ready .splash-wordmark span{animation:brand-word-in .55s 1.1s ease both}
@@ -701,7 +702,7 @@ body:has(#guide:not([hidden])){overflow-x:clip}
 .about-intro>.eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--wood)}
 #about .about-product{display:flex;align-items:center;gap:4px;margin:16px 0 18px;line-height:1.2}
 .about-product-logo{flex:0 0 88px;width:88px;height:auto}
-.about-product-name{font-family:var(--sans);font-size:clamp(2rem,6.5vw,2.8rem);font-weight:400;letter-spacing:-.055em;white-space:nowrap}
+.about-product-name{font-family:var(--brand);font-size:clamp(2rem,6.5vw,2.8rem);font-weight:400;letter-spacing:-.055em;white-space:nowrap}
 .about-product-name strong{font-weight:750}
 #about .about-lead{max-width:54ch;font-size:.95rem;line-height:1.8}
 .about-pillars{display:flex;flex-wrap:wrap;gap:8px 16px;list-style:none;margin:22px 0 0;padding:16px 0 0;border-top:1px solid var(--line)}
@@ -799,3 +800,5 @@ footer{padding-bottom:env(safe-area-inset-bottom,0px)}
   .project-primary-actions:has(#psubmit.icon-action){display:flex;flex-wrap:wrap;justify-content:flex-end}
   #pdlg .project-primary-actions #psubmit.icon-action{grid-column:auto;order:0;min-width:44px;padding:0}
 }
+
+.wordmark,.splash-wordmark,.about-product-name{font-synthesis:none;font-optical-sizing:auto}

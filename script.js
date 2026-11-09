@@ -747,7 +747,7 @@ async function showSplash(userRequested = false) {
   document.body.append(splash);
   const image = splash.querySelector('img');
   try {
-    await image.decode();
+    await Promise.all([image.decode(), document.fonts.load('400 32px Manrope', 'Arealplan'), document.fonts.load('750 32px Manrope', 'Arealplan')]);
   } catch (error) {
     // Ikke vis navnet alene dersom logosymbolet ikke kan lastes.
     if (splash.isConnected) splash.remove();

@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.5',
+    title: 'Lik logoskrift på alle enheter',
+    description: 'Produktnavnet bruker samme lokalt lagrede font på mobil og desktop.',
+    changes: ['Samordnet logoskrift i toppfelt, åpningsanimasjon og Om Arealplan.', 'Logoanimasjonen venter på både bilde og skrifttyper før den starter.']
+  },
+  {
     version: '1.5.4',
     title: 'Logisk rekkefølge på lagring',
     description: 'Lagre ligger mellom deling og Lagre og åpne.',
