@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.3',
+    title: 'Samlede prosjekthandlinger',
+    description: 'Deling er plassert sammen med lagring i prosjektvinduet.',
+    changes: ['Slett og Avbryt står i egen gruppe, adskilt fra deling og lagring.']
+  },
+  {
     version: '1.5.2',
     title: 'Minimalistiske lagringshandlinger',
     description: 'Prosjektvinduet bruker diskrete og tilgjengelige ikonknapper.',
