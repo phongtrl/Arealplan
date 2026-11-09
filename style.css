@@ -802,3 +802,9 @@ footer{padding-bottom:env(safe-area-inset-bottom,0px)}
 }
 
 .wordmark,.splash-wordmark,.about-product-name{font-synthesis:none;font-optical-sizing:auto}
+
+/* Tydelige undertitler i produktutviklerprofilen. */
+#about .about-section>h4{display:flex;align-items:center;gap:12px;margin:32px 0 16px;font:600 1.05rem/1.5 var(--heading);letter-spacing:-.015em;color:var(--ink)}
+#about .about-section>h4::before{content:"";align-self:stretch;flex:0 0 3px;min-height:22px;background:var(--wood);border-radius:2px}
+#about .about-section>h4::after{content:"";flex:1;min-width:16px;height:1px;background:var(--line)}
+@media(max-width:44rem){#about .about-section>h4{font-size:1rem;gap:10px;line-height:1.55}}

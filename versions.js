@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.6',
+    title: 'Tydeligere profiltitler',
+    description: 'Utdanning og erfaring er tydeligere markert som seksjoner i Om Arealplan.',
+    changes: ['Større, tydeligere undertitler med bedre luft og diskrete skillelinjer.']
+  },
+  {
     version: '1.5.5',
     title: 'Lik logoskrift på alle enheter',
     description: 'Produktnavnet bruker samme lokalt lagrede font på mobil og desktop.',
