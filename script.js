@@ -214,6 +214,11 @@ function pdialog(id, fromScenario = false) {
   $('#pdlg-e').textContent = p ? 'Prosjekt' + (p.opprettet ? ' · opprettet ' + fmtD(p.opprettet) : '') : 'Prosjekt';
   $('#pdlg-t').textContent = p ? p.navn : 'Nytt prosjekt';
   $('#psubmit .action-label').textContent = p ? 'Lagre endringer' : 'Opprett prosjekt';
+  $('#psubmit').classList.toggle('icon-action', !!p);
+  $('#psubmit').classList.toggle('pri', !p);
+  $('#psubmit').setAttribute('aria-label', p ? 'Lagre endringer' : 'Opprett prosjekt');
+  $('#psubmit').title = p ? 'Lagre endringer' : 'Opprett prosjekt';
+  $('#psubmit svg').innerHTML = p ? '<path d="M4 3h12l4 4v14H4zM8 3v6h8V3M8 21v-7h8v7"/>' : '<path d="M12 5v14M5 12h14"/>';
   $('#pslett').hidden = !p;
   $('#share-project').hidden = !p;
   $('#project-sharing-note').hidden = !p;

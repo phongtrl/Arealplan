@@ -788,3 +788,14 @@ footer{padding-bottom:env(safe-area-inset-bottom,0px)}
   .modern-select-trigger[aria-expanded=true] .modern-select-arrow{transform:translateY(2px) rotate(225deg)}
   .ptools>.modern-select{min-width:160px;max-width:240px}
 }
+
+/* Diskrete ikonhandlinger i eksisterende prosjekter. */
+#pdlg .project-dialog-actions button.icon-action{display:inline-grid;place-items:center;flex:0 0 44px;width:44px;min-width:44px;height:44px;padding:0;border-color:transparent;background:transparent;color:var(--muted)}
+#pdlg .project-dialog-actions button.icon-action svg{width:21px;height:21px;stroke-width:1.5}
+#pdlg .project-dialog-actions button.icon-action .action-label{display:none}
+#pdlg .project-dialog-actions button.icon-action:hover{background:var(--hover);border-color:var(--line);color:var(--ink);box-shadow:none}
+#pdlg .project-dialog-actions #psubmit.icon-action{color:var(--ok)}
+@media(max-width:44rem){
+  .project-primary-actions:has(#psubmit.icon-action){display:flex;flex-wrap:wrap;justify-content:flex-end}
+  #pdlg .project-primary-actions #psubmit.icon-action{grid-column:auto;order:0;min-width:44px;padding:0}
+}

@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.2',
+    title: 'Minimalistiske lagringshandlinger',
+    description: 'Prosjektvinduet bruker diskrete og tilgjengelige ikonknapper.',
+    changes: ['Deling og lagring vises som ikoner i eksisterende prosjekter.', 'Diskett med pil betyr lagre og åpne veilederen. Nye prosjekter beholder en tydelig Opprett-knapp.']
+  },
+  {
     version: '1.5.1',
     title: 'Deling direkte fra prosjektkort',
     description: 'Delingsikonet ligger nå ved siden av redigering.',
