@@ -86,12 +86,13 @@
 <main id="prosjekter" hidden>
   <div class="phead">
     <div><h2>Mine prosjekter</h2><p class="sub" id="pantall"></p></div>
-    <div class="ptools"><button id="import-project" type="button">Importer prosjekt</button><input id="project-file" type="file" accept=".json,application/json" hidden>
+    <div class="ptools">
       <input id="psok" type="search" placeholder="Søk etter navn, nummer, kommune …" aria-label="Søk i prosjekter">
       <select id="psort" aria-label="Sorter prosjekter"><option value="endret">Sist endret</option><option value="navn">Navn</option><option value="nr">Prosjektnummer</option></select>
     </div>
   </div>
   <div class="project-view-bar"><nav class="project-views" aria-label="Prosjektoversikt"><button type="button" id="view-projects" aria-pressed="true">Prosjekter <span id="projects-count">0</span></button><button type="button" id="view-archive" aria-pressed="false">Arkiv <span id="archive-count">0</span></button></nav><button id="archive-completed" type="button" hidden>Arkiver alle avsluttede</button></div>
+  <input id="project-file" type="file" accept=".json,application/json" hidden>
   <div id="plist" class="pgrid"></div>
   <p class="pnote">Prosjektene lagres kun i denne nettleseren.</p>
 </main>

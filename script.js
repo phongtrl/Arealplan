@@ -291,7 +291,7 @@ function renderProj() {
   $('#view-projects').setAttribute('aria-pressed', !projectArchiveView);
   $('#view-archive').setAttribute('aria-pressed', projectArchiveView);
   $('#archive-completed').hidden = projectArchiveView || !P.liste.some(p => isClosed(p) && !p.arkivert);
-  const ny = '<button class="pcard pnew" data-ny="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Opprett nytt prosjekt</button>';
+  const ny = '<button class="pcard pnew project-action-card" data-ny="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Opprett nytt prosjekt</span><small>Start et nytt planarbeid</small></button><button id="import-project" class="pcard pimport project-action-card" type="button" data-import="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 15v5h16v-5"/></svg><span>Importer prosjekt</span><small>Åpne en delt prosjektfil</small></button>';
   $('#plist').innerHTML = (projectArchiveView ? '' : ny) + (list.length ? list.map(p => {
     const i = p.info || {}, pl = D.plantyper.find(x => x.id === p.plan), n = Object.keys(p.d || {}).length;
     const meta = [i.oppdragsgiver, i.kommune].filter(Boolean).map(esc).join(' · ');
@@ -387,7 +387,6 @@ function initProj() {
   $('#pdlg').onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
   $('#pslett').onclick = pslett;
   $('#share-project').onclick = shareProject;
-  $('#import-project').onclick = () => $('#project-file').click();
   $('#project-file').onchange = importProjectFile;
   $('#save-scenario').onclick = () => pdialog(null, true);
   $('#pvelg').onchange = e => { psave(); popen(e.target.value); };

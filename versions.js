@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.4.1',
+    title: 'Import ved siden av oppretting',
+    description: 'De to inngangene til et prosjekt står nå samlet i oversikten.',
+    changes: ['Importer prosjekt vises som et eget kort ved siden av Opprett nytt prosjekt, med samme formspråk og et eget ikon.']
+  },
+  {
     version: '1.4.0',
     title: 'Del prosjekter',
     description: 'Overfør prosjektkopier til andre brukere eller egne enheter.',

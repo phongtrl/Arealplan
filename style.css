@@ -722,7 +722,13 @@ body:has(#guide:not([hidden])){overflow-x:clip}
   #about .about-education span{text-align:left}
 }
 
-#import-project{min-height:42px;white-space:nowrap;font-size:.8rem}
+.project-action-card{align-items:center;justify-content:center;gap:9px;text-align:center;color:var(--muted);font-size:.9rem;font-weight:500;background:transparent;border:1px dashed var(--line-strong)}
+.project-action-card svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s var(--ease)}
+.project-action-card small{font-size:.73rem;font-weight:400;color:var(--muted)}
+.project-action-card:hover{background:var(--hover);color:var(--ink);border-color:var(--wood);box-shadow:none}
+.project-action-card:hover svg{transform:translateY(-2px)}
+.pimport.project-action-card{border-style:solid;border-color:var(--line)}
+.pimport.project-action-card:hover{border-color:var(--line-strong)}
 #pdlg .project-sharing-note{margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--muted);font-size:.75rem;line-height:1.6}
 #share-project:disabled{opacity:.5;cursor:wait}
 @media(max-width:44rem){.project-secondary-actions{flex-wrap:wrap}#pdlg .project-dialog-actions{max-width:100%}}
