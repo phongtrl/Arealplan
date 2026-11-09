@@ -331,6 +331,10 @@ function initProj() {
   $('#psok').oninput = $('#psort').onchange = renderProj;
   popen(P.aktiv);
 }
+const guideFoldState = new Map();
+function foldedSection(title, items, key, initiallyOpen = false) {
+  return items.length ? `<details class="guide-fold" data-fold="${key}"${initiallyOpen ? ' open' : ''}><summary><span class="fold-title">${title}</span><span class="fold-count">${items.length}</span></summary><div class="fold-content"><ul>${items.join('')}</ul></div></details>` : '';
+}
 const sec = (h, items, tag = 'ul', cnt) => items.length ? `<h2>${h}${cnt ? '<span class="cnt"></span>' : ''}</h2><${tag}>${items.join('')}</${tag}>` : '';
 
 function renderTeam(plan) {
@@ -338,7 +342,7 @@ function renderTeam(plan) {
   const project = cur();
   const rows = roles => roles.map(role => `<li class="team-role"><div class="team-role-heading"><b>${esc(role.name)}</b><span class="team-count">${esc(role.count)}</span></div><p>${esc(role.task)}</p><p class="team-when"><span>Involveres</span> ${esc(role.when)}</p>${role.triggers?.length ? `<p class="team-trigger">Basert på: ${role.triggers.map(id => esc(D.faktorer.find(f => f.id === id).navn)).join(', ')}</p>` : ''}</li>`).join('');
   const context = S.akt === 'kommune' ? 'For kommunen: skill mellom rollen som planmyndighet og eventuelt eget planarbeid. Avklar saksbehandler, interne sektorer og politiske beslutningspunkter.' : S.akt === 'utbygger' ? 'For forslagsstiller: utpek en prosjekteier som godkjenner rammer og beslutninger, og avklar grensesnittet mot kommunen.' : S.akt === 'konsulent' ? 'For konsulentteamet: avklar mandat og leveranser med oppdragsgiver. Oppdragsgiver og kommunen inngår normalt ikke i bemanningen til konsulentteamet.' : 'Avklar hvem som er prosjekteier, forslagsstiller og kommunens kontaktperson før oppstart.';
-  return `<aside class="team-plan" aria-labelledby="team-title"><p class="eyebrow">Ressursplanlegging</p><h2 id="team-title">Anbefalt team</h2><div class="team-overview"><strong>${team.min}–${team.max}</strong><span>personer i kjerneteamet<br><small>+ fagressurser etter behov</small></span></div><p>${esc(team.explanation)}</p><p class="team-basis">Et planleggingsanslag basert på plantype og valgene dine, ikke et bemanningskrav. Antall gjelder personer gjennom prosjektet, ikke årsverk eller samtidig fulltidsbemanning. Avklar omfang og timebudsjett før bestilling.</p>${project?.info?.leder ? `<p class="team-leader">Registrert prosjektleder: <b>${esc(project.info.leder)}</b></p>` : ''}<details open><summary>Kjerneteam <span class="team-detail-note">roller og ansvar</span></summary><p class="team-note">Én person kan dekke flere roller ved riktig kompetanse. Kvalitetssikring bør utføres av en annen enn forfatteren. Rolleantallene skal derfor ikke summeres direkte.</p><ul class="team-roles">${rows(team.core)}</ul></details><details><summary>Fagressurser <span class="team-detail-note">${team.specialists.length} anbefalte fagroller</span></summary>${team.specialists.length ? `<p class="team-note">Kobles inn for avgrensede leveranser. Roller kan kombineres der kompetansen dekker behovet; antallene skal ikke summeres ukritisk.</p><ul class="team-roles">${rows(team.specialists)}</ul>` : '<p class="team-note">Ingen ekstra fagroller er foreslått ut fra valgene ennå. Avklar fagbehov i oppstartsmøtet; ingen valgte stedsforhold betyr ikke at området er uten risiko.</p>'}</details><details><summary>Samordning og beslutninger</summary><p class="team-note">${context}</p><ul class="team-management"><li><b>Fordel tverrgående ansvar:</b> ROS, medvirkning, barn og unge, klima og universell utforming må ha en navngitt ansvarlig i teamet. Bruk fagstøtte ved behov.</li><li><b>Før oppstart:</b> avtal ansvarlig, leveranse, timebudsjett og frist for hver fagressurs.</li><li><b>Ved milepæler:</b> følg opp fremdrift, økonomi, avhengigheter og beslutninger. Samordne fag før høring og innsending.</li></ul></details></aside>`;
+  return `<details class="team-plan guide-fold" data-fold="team"><summary><span class="fold-title">Anbefalt team</span><small>${team.min}–${team.max} i kjerneteamet + fagressurser</small></summary><div class="fold-content"><p class="eyebrow">Ressursplanlegging</p><div class="team-overview"><strong>${team.min}–${team.max}</strong><span>personer i kjerneteamet<br><small>+ fagressurser etter behov</small></span></div><p>${esc(team.explanation)}</p><p class="team-basis">Et planleggingsanslag basert på plantype og valgene dine, ikke et bemanningskrav. Antall gjelder personer gjennom prosjektet, ikke årsverk eller samtidig fulltidsbemanning. Avklar omfang og timebudsjett før bestilling.</p>${project?.info?.leder ? `<p class="team-leader">Registrert prosjektleder: <b>${esc(project.info.leder)}</b></p>` : ''}<details open><summary>Kjerneteam <span class="team-detail-note">roller og ansvar</span></summary><p class="team-note">Én person kan dekke flere roller ved riktig kompetanse. Kvalitetssikring bør utføres av en annen enn forfatteren. Rolleantallene skal derfor ikke summeres direkte.</p><ul class="team-roles">${rows(team.core)}</ul></details><details><summary>Fagressurser <span class="team-detail-note">${team.specialists.length} anbefalte fagroller</span></summary>${team.specialists.length ? `<p class="team-note">Kobles inn for avgrensede leveranser. Roller kan kombineres der kompetansen dekker behovet; antallene skal ikke summeres ukritisk.</p><ul class="team-roles">${rows(team.specialists)}</ul>` : '<p class="team-note">Ingen ekstra fagroller er foreslått ut fra valgene ennå. Avklar fagbehov i oppstartsmøtet; ingen valgte stedsforhold betyr ikke at området er uten risiko.</p>'}</details><details><summary>Samordning og beslutninger</summary><p class="team-note">${context}</p><ul class="team-management"><li><b>Fordel tverrgående ansvar:</b> ROS, medvirkning, barn og unge, klima og universell utforming må ha en navngitt ansvarlig i teamet. Bruk fagstøtte ved behov.</li><li><b>Før oppstart:</b> avtal ansvarlig, leveranse, timebudsjett og frist for hver fagressurs.</li><li><b>Ved milepæler:</b> følg opp fremdrift, økonomi, avhengigheter og beslutninger. Samordne fag før høring og innsending.</li></ul></details></div></details>`;
 }
 
 function render() {
@@ -371,12 +375,11 @@ function render() {
     (lang ? `<p>Lengste utredning i dette scenarioet: <b>${lang.navn}</b> (+${lang.uker[0]}–${lang.uker[1]} uker).</p>` : '') +
     `<p>Grovt anslag. Utredningene antas å løpe parallelt, og den lengste styrer. Faktisk tid avhenger av kommunens kapasitet, kvaliteten på underlaget og eventuelle innsigelser.</p></div>`;
   out.innerHTML =
-    (project ? projectHeading(project, p) : `<h2>${p.navn}<span class="ref">${p.r}</span></h2>`) + `<p class="sub">${p.beskrivelse}</p>${project ? `<p class="project-plan-ref">${esc(p.r)}</p>` : ''}<button id="alle" class="link">Åpne alle beskrivelser</button>` + box +
-    sec('Gjenkjent scenario', signal) +
+    (project ? projectHeading(project, p) : `<h2>${p.navn}<span class="ref">${p.r}</span></h2>`) + `<p class="sub">${p.beskrivelse}</p>${project ? `<p class="project-plan-ref">${esc(p.r)}</p>` : ''}<button id="alle" class="link">Åpne alle</button>` + box +
+    foldedSection('Gjenkjent scenario', signal, 'scenario', true) +
     renderTeam(p) +
     sec('Anbefalt prosess', steps.map(x => li(x, 'steg')), 'ol', 1) +
-    `<aside class="work-order" aria-labelledby="work-order-title">
-      <h3 id="work-order-title">Hva gjør du først?</h3>
+    `<details class="guide-fold work-order" data-fold="rekkefolge"><summary><span class="fold-title">Hva gjør du først?</span><small>Arbeidsrekkefølge og parallelle oppgaver</small></summary><div class="fold-content">
       <p>Utredninger og plandokumenter utvikles delvis parallelt. Listene nedenfor er sjekklister, ikke en fast arbeidsrekkefølge.</p>
       <ol>
         <li><b>Innhent kunnskap og innspill.</b> Start medvirkning tidlig, og avklar barn og unges interesser før løsningen låses. Medvirkning fortsetter gjennom planarbeidet.</li>
@@ -387,11 +390,11 @@ function render() {
       </ol>
       <p class="work-order-note"><b>Hvorfor står ROS begge steder?</b> Det er samme analyse: Den starter som utredning og oppdateres til et dokument som følger planforslaget. Avkryssingene skiller mellom gjennomført utredning og ferdig dokument i planforslaget.</p>
       <p class="work-order-note">Illustrasjoner forklarer løsningen. Bindende krav må sikres i plankart og bestemmelser. Omfanget av arbeidet tilpasses plantype og tiltak.</p>
-    </aside>` +
+    </div></details>` +
     sec('Utredninger og tema', [...f.map(x => li(x, 'utr')), ...D.alltid.map(x => li(x, 'utr'))], 'ul', 1) +
     sec('Innhold i planforslaget', p.innhold.map(x => li(x, 'inn')), 'ul', 1) +
-    sec('Risiko og fallgruver', risiko) +
-    sec('Veiledere og eksempeldokumenter', D.dok.filter(x => !x.p || x.p.includes(S.plan)).map(x => `<li><div class="row">${a(x.t, x.u)}<span class="ref">${x.k}</span></div></li>`));
+    foldedSection('Risiko og fallgruver', risiko, 'risiko') +
+    foldedSection('Veiledere og eksempeldokumenter', D.dok.filter(x => !x.p || x.p.includes(S.plan)).map(x => `<li><div class="row">${a(x.t, x.u)}<span class="ref">${x.k}</span></div></li>`), 'ressurser');
   wireToggle();
   updateProgress();
 }
@@ -410,12 +413,22 @@ function updateProgress() {
 }
 
 function wireToggle() {
-  const b = $('#alle'), ds = () => [...document.querySelectorAll('#out details')];
+  const b = $('#alle'), ds = [...document.querySelectorAll('#out details')];
+  const prefix = (P.aktiv || 'scenario') + ':' + S.plan + ':';
+  ds.filter(detail => detail.matches('.guide-fold')).forEach(detail => {
+    // Nye scenariovarsler skal vises, selv om en tidligere varselliste var lukket.
+    const key = prefix + detail.dataset.fold + (detail.dataset.fold === 'scenario' ? ':' + detail.textContent : '');
+    if (guideFoldState.has(key)) detail.open = guideFoldState.get(key);
+    detail.addEventListener('toggle', () => guideFoldState.set(key, detail.open));
+  });
+  const update = () => { b.textContent = ds.some(detail => !detail.open) ? 'Åpne alle' : 'Lukk alle'; };
   b.onclick = () => {
-    const open = ds().some(d => !d.open);
-    ds().forEach(d => d.open = open);
-    b.textContent = open ? 'Lukk alle beskrivelser' : 'Åpne alle beskrivelser';
+    const open = ds.some(detail => !detail.open);
+    ds.forEach(detail => { detail.open = open; });
+    update();
   };
+  ds.forEach(detail => detail.addEventListener('toggle', update));
+  update();
 }
 
 function setTheme(t) {

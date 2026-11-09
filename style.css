@@ -652,3 +652,27 @@ body:has(#guide:not([hidden])){overflow-x:clip}
   #pdlg .project-primary-actions button{min-width:0;padding:10px 8px;font-size:.73rem}
   #pdlg .project-primary-actions #psubmit{grid-column:1/-1;order:1;min-height:44px}
 }
+
+/* Støtteinnhold åpnes ved behov; prosess og sjekklister er alltid synlige. */
+#out>.guide-fold{margin:20px 0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+#out>.guide-fold>summary{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;min-height:64px;padding:18px 42px 18px 18px}
+#out>.guide-fold>summary::before{left:auto;right:20px;top:27px;transform:rotate(45deg)}
+#out>.guide-fold[open]>summary::before{transform:rotate(225deg)}
+#out>.guide-fold>summary:hover{background:var(--hover)}
+.fold-title{font:500 .96rem/1.5 var(--heading);letter-spacing:-.015em;overflow-wrap:anywhere}
+.fold-count{font:400 .72rem/1.5 var(--sans);color:var(--muted);padding:1px 7px;border:1px solid var(--line);border-radius:20px}
+#out>.guide-fold>summary>small{flex-basis:100%;color:var(--muted);font:400 .73rem/1.5 var(--sans)}
+#out>.guide-fold>.fold-content{padding:0 18px 18px;border-top:1px solid var(--line)}
+.fold-content>ul{margin-top:14px}
+.fold-content>p{padding-left:0}
+#out>.guide-fold .fold-content .row{padding-left:0}
+#out>.guide-fold .fold-content .row>a{overflow-wrap:anywhere}
+#out>.guide-fold[data-fold="scenario"]{border-color:var(--warn-line)}
+#out>.guide-fold[data-fold="scenario"]>summary{background:var(--warn-bg)}
+#out>.guide-fold[data-fold="scenario"] .alert{margin-left:0}
+#out>.team-plan.guide-fold{background:var(--page)}
+#out>.team-plan.guide-fold .fold-content{padding-top:18px}
+#out>.work-order.guide-fold{background:var(--tint-bg);border-color:var(--tint-line)}
+#out>.work-order.guide-fold .fold-content{padding-top:10px;border-color:var(--tint-line)}
+@media(max-width:44rem){#out>.guide-fold>summary{padding-left:14px}#out>.guide-fold>.fold-content{padding-left:14px;padding-right:14px}}
+.team-plan>.fold-content>details{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}

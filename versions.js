@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.3.0',
+    title: 'Ryddigere veiledning',
+    description: 'Støtteinnhold kan åpnes ved behov, mens de sentrale sjekklistene forblir synlige.',
+    changes: ['Åpne/lukk-seksjoner for risiko, kilder, gjenkjent scenario, team og arbeidsrekkefølge.', 'Scenariovarsler vises åpne. Valgt åpne/lukk-tilstand huskes mens du bruker siden.', 'Åpne alle og Lukk alle styrer både seksjoner og punktbeskrivelser.']
+  },
+  {
     version: '1.2.1',
     title: 'Nytt handlingsfelt i prosjektvinduet',
     description: 'Prosjekthandlingene har fått et renere og mer responsivt uttrykk.',
