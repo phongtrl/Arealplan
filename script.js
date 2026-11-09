@@ -295,11 +295,11 @@ function renderProj() {
   $('#plist').innerHTML = (projectArchiveView ? '' : ny) + (list.length ? list.map(p => {
     const i = p.info || {}, pl = D.plantyper.find(x => x.id === p.plan), n = Object.keys(p.d || {}).length;
     const meta = [i.oppdragsgiver, i.kommune].filter(Boolean).map(esc).join(' · ');
-    return `<button class="pcard${p.id === P.aktiv && !isClosed(p) ? ' on' : ''}" data-pid="${esc(p.id)}" data-project-status="${esc(i.status || '')}">` +
+    return `<article class="pcard${p.id === P.aktiv && !isClosed(p) ? ' on' : ''}" data-pid="${esc(p.id)}" data-project-status="${esc(i.status || '')}">` +
       `<span class="pc-top"><span>Prosjektnr: ${i.nr ? esc(i.nr) : 'Ikke angitt'}</span>${p.id === P.aktiv && !isClosed(p) ? '<span class="pc-akt">Aktiv</span>' : isClosed(p) ? '<span class="pc-inactive">Inaktiv</span>' : ''}</span>` +
-      `<span class="pc-navn">${esc(p.navn)}</span>${projectStamps(p, pl)}` +
+      `${isClosed(p) || p.arkivert ? `<span class="pc-navn">${esc(p.navn)}</span>` : `<a class="pc-navn pc-title-link" href="#veileder" aria-label="Åpne ${esc(p.navn)} i veilederen">${esc(p.navn)}</a>`}${projectStamps(p, pl)}` +
       `<span class="pc-meta">${meta || 'Ingen oppdragsgiver registrert'}</span>` +
-      `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span></button>`;
+      `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span><span class="pc-card-actions"><button type="button" data-card-action="edit" aria-label="Rediger ${esc(p.navn)}" title="Rediger prosjekt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15z"/></svg></button></span></article>`;
   }).join('') : `<p class="pempty">${q ? 'Ingen prosjekter samsvarer med søket.' : projectArchiveView ? 'Arkivet er tomt. Avsluttede prosjekter kan arkiveres fra prosjektvinduet eller med «Arkiver alle avsluttede».' : 'Du har ingen prosjekter her ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
 }
 let pendingProjectShare = null;
@@ -422,7 +422,14 @@ function initProj() {
   $('#plist').onclick = e => {
     const b = e.target.closest('.pcard'); if (!b) return;
     if (b.dataset.import) { $('#project-file').click(); return; }
-    pdialog(b.dataset.ny ? null : b.dataset.pid);
+    if (b.dataset.ny) { pdialog(null); return; }
+    const project = P.liste.find(item => item.id === b.dataset.pid);
+    if (!project) return;
+    const action = e.target.closest('[data-card-action]');
+    if (action?.dataset.cardAction === 'edit' || isClosed(project) || project.arkivert) { pdialog(project.id); return; }
+    e.preventDefault();
+    psave(); popen(project.id); location.hash = 'veileder';
+    if (mobileLayout.matches) requestAnimationFrame(() => openMobilePage(1));
   };
   $('#view-projects').onclick = () => { projectArchiveView = false; renderProj(); };
   $('#view-archive').onclick = () => { projectArchiveView = true; renderProj(); };

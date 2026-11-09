@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.4.3',
+    title: 'Direkte tilgang fra prosjektkort',
+    description: 'Prosjektkortet åpner veilederen, mens en blyant gir tilgang til redigering.',
+    changes: ['Klikk på prosjektkortet for veiledning. Bruk blyantikonet for redigering.', 'Avsluttede og arkiverte prosjekter må gjenåpnes før de brukes i veilederen.']
+  },
+  {
     version: '1.4.2',
     title: 'Velg nedlasting eller e-post',
     description: 'Prosjektdeling gir et tydelig valg mellom JSON-nedlasting og e-post.',
