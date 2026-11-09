@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.3.1',
+    title: 'Mer harmonisk typografi',
+    description: 'Veiledningen har fått en mer konsekvent leserytme.',
+    changes: ['Samme størrelse og linjehøyde på innholdstekst i støttepaneler og sjekklister.', 'Enhetlige overskrifter i åpne/lukk-seksjonene.']
+  },
+  {
     version: '1.3.0',
     title: 'Ryddigere veiledning',
     description: 'Støtteinnhold kan åpnes ved behov, mens de sentrale sjekklistene forblir synlige.',

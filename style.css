@@ -676,3 +676,16 @@ body:has(#guide:not([hidden])){overflow-x:clip}
 #out>.work-order.guide-fold .fold-content{padding-top:10px;border-color:var(--tint-line)}
 @media(max-width:44rem){#out>.guide-fold>summary{padding-left:14px}#out>.guide-fold>.fold-content{padding-left:14px;padding-right:14px}}
 .team-plan>.fold-content>details{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+
+/* Felles leserytme i prosjektveiledningen. */
+#out{--reading-size:.9rem;--section-title-size:.95rem;--reading-line:1.7}
+#out>.guide-fold>summary>.fold-title{font-family:var(--heading);font-size:var(--section-title-size);font-weight:500;line-height:1.5;letter-spacing:-.015em}
+#out>ul,#out>ol{font-size:var(--reading-size);line-height:var(--reading-line)}
+#out>ul>li>details>summary>b,#out>ol>li>details>summary>b,#out>ul>li>.row>b,#out>ol>li>.row>b{font-size:inherit;line-height:inherit}
+#out>ul>li>details>p,#out>ol>li>details>p{font-size:var(--reading-size);line-height:var(--reading-line)}
+#out>.guide-fold>.fold-content{font-size:var(--reading-size);line-height:var(--reading-line)}
+#out>.guide-fold>.fold-content :is(p,ul,ol,li,dl,dd){font-size:var(--reading-size);line-height:var(--reading-line)}
+#out>.guide-fold>.fold-content :is(.team-role-heading,details>summary,.team-overview>span){font-size:var(--reading-size);line-height:var(--reading-line)}
+#out>.guide-fold>.fold-content .team-detail-note{font-size:.75rem}
+#out>.guide-fold>.fold-content .team-when>span{font-size:inherit}
+#out>.guide-fold>.fold-content .eyebrow{font-size:.72rem;line-height:1.5}
