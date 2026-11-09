@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.4.4',
+    title: 'Bedre tematilpasning på mobil',
+    description: 'Appens farger er bedre samordnet med nettleser- og statusfelt.',
+    changes: ['Følger systemets tema når du ikke har valgt lys eller mørk manuelt.', 'Samordnet bakgrunn, nettleserfarge og iOS-metadata allerede før første visning.', 'Mer hensyn til iPhones statusfelt og skjermkanter.']
+  },
+  {
     version: '1.4.3',
     title: 'Direkte tilgang fra prosjektkort',
     description: 'Prosjektkortet åpner veilederen, mens en blyant gir tilgang til redigering.',

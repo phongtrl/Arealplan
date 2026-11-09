@@ -546,14 +546,21 @@ function wireToggle() {
   update();
 }
 
-function setTheme(t) {
+function setTheme(t, persist = true) {
   document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('theme', t); } catch (e) {}
+  if (persist) { try { localStorage.setItem('theme', t); } catch (e) {} }
+  document.documentElement.style.colorScheme = t;
+  document.querySelector('meta[name="color-scheme"]').content = t;
+  document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = t === 'dark' ? 'black-translucent' : 'default';
   $('#tema').setAttribute('aria-label', t === 'dark' ? 'Bytt til lys modus' : 'Bytt til mørk modus');
-  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#1C1B19' : '#F2EFE8';
+  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#171615' : '#F2EFE8';
 }
 $('#tema').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-setTheme(document.documentElement.dataset.theme || 'light');
+setTheme(document.documentElement.dataset.theme || 'light', false);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+  let saved; try { saved = localStorage.getItem('theme'); } catch (error) {}
+  if (!['light','dark'].includes(saved)) setTheme(event.matches ? 'dark' : 'light', false);
+});
 
 const G = window.GUIDER || [];
 const LOGO = '<img class="logo" src="APlogo.png" width="1536" height="1024" alt="" aria-hidden="true">';
