@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.8',
+    title: 'Hele bunnmenyen på Android',
+    description: 'Mobilvisningen tar hensyn til den synlige appflaten og navigasjonsfeltet.',
+    changes: ['Panelhøyden tilpasses synlig skjermhøyde, med mer plass nederst.', 'På lave mobilskjermer kan siden rulles fremfor at bunnmenyen klippes.']
+  },
+  {
     version: '1.5.6',
     title: 'Tydeligere profiltitler',
     description: 'Utdanning og erfaring er tydeligere markert som seksjoner i Om Arealplan.',

@@ -1,5 +1,5 @@
-const CACHE = 'arealplan-shell-v63';
-const SHELL = ['./', 'index.html', 'style.css', 'script.js', 'select-ui.js', 'app-updates.js', 'build.js', 'team.js', 'versions.js', 'data.js', 'guider.js', 'APlogo.png', 'manifest.webmanifest', 'fonts/Manrope-Variable.ttf', 'fonts/Roboto-Variable.ttf', 'icons/icon-light-180.png', 'icons/icon-light-192.png', 'icons/icon-light-512.png'];
+const CACHE = 'arealplan-shell-v64';
+const SHELL = ['./', 'index.html', 'style.css', 'script.js', 'select-ui.js', 'app-updates.js', 'viewport.js', 'build.js', 'team.js', 'versions.js', 'data.js', 'guider.js', 'APlogo.png', 'manifest.webmanifest', 'fonts/Manrope-Variable.ttf', 'fonts/Roboto-Variable.ttf', 'icons/icon-light-180.png', 'icons/icon-light-192.png', 'icons/icon-light-512.png'];
 async function readRelease() {
   const response = await fetch(new URL('release.json', self.registration.scope), {cache:'no-store'});
   if (!response.ok) throw new Error('Release metadata unavailable');
