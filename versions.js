@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.4',
+    title: 'Logisk rekkefølge på lagring',
+    description: 'Lagre ligger mellom deling og Lagre og åpne.',
+    changes: ['Lagre og åpne er plassert helt til høyre i prosjektvinduet.']
+  },
+  {
     version: '1.5.3',
     title: 'Samlede prosjekthandlinger',
     description: 'Deling er plassert sammen med lagring i prosjektvinduet.',
