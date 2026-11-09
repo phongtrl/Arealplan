@@ -392,6 +392,7 @@ function initProj() {
   $('#pvelg').onchange = e => { psave(); popen(e.target.value); };
   $('#plist').onclick = e => {
     const b = e.target.closest('.pcard'); if (!b) return;
+    if (b.dataset.import) { $('#project-file').click(); return; }
     pdialog(b.dataset.ny ? null : b.dataset.pid);
   };
   $('#view-projects').onclick = () => { projectArchiveView = false; renderProj(); };
