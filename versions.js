@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.3.2',
+    title: 'Tilpassede scenariovarsler',
+    description: 'Gjenkjent scenario følger typografien i resten av veiledningen.',
+    changes: ['Samordnet tekststørrelse, linjehøyde og lettere utheving i scenariovarslene.']
+  },
+  {
     version: '1.3.1',
     title: 'Mer harmonisk typografi',
     description: 'Veiledningen har fått en mer konsekvent leserytme.',

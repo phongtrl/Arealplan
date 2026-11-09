@@ -689,3 +689,8 @@ body:has(#guide:not([hidden])){overflow-x:clip}
 #out>.guide-fold>.fold-content .team-detail-note{font-size:.75rem}
 #out>.guide-fold>.fold-content .team-when>span{font-size:inherit}
 #out>.guide-fold>.fold-content .eyebrow{font-size:.72rem;line-height:1.5}
+
+/* Scenariovarsler følger samme lesestørrelse og rolige vekt som resten. */
+#out>.guide-fold[data-fold="scenario"] .alert{font-family:var(--sans);font-size:var(--reading-size);font-weight:400;line-height:var(--reading-line);overflow-wrap:anywhere}
+#out>.guide-fold[data-fold="scenario"] .alert :is(b,strong){font-size:inherit;font-weight:500;line-height:inherit}
+#out>.guide-fold[data-fold="scenario"] .alert .ref{font-size:.74rem;line-height:1.5;white-space:normal}
