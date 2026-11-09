@@ -302,7 +302,8 @@ function renderProj() {
       `${renderProjectStart(p)}<span class="pc-foot"><span>${n ? `${n} avkrysset` : 'Ingen avkrysninger'}</span><span>${p.endret ? 'Endret ' + fmtD(p.endret) : ''}</span></span></button>`;
   }).join('') : `<p class="pempty">${q ? 'Ingen prosjekter samsvarer med søket.' : projectArchiveView ? 'Arkivet er tomt. Avsluttede prosjekter kan arkiveres fra prosjektvinduet eller med «Arkiver alle avsluttede».' : 'Du har ingen prosjekter her ennå. Opprett et prosjekt for å lagre scenario, avkrysninger og prosjektdetaljer.'}</p>`);
 }
-async function shareProject() {
+let pendingProjectShare = null;
+function shareProject() {
   const saved = P.liste.find(project => project.id === pid);
   if (!saved) return;
   const form = $('#pform');
@@ -314,22 +315,45 @@ async function shareProject() {
   const payload = {format:'arealplan-project',version:1,exportedAt:new Date().toISOString(),project};
   const filename = (projectTitle(project).replace(/[^a-zA-Z0-9æøåÆØÅ._ -]/g, '').slice(0,100) || 'prosjekt') + '.arealplan.json';
   const file = new File([JSON.stringify(payload,null,2)], filename, {type:'application/json'});
-  const button = $('#share-project');
+  pendingProjectShare = {file, project};
+  $('#share-filename').textContent = filename;
+  $('#email-fallback').hidden = true;
+  $('#share-options').hidden = false;
+  $('#share-choice').showModal();
+}
+function downloadProjectCopy() {
+  if (!pendingProjectShare) return;
+  const {file} = pendingProjectShare;
+  const url = URL.createObjectURL(file), link = document.createElement('a');
+  link.href = url; link.download = file.name; document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+function showProjectEmailFallback() {
+  if (!pendingProjectShare) return;
+  const {project,file} = pendingProjectShare;
+  $('#share-options').hidden = true;
+  $('#email-fallback').hidden = false;
+  const subject = 'Arealplan – ' + projectTitle(project);
+  const body = 'Hei!\n\nHer er en kopi av prosjektet «' + project.navn + '».\n\nLEGG VED FILEN: ' + file.name + '\n\nMottaker: Åpne Arealplan → Mine prosjekter → Importer prosjekt, og velg JSON-filen. Endringer i kopiene synkroniseres ikke.\n';
+  $('#compose-project-email').href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  $('#email-fallback-download').focus();
+}
+async function emailProjectCopy() {
+  if (!pendingProjectShare) return;
+  const {file,project} = pendingProjectShare;
+  const button = $('#email-project');
   button.disabled = true;
   try {
-    if (navigator.canShare?.({files:[file]})) {
-      await navigator.share({files:[file],title:project.navn});
-      toast('Prosjektkopien er delt.');
-    } else {
-      const url = URL.createObjectURL(file), link = document.createElement('a');
-      link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
-      toast('Prosjektfilen er klar for nedlasting. Send filen til mottakeren.');
-    }
+    if (!navigator.share || !navigator.canShare?.({files:[file]})) { showProjectEmailFallback(); return; }
+    // Kalles direkte fra brukerens trykk, slik mobilnettlesere krever.
+    await navigator.share({files:[file],title:projectTitle(project),text:'Importer vedlagte JSON-fil i Arealplan → Mine prosjekter → Importer prosjekt.'});
+    $('#share-choice').close();
+    toast('Prosjektfilen er overlevert til delingsmenyen.');
   } catch (error) {
-    if (error.name !== 'AbortError') toast('Kunne ikke dele prosjektet. Prøv igjen i nettleseren.');
+    if (error.name !== 'AbortError') showProjectEmailFallback();
   } finally { button.disabled = false; }
 }
+
 function readSharedProject(payload) {
   const invalid = () => { throw new Error('Filen er ikke en gyldig Arealplan-prosjektfil.'); };
   if (!payload || payload.format !== 'arealplan-project' || payload.version !== 1) invalid();
@@ -387,6 +411,11 @@ function initProj() {
   $('#pdlg').onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
   $('#pslett').onclick = pslett;
   $('#share-project').onclick = shareProject;
+  $('#download-project').onclick = () => { downloadProjectCopy(); $('#share-choice').close(); };
+  $('#email-project').onclick = emailProjectCopy;
+  $('#email-fallback-download').onclick = () => { downloadProjectCopy(); $('#email-download-status').textContent = 'Nedlastingen er startet. Åpne e-posten og legg ved prosjektfilen før du sender.'; };
+  $('#share-choice-close').onclick = () => $('#share-choice').close();
+  $('#share-choice').addEventListener('close', () => { pendingProjectShare = null; $('#email-download-status').textContent = ''; });
   $('#project-file').onchange = importProjectFile;
   $('#save-scenario').onclick = () => pdialog(null, true);
   $('#pvelg').onchange = e => { psave(); popen(e.target.value); };

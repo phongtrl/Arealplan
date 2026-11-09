@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.4.2',
+    title: 'Velg nedlasting eller e-post',
+    description: 'Prosjektdeling gir et tydelig valg mellom JSON-nedlasting og e-post.',
+    changes: ['E-post åpner enhetens delingsmeny med JSON-vedlegget når det støttes.', 'Nettlesere uten vedleggsdeling får egne trinn for nedlasting og e-postutkast med manuelt vedlegg.']
+  },
+  {
     version: '1.4.1',
     title: 'Import ved siden av oppretting',
     description: 'De to inngangene til et prosjekt står nå samlet i oversikten.',
