@@ -808,3 +808,8 @@ footer{padding-bottom:env(safe-area-inset-bottom,0px)}
 #about .about-section>h4::before{content:"";align-self:stretch;flex:0 0 3px;min-height:22px;background:var(--wood);border-radius:2px}
 #about .about-section>h4::after{content:"";flex:1;min-width:16px;height:1px;background:var(--line)}
 @media(max-width:44rem){#about .about-section>h4{font-size:1rem;gap:10px;line-height:1.55}}
+
+.app-update-tools{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.app-update-tools button{min-height:42px;font-size:.8rem;background:var(--card)}
+#versions #app-update-status{margin-bottom:0;font-size:.76rem;color:var(--muted)}
+#app-update-banner{position:fixed;z-index:95;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(480px,calc(100% - 32px));padding:14px 18px;font-size:.8rem;line-height:1.6;background:var(--card);border:1px solid var(--line-strong);border-radius:10px;box-shadow:0 6px 24px var(--shadow)}

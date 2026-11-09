@@ -678,7 +678,7 @@ function renderVersions() {
   const releases = window.APP_RELEASES || [];
   const latest = releases[0];
   $('#app-version').textContent = latest ? 'v' + latest.version : '';
-  $('#versions').innerHTML = `<header class="versions-intro"><p class="eyebrow">Produktutvikling</p><h2 id="versions-title">Versjoner</h2><p>Se hva som er nytt i Arealplan.</p><p class="versions-explanation">Appversjonen beskriver funksjoner og grensesnitt. Fagdata har eget versjonsnummer: ${esc(D.meta.versjon)} (${esc(D.meta.oppdatert)}).</p></header><ol class="release-list">${releases.map((release, index) => `<li class="release-entry"><div class="release-heading"><span class="release-version">v${esc(release.version)}</span>${index === 0 ? '<span class="badge">Denne appversjonen</span>' : ''}</div><h3>${esc(release.title)}</h3><p>${esc(release.description)}</p><ul>${release.changes.map(change => `<li>${esc(change)}</li>`).join('')}</ul></li>`).join('')}</ol><p class="versions-footnote">Nye endringer føres her fra og med v1.0.0. Eldre utviklingsarbeid har ikke en egen dokumentert appversjon. En installert app kan trenge at alle appvinduer lukkes og åpnes igjen før en oppdatering tas i bruk.</p>`;
+  $('#versions').innerHTML = `<header class="versions-intro"><p class="eyebrow">Produktutvikling</p><h2 id="versions-title">Versjoner</h2><p>Se hva som er nytt i Arealplan.</p><p class="versions-explanation">Appversjonen beskriver funksjoner og grensesnitt. Fagdata har eget versjonsnummer: ${esc(D.meta.versjon)} (${esc(D.meta.oppdatert)}).</p><div class="app-update-tools"><button type="button" id="check-app-updates">Se etter oppdateringer</button><p id="app-update-status" role="status">Du bruker v${esc(latest.version)}. Koble til nett for å kontrollere oppdateringer.</p></div></header><ol class="release-list">${releases.map((release, index) => `<li class="release-entry"><div class="release-heading"><span class="release-version">v${esc(release.version)}</span>${index === 0 ? '<span class="badge">Denne appversjonen</span>' : ''}</div><h3>${esc(release.title)}</h3><p>${esc(release.description)}</p><ul>${release.changes.map(change => `<li>${esc(change)}</li>`).join('')}</ul></li>`).join('')}</ol><p class="versions-footnote">Nye endringer føres her fra og med v1.0.0. Eldre utviklingsarbeid har ikke en egen dokumentert appversjon. Når en ny utgave er klar, oppdateres appen samlet. Et åpent prosjektvindu får bli ferdig før siden lastes på nytt. Oppdateringer krever nettilgang.</p>`;
 }
 
 let lastIx = null, lastGuideIndex = null;
@@ -823,11 +823,7 @@ window.addEventListener('appinstalled', () => {
   $('#install-confirm').hidden = true;
   installDialog.close();
 });
-if ('serviceWorker' in navigator && window.isSecureContext) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => { /* Siden fungerer også uten frakoblet modus. */ });
-  });
-}
+
 
 // Mobil: separate sider med naturlig sveiping og tilgjengelige knapper.
 const mobileLayout = matchMedia('(max-width: 55.999rem)');

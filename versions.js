@@ -4,7 +4,7 @@ window.APP_RELEASES = [
     version: '1.5.6',
     title: 'Tydeligere profiltitler',
     description: 'Utdanning og erfaring er tydeligere markert som seksjoner i Om Arealplan.',
-    changes: ['Større, tydeligere undertitler med bedre luft og diskrete skillelinjer.']
+    changes: ['Større, tydeligere undertitler med bedre luft og diskrete skillelinjer.', 'Samlet oppdatering av appfiler og versjonsnummer, også ved reversering. Versjonssiden har fått oppdateringskontroll.']
   },
   {
     version: '1.5.5',
