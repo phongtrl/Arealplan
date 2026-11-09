@@ -694,3 +694,30 @@ body:has(#guide:not([hidden])){overflow-x:clip}
 #out>.guide-fold[data-fold="scenario"] .alert{font-family:var(--sans);font-size:var(--reading-size);font-weight:400;line-height:var(--reading-line);overflow-wrap:anywhere}
 #out>.guide-fold[data-fold="scenario"] .alert :is(b,strong){font-size:inherit;font-weight:500;line-height:inherit}
 #out>.guide-fold[data-fold="scenario"] .alert .ref{font-size:.74rem;line-height:1.5;white-space:normal}
+
+/* Om Arealplan: produktidentitet og en lettere, redaksjonell profil. */
+#about .about-intro{padding:36px 32px 30px;background:var(--page)}
+.about-intro>.eyebrow{display:flex;align-items:center;gap:8px;font-size:.65rem;letter-spacing:.11em;color:var(--muted)}
+.about-intro>.eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--wood)}
+#about .about-product{display:flex;align-items:center;gap:4px;margin:16px 0 18px;line-height:1.2}
+.about-product-logo{flex:0 0 88px;width:88px;height:auto}
+.about-product-name{font-family:var(--sans);font-size:clamp(2rem,6.5vw,2.8rem);font-weight:400;letter-spacing:-.055em;white-space:nowrap}
+.about-product-name strong{font-weight:750}
+#about .about-lead{max-width:54ch;font-size:.95rem;line-height:1.8}
+.about-pillars{display:flex;flex-wrap:wrap;gap:8px 16px;list-style:none;margin:22px 0 0;padding:16px 0 0;border-top:1px solid var(--line)}
+.about-pillars li{margin:0;color:var(--muted);font-size:.7rem;letter-spacing:.02em}
+#about .about-section{padding:32px}
+#about .about-section>.eyebrow{font-size:.65rem;letter-spacing:.12em;color:var(--wood)}
+#about .about-section>h3{margin:7px 0 18px;font-size:1.4rem;font-weight:450;letter-spacing:-.035em}
+#about .about-education li{grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:5px 16px;padding:14px 0}
+#about .about-education li:last-child{border-bottom:0}
+#about .about-education strong{font-weight:450;font-size:.84rem;line-height:1.6}
+#about .about-education span{font-size:.73rem;text-align:right}
+#about h4{margin-top:28px;font-weight:500;letter-spacing:-.01em}
+@media(max-width:44rem){
+  #about .about-intro,#about .about-section{padding:26px 20px}
+  .about-product-logo{flex-basis:64px;width:64px}
+  #about .about-product{gap:6px;margin-top:12px}
+  #about .about-education li{grid-template-columns:minmax(0,1fr)}
+  #about .about-education span{text-align:left}
+}

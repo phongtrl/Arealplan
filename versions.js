@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.3.3',
+    title: 'Fornyet produktpresentasjon',
+    description: 'Om Arealplan har fått et renere uttrykk med produktets logo og navn.',
+    changes: ['Logo og produktnavn erstatter sidetittelen i introduksjonen.', 'Produktutvikler som rolletittel og et mer oversiktlig oppsett for bakgrunn og utdanning.']
+  },
+  {
     version: '1.3.2',
     title: 'Tilpassede scenariovarsler',
     description: 'Gjenkjent scenario følger typografien i resten av veiledningen.',
