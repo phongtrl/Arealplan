@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.5.0',
+    title: 'Moderne nedtrekksmenyer på desktop',
+    description: 'Eksempelscenarioer, sortering og skjemavalg følger samme rolige formspråk.',
+    changes: ['Egne menyer med tydelig valgt alternativ og myk åpning på desktop.', 'Tastaturstøtte, søk ved å skrive og menyer som tilpasser seg tilgjengelig plass.', 'Mobil beholder nettleserens innebygde velgere.']
+  },
+  {
     version: '1.4.4',
     title: 'Bedre tematilpasning på mobil',
     description: 'Appens farger er bedre samordnet med nettleser- og statusfelt.',

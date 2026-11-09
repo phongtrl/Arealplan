@@ -767,3 +767,24 @@ html{background:var(--page)}
 .topbar{padding-top:env(safe-area-inset-top,0px)}
 .tb{padding-left:max(var(--edge),env(safe-area-inset-left,0px));padding-right:max(var(--edge),env(safe-area-inset-right,0px))}
 footer{padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* Enhetlige nedtrekksmenyer på desktop, native valg på mobil. */
+.modern-select{display:block;min-width:0;max-width:100%}
+.modern-select-trigger{display:none}
+.desktop-select-menu{position:fixed;inset:auto;margin:0;padding:5px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);box-shadow:0 12px 30px -12px var(--shadow);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;z-index:250;animation:menu-in .16s var(--ease)}
+.desktop-select-menu button{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:42px;width:100%;padding:10px 12px;text-align:left;font-size:.82rem;font-weight:400;line-height:1.5;border:1px solid transparent;border-radius:6px;overflow-wrap:anywhere}
+.desktop-select-menu button[aria-selected=true]{background:var(--tint-bg)}
+.desktop-select-menu button:hover{background:var(--hover)}
+.desktop-select-menu button:focus-visible{outline:2px solid var(--wood);outline-offset:-2px}
+.desktop-select-check{flex-shrink:0;color:var(--ok);visibility:hidden}
+.desktop-select-menu button[aria-selected=true] .desktop-select-check{visibility:visible}
+.desktop-select-menu button:disabled{opacity:.45;cursor:not-allowed}
+@media(min-width:56rem){
+  .modern-select>select{display:none}
+  .modern-select-trigger{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;min-height:44px;padding:11px 13px;background:var(--page);border:1px solid var(--line);border-radius:8px;font-size:.84rem;font-weight:400;text-align:left}
+  .modern-select-trigger:hover,.modern-select-trigger[aria-expanded=true]{background:var(--hover);border-color:var(--line-strong)}
+  .modern-select-value{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .modern-select-arrow{flex:0 0 6px;width:6px;height:6px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-2px) rotate(45deg);transition:transform .18s var(--ease)}
+  .modern-select-trigger[aria-expanded=true] .modern-select-arrow{transform:translateY(2px) rotate(225deg)}
+  .ptools>.modern-select{min-width:160px;max-width:240px}
+}
