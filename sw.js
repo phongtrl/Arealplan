@@ -1,4 +1,4 @@
-const CACHE = 'arealplan-shell-v68';
+const CACHE = 'arealplan-shell-v69';
 const SHELL = ['./', 'index.html', 'style.css', 'script.js', 'select-ui.js', 'app-updates.js', 'viewport.js', 'build.js', 'team.js', 'economy-model.js', 'economy-ui.js', 'versions.js', 'data.js', 'guider.js', 'APlogo.png', 'manifest.webmanifest', 'fonts/Manrope-Variable.ttf', 'fonts/Roboto-Variable.ttf', 'icons/icon-light-180.png', 'icons/icon-light-192.png', 'icons/icon-light-512.png'];
 async function readRelease() {
   const response = await fetch(new URL('release.json', self.registration.scope), {cache:'no-store'});

@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.6.1',
+    title: 'Roligere sidebytte',
+    description: 'Sidene beholder en stabil størrelse ved navigering.',
+    changes: ['Sidebytte bruker en diskret inntoning uten sideveis bevegelse.', 'Stabilisert tekststørrelse på mobil og plass til rullefelt på desktop. Vanlig manuell zoom er fortsatt tilgjengelig.']
+  },
+  {
     version: '1.6.0',
     title: 'Prosjektøkonomi',
     description: 'En egen side for prosjektets økonomiske rammer og ressursbruk.',

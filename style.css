@@ -18,7 +18,7 @@
 
 /* Base */
 *{box-sizing:border-box}
-html{scroll-padding-top:80px}
+html{scroll-padding-top:80px;scrollbar-gutter:stable;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;background:var(--page);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;transition:background .2s,color .2s}
 h1,h2,h3{font-family:var(--heading);font-weight:450;letter-spacing:-.035em}
 :focus-visible{outline:2px solid var(--wood);outline-offset:3px}
@@ -240,11 +240,8 @@ dd{margin:2px 0 0;color:var(--muted)}
 @keyframes brand-text-in{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 
 /* Bevegelse */
-.enter-r{animation:panel-in-right .25s ease}
-.enter-l{animation:panel-in-left .25s ease}
-.enter-f{animation:fade-in .2s ease}
-@keyframes panel-in-right{from{opacity:0;transform:translateX(24px)}}
-@keyframes panel-in-left{from{opacity:0;transform:translateX(-24px)}}
+/* Page navigation must not move or resize the viewport. */
+.enter-r,.enter-l,.enter-f{animation:fade-in .2s ease}
 @keyframes fade-in{from{opacity:0}}
 @keyframes menu-in{from{opacity:0;transform:translateY(-4px)}}
 @keyframes dlg-in{from{opacity:0;transform:translateY(10px) scale(.99)}}
