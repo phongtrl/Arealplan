@@ -578,6 +578,15 @@ const dd = open => { ddm.hidden = !open; ddb.setAttribute('aria-expanded', open)
 ddb.onclick = () => dd(ddm.hidden);
 document.addEventListener('click', e => { if (!e.target.closest('.dd')) dd(false); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !ddm.hidden) { dd(false); ddb.focus(); } });
+// Re-selecting the current page must not trigger native fragment scrolling.
+$('#nav').addEventListener('click', event => {
+  const link = event.target.closest('a[data-p]');
+  if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  if (link.getAttribute('aria-current') === 'page') {
+    event.preventDefault();
+    dd(false);
+  }
+});
 $('#nav').addEventListener('keydown', e => {
   const menu = [...ddm.querySelectorAll('a')], mi = menu.indexOf(e.target);
   if (mi >= 0 && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {

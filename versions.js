@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.6.2',
+    title: 'Stabil rulleposisjon',
+    description: 'Et nytt trykk på den aktive siden beholder rulleposisjonen.',
+    changes: ['Fjernet et lite rullehopp når du trykker på Prosjekter mens siden allerede er åpen. Det samme gjelder de andre aktive menypunktene.']
+  },
+  {
     version: '1.6.1',
     title: 'Roligere sidebytte',
     description: 'Sidene beholder en stabil størrelse ved navigering.',
