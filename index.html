@@ -96,6 +96,7 @@
   <div id="plist" class="pgrid"></div>
   <p class="pnote">Prosjektene lagres kun i denne nettleseren.</p>
 </main>
+<main id="economy" hidden aria-labelledby="economy-title"><header class="economy-page-heading"><p class="eyebrow">Rammer og ressursbruk</p><h2 id="economy-title">Prosjektøkonomi</h2><p>Sett en økonomisk ramme, fordel planlagte kostnader og følg opp registrert forbruk.</p></header><div id="economy-content"></div></main>
 <article id="guide" hidden></article>
 <article id="about" hidden aria-labelledby="about-title">
   <header class="about-intro"><p class="eyebrow">Utviklet i 2026</p><h2 id="about-title" class="about-product"><img class="logo about-product-logo" src="APlogo.png" width="1536" height="1024" alt="" aria-hidden="true"><span class="about-product-name"><strong>Areal</strong><span>plan</span></span></h2><p class="about-lead">Et verktøy for å gjøre arealplanlegging mer oversiktlig – fra de første prosjektvalgene til faglige avklaringer, bemanning og oppfølging.</p><ul class="about-pillars" aria-label="Produktets fagområder"><li>Arealplanlegging</li><li>GIS</li><li>Prosjektstøtte</li></ul></header>
@@ -125,7 +126,7 @@
     <li><h3>Bruk Plankunnskap ved behov</h3><p>Velg et dokument fra <b>Plankunnskap</b> for å lære hva det betyr, når det trengs og hva det bør inneholde. På mobil sveiper du mot venstre for neste dokument og mot høyre for forrige. Du kan også bruke <b>Forrige</b> og <b>Neste</b>.</p></li>
     <li><h3>Avslutt eller gjenåpne prosjektet</h3><p>Åpne prosjektet i <b>Mine prosjekter</b> og sett status til <b>Avsluttet</b> når arbeidet er ferdig. Prosjektet blir inaktivt, men beholder valg og fremdrift. Avsluttede prosjekter kan flyttes til <b>Arkiv</b> med «Arkiver prosjekt», eller samlet med «Arkiver alle avsluttede». Fra arkivet kan du hente prosjektet tilbake som avsluttet, eller trykke <b>Gjenåpne prosjekt</b> for å sette det til «Pågår» og gjøre det aktivt igjen.</p></li>
   </ol>
-  <section class="howto-practical" aria-labelledby="howto-practical-title"><h3 id="howto-practical-title">Greit å vite</h3><dl><dt>Installere appen</dt><dd>Bruk installasjonsikonet i toppfeltet. På iPhone kan du bruke Chrome eller Safari: åpne Del-menyen og velg «Legg til på Hjem-skjerm». På Android og Chrome på datamaskin kan nettleseren tilby «Installer app».</dd><dt>Bruke uten nett</dt><dd>Appens sider kan brukes uten nett etter første fullførte innlasting. Eksterne kilder og dokumenter krever nett.</dd><dt>Hvor lagres prosjektene?</dt><dd>På denne enheten, i nettleseren eller den installerte appen. De synkroniseres ikke automatisk mellom enheter, og nettleser og app kan ha ulike lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</dd><dt>Dele et prosjekt</dt><dd>Åpne prosjektet i Mine prosjekter og trykk «Del prosjekt». Velg «Last ned JSON» eller «Send på e-post». Velg e-postappen i delingsmenyen når filvedlegg støttes; ellers last ned filen og legg den ved selv. Mottakeren velger «Importer prosjekt» og åpner filen. En ny kopi opprettes, med opplysninger, valg og fremdrift. Senere endringer synkroniseres ikke mellom kopiene.</dd><dt>Vurdere rådene</dt><dd>Bruk anbefalingene som støtte. Tilpass dem til prosjektet, og kontroller krav med kommunen, aktuelle fagpersoner og gjeldende regelverk.</dd></dl><a href="#faq">Flere spørsmål? Se FAQ →</a></section>
+  <section class="howto-practical" aria-labelledby="howto-practical-title"><h3 id="howto-practical-title">Greit å vite</h3><dl><dt>Installere appen</dt><dd>Bruk installasjonsikonet i toppfeltet. På iPhone kan du bruke Chrome eller Safari: åpne Del-menyen og velg «Legg til på Hjem-skjerm». På Android og Chrome på datamaskin kan nettleseren tilby «Installer app».</dd><dt>Bruke uten nett</dt><dd>Appens sider kan brukes uten nett etter første fullførte innlasting. Eksterne kilder og dokumenter krever nett.</dd><dt>Hvor lagres prosjektene?</dt><dd>På denne enheten, i nettleseren eller den installerte appen. De synkroniseres ikke automatisk mellom enheter, og nettleser og app kan ha ulike lagringsområder. Sletting av nettleser- eller appdata kan fjerne prosjektene.</dd><dt>Dele et prosjekt</dt><dd>Åpne prosjektet i Mine prosjekter og trykk «Del prosjekt». Velg «Last ned JSON» eller «Send på e-post». Velg e-postappen i delingsmenyen når filvedlegg støttes; ellers last ned filen og legg den ved selv. Mottakeren velger «Importer prosjekt» og åpner filen. En ny kopi opprettes, med opplysninger, valg og fremdrift. Senere endringer synkroniseres ikke mellom kopiene.</dd><dt>Sette økonomiske rammer</dt><dd>Åpne Økonomi, velg prosjekt og legg inn totalramme, reserve og kostnadsposter. Bruk enten timer × timesats eller et fast beløp. Registrert forbruk vises separat. Trykk «Lagre økonomi» når du er ferdig; tallene følger med ved prosjektdeling.</dd><dt>Vurdere rådene</dt><dd>Bruk anbefalingene som støtte. Tilpass dem til prosjektet, og kontroller krav med kommunen, aktuelle fagpersoner og gjeldende regelverk.</dd></dl><a href="#faq">Flere spørsmål? Se FAQ →</a></section>
 </article>
 <article id="versions" hidden aria-labelledby="versions-title"></article>
 <dialog id="pdlg" aria-labelledby="pdlg-t">
@@ -175,7 +176,7 @@
         </div>
       </fieldset>
       <label>Beskrivelse og notater<textarea name="notat" rows="3" maxlength="2000"></textarea></label>
-      <p id="project-sharing-note" class="project-sharing-note" hidden>Deling sender en kopi som prosjektfil, inkludert kontaktopplysninger og notater. Mottakeren velger «Importer prosjekt» i Mine prosjekter. Endringer synkroniseres ikke.</p>
+      <p id="project-sharing-note" class="project-sharing-note" hidden>Deling sender en kopi som prosjektfil, inkludert kontaktopplysninger, notater og lagret prosjektøkonomi. Mottakeren velger «Importer prosjekt» i Mine prosjekter. Endringer synkroniseres ikke.</p>
       <p id="pfeil" class="err" role="alert" hidden></p>
     </div>
     <div class="df project-dialog-actions">
@@ -199,7 +200,7 @@
   <div class="share-choice-content"><p class="eyebrow">Del en prosjektkopi</p><h2 id="share-choice-title">Hvordan vil du dele?</h2><p id="share-filename"></p>
     <div id="share-options"><button id="download-project" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg><span><strong>Last ned JSON</strong><small>Lagre prosjektfilen og send den videre selv.</small></span></button><button id="email-project" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3zM3 6l9 7 9-7"/></svg><span><strong>Send på e-post</strong><small>Velg e-postappen i enhetens delingsmeny. JSON-filen følger med.</small></span></button></div>
     <div id="email-fallback" hidden><p>Denne nettleseren kan ikke legge filen direkte ved en e-post. Last ned JSON-filen først, og legg den ved selv.</p><button id="email-fallback-download" type="button">1. Last ned JSON-vedlegget</button><a id="compose-project-email" href="mailto:">2. Åpne e-postutkast →</a><p id="email-download-status" role="status"></p></div>
-    <p class="share-copy-note">Kopien inneholder prosjektopplysninger, kontaktinformasjon, notater og fremdrift. Senere endringer synkroniseres ikke.</p><button id="share-choice-close" type="button">Lukk</button>
+    <p class="share-copy-note">Kopien inneholder prosjektopplysninger, kontaktinformasjon, notater, fremdrift og lagret prosjektøkonomi. Ulagrede økonomiutkast deles ikke. Senere endringer synkroniseres ikke.</p><button id="share-choice-close" type="button">Lukk</button>
   </div>
 </dialog>
 <dialog id="install-dialog" aria-labelledby="install-title">
@@ -220,6 +221,8 @@
 <script src="guider.js"></script>
 <script src="team.js"></script>
 <script src="versions.js"></script>
+<script src="economy-model.js"></script>
+<script src="economy-ui.js"></script>
 <script src="script.js"></script>
 <script src="select-ui.js"></script>
 <script src="app-updates.js"></script>

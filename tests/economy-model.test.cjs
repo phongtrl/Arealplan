@@ -1,0 +1,7 @@
+const assert=require('node:assert/strict');global.window={};require('../economy-model.js');const M=window.EconomyModel;
+assert.equal(M.parse('125 000,50'),12500050);assert.equal(M.parse('1.234,56'),123456);assert.equal(M.parse('1234.56'),123456);assert.equal(M.parse('1.234'),123400);assert.equal(M.parse(''),null);assert.equal(M.parse('0'),0);for(const value of ['-1','NaN','1,234.56','1,2,3','1.2345','<script>'])assert.throws(()=>M.parse(value));
+const item={id:'a',label:'Planarbeid',kind:'time',hours100:333,rateOre:99999,amountOre:null,spentOre:10000};
+const budget=M.validate({schema:1,budgetOre:1000000,reserveBp:1000,notes:'',items:[item,{...item,id:'b',kind:'fixed',amountOre:200000,spentOre:null},{...item,id:'c',hours100:null,spentOre:null}]});const t=M.totals(budget);assert.equal(t.plannedOre,532997);assert.equal(t.reserveOre,100000);assert.equal(t.marginOre,367003);assert.equal(t.spentOre,10000);assert.equal(t.incomplete,1);assert.equal(t.spentCount,1);
+for(const invalid of [{...budget,schema:2},{...budget,budgetOre:-1},{...budget,reserveBp:10001},{...budget,budgetOre:1.5},{...budget,items:[item,item]},{...budget,items:[{...item,hours100:1000000,rateOre:M.MAX_MONEY}]}])assert.throws(()=>M.validate(invalid));
+assert.equal(M.totals({...M.empty(),budgetOre:0,items:[{...item,kind:'fixed',amountOre:100}]}).marginOre,-100);
+console.log('PASS Norwegian amounts, exact øre rounding, reserve, incomplete rows, separate actuals, zero budget and invalid import limits');

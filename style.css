@@ -832,3 +832,78 @@ footer{padding-bottom:env(safe-area-inset-bottom,0px)}
 html,body{background-color:var(--page)}
 /* Unngå en kort fargestripe mens selve status-/nettleserfeltet skifter tema. */
 body{transition:color .2s}
+
+/* Prosjektøkonomi */
+.nav-projects-short{display:none}
+#economy{width:100%;max-width:72rem;display:block;margin:32px auto 0}
+.economy-page-heading{margin-bottom:24px}
+#economy h2{margin:6px 0 12px;font:450 clamp(1.8rem,4vw,2.5rem)/1.2 var(--heading);letter-spacing:-.04em}
+.economy-page-heading>p:last-child{margin:0;color:var(--muted);font-size:.9rem;line-height:1.7;max-width:65ch}
+.economy-project-selector{max-width:440px;margin-bottom:24px}
+.economy-project-selector>label{display:block;margin-bottom:8px;font-size:.73rem;color:var(--muted)}
+#economy select{width:100%;min-height:44px;padding:10px 12px;font:400 .85rem var(--sans);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px}
+.economy-project-heading h3{margin:0;font:500 1.15rem/1.4 var(--heading);overflow-wrap:anywhere}
+.economy-project-heading>p{margin:0 0 22px;color:var(--muted);font-size:.76rem}
+.economy-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.economy-metrics>div{padding:18px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);min-width:0}
+.economy-metrics span{display:block;font-size:.73rem;color:var(--muted)}
+.economy-metrics strong{display:block;margin-top:9px;font:500 clamp(1.05rem,2vw,1.4rem)/1.5 var(--heading);letter-spacing:-.025em;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.economy-metrics .economy-over{border-color:var(--danger)}
+.economy-over strong{color:var(--danger)}
+.economy-allocation{padding:14px 0 22px}
+.economy-allocation p{margin:8px 0;font-size:.76rem;color:var(--muted);line-height:1.7}
+.economy-allocation b{font-weight:500;color:var(--ink)}
+.economy-meter{height:6px;margin:12px 0;background:var(--line);border-radius:10px;overflow:hidden}
+.economy-meter>span{display:block;height:100%;background:var(--ok)}
+.economy-meter>span.over{background:var(--danger)}
+#economy-form{padding:24px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
+.economy-section-title{font:500 1.1rem/1.5 var(--heading);letter-spacing:-.02em;color:var(--ink);text-transform:none;margin-bottom:18px}
+.economy-frame-fields{display:grid;grid-template-columns:2fr 1fr;gap:18px;max-width:620px}
+#economy-form label{display:grid;gap:7px;color:var(--muted);font-size:.75rem;min-width:0}
+#economy-form input,#economy-form textarea{width:100%;min-width:0;padding:11px 12px;font:400 .9rem/1.5 var(--sans);background:var(--page);color:var(--ink);border:1px solid var(--line);border-radius:7px}
+#economy-form input:focus,#economy-form textarea:focus{outline:2px solid var(--wood);outline-offset:1px}
+#economy-form textarea{resize:vertical;min-height:88px}
+.economy-hint{margin:12px 0 20px;font-size:.75rem;line-height:1.7;color:var(--muted)}
+.economy-cost-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:28px;border-top:1px solid var(--line);padding-top:24px}
+.economy-cost-heading h3{margin:0;font:500 1.1rem/1.5 var(--heading)}
+#economy-add{min-height:44px;font-size:.8rem}
+.economy-items{display:grid;gap:12px;margin:18px 0 24px}
+.economy-item{padding:16px;background:var(--page)}
+.economy-item-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.economy-item-heading h4{margin:0;font-size:.72rem;font-weight:500;color:var(--wood)}
+.economy-item-heading button{width:40px;height:40px;padding:0;color:var(--muted);border-color:transparent}
+.economy-item-heading button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.economy-item-heading button:hover{color:var(--danger)}
+.economy-item-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.economy-item-fields .economy-label-field{grid-column:span 3}
+.economy-no-items{margin:0;font-size:.83rem;color:var(--muted);line-height:1.7}
+.economy-save-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.economy-save-bar>p{font-size:.75rem;color:var(--muted)}
+.economy-save-bar>div{display:flex;gap:8px;flex-wrap:wrap}
+.economy-save-bar button{min-height:44px;font-size:.8rem}
+.economy-message{padding:12px 14px;margin:16px 0;font-size:.82rem;line-height:1.7;background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:8px}
+.economy-message.error{color:var(--danger);border-color:var(--danger)}
+#economy fieldset:disabled{opacity:.7}
+.economy-empty h3{margin:0 0 12px;font:500 1.2rem var(--heading)}
+.economy-empty p{font-size:.88rem;line-height:1.7;color:var(--muted)}
+.economy-empty a{display:inline-block;margin-top:10px;font-size:.85rem}
+@media(max-width:55.999rem){
+  .nav-projects-long{display:none}.nav-projects-short{display:inline}
+  .tabs{grid-template-columns:auto auto auto minmax(0,1fr)}
+  .tabs>a,.dd>button{padding-inline:4px;font-size:.73rem}
+  #economy{margin-top:20px}
+  .economy-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .economy-metrics>div{padding:14px 12px}
+  .economy-item-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .economy-item-fields .economy-label-field{grid-column:1/-1}
+}
+@media(max-width:44rem){
+  #economy-form{padding:18px 14px}
+  .economy-frame-fields{grid-template-columns:minmax(0,1fr)}
+  #economy-form input,#economy-form textarea,#economy select{font-size:16px}
+  .economy-item{padding:14px 12px}
+  .economy-save-bar>div{width:100%}
+  .economy-save-bar>div>button{flex:1}
+}
+
+.economy-item-total{margin:14px 0 0;font-size:.78rem;font-weight:500;color:var(--ok);font-variant-numeric:tabular-nums}

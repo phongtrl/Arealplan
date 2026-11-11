@@ -1,6 +1,12 @@
 // Nyeste versjon først. Appversjon og fagdataversjon vedlikeholdes separat.
 window.APP_RELEASES = [
   {
+    version: '1.6.0',
+    title: 'Prosjektøkonomi',
+    description: 'En egen side for prosjektets økonomiske rammer og ressursbruk.',
+    changes: ['Sett totalramme og reserve, og planlegg kostnader som timer × sats eller fast beløp.', 'Se margin mot rammen og registrert forbruk, med tydelig varsling ved overskridelse.', 'Økonomien lagres per prosjekt, fungerer uten nett og følger med i delte prosjektfiler.']
+  },
+  {
     version: '1.5.10',
     title: 'Forbedret temabytte på iPhone',
     description: 'Lys og mørk modus er bedre samordnet med toppfeltet på iPhone.',

@@ -1,2 +1,2 @@
 // Generert med scripts/prepare-release.py.
-window.APP_BUILD = {"version": "1.5.10", "build": "arealplan-shell-v67"};
+window.APP_BUILD = {"version": "1.6.0", "build": "arealplan-shell-v68"};

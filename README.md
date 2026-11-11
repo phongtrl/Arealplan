@@ -1,4 +1,4 @@
-# Arealplan101
+# Arealplan
 
 
 ## Installerbar nettapp
@@ -18,3 +18,10 @@ Ved endringer i filene som forhåndslagres, øk versjonen i `CACHE` i `sw.js`. E
 `versions.js` er kilden for appens versjonsnummer og endringslogg. Nyeste oppføring står først og vises i bunnmenyen og på `#versjoner`. Fra og med 1.0.0 registreres nye utgivelser her; tidligere appversjoner er ikke rekonstruert.
 
 Ved neste funksjonsendring: legg til en ny oppføring med økt minor-versjon (for eksempel 1.1.0). Ved feilretting: øk patch-versjonen (for eksempel 1.0.1). Skriv konkrete brukerrettede endringer, øk cache-versjonen i `sw.js`, og kjør `python scripts/prepare-release.py`. Dette oppdaterer `build.js` og `release.json`. Bygg-ID må alltid økes, også ved reversering til et lavere appversjonsnummer. `DATA.meta.versjon` gjelder bare fagdata og er uavhengig av appversjonen.
+
+
+## Prosjektøkonomi
+
+Økonomi lagres i `project.economy` (skjema 1). Beløp er heltallsøre, timer er hundredeler og reserve er basispunkter. Delte prosjekter med økonomi bruker filformatversjon 2; import støtter både 1 og 2. Eldre prosjektfiler uten økonomi er fortsatt gyldige. Ulagrede økonomiutkast beholdes i vinduet ved navigasjon og sperrer automatisk omstart ved appoppdatering til de lagres eller forkastes.
+
+Kontroller økonomiberegningene med `node tests/economy-model.test.cjs`.

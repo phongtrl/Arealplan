@@ -12,11 +12,11 @@
   const initiallyControlled = !!navigator.serviceWorker.controller;
   const banner = document.createElement('aside');
   banner.id = 'app-update-banner'; banner.hidden = true; banner.setAttribute('role','status');
-  banner.innerHTML = '<span>En oppdatert utgave er klar. Lukk prosjektvinduet når du er ferdig for å ta den i bruk.</span>';
+  banner.innerHTML = '<span>En oppdatert utgave er klar. Lagre eller forkast redigeringen når du er ferdig for å ta oppdateringen i bruk.</span>';
   document.body.append(banner);
   function refreshWhenSafe() {
     if (!pendingReload || reloading) return;
-    if (document.querySelector('dialog[open]') || document.hidden) { banner.hidden = false; return; }
+    if (document.querySelector('dialog[open]') || window.EconomyUI?.hasUnsaved() || document.hidden) { banner.hidden = false; return; }
     // Valg og avkrysninger lagres ved endring. Ikke skriv en gammel fanes
     // prosjektkopi over nyere data fra et annet vindu under oppdatering.
     reloading = true;
@@ -29,6 +29,7 @@
   navigator.serviceWorker.addEventListener('message', event => {
     if (event.data?.type === 'APP_UPDATED' && event.data.build !== window.APP_BUILD.build) { pendingReload = true; refreshWhenSafe(); }
   });
+  document.addEventListener('app-edit-complete',refreshWhenSafe);
   document.addEventListener('close', () => { if (pendingReload) setTimeout(refreshWhenSafe,0); }, true);
   function activeBuild(worker) {
     return new Promise(resolve => {

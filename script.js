@@ -317,7 +317,7 @@ function shareProject(projectId = null) {
   const info = projectId ? {...saved.info} : Object.fromEntries(PF.filter(key => key !== 'navn').map(key => [key, form.elements[key].value.trim()]));
   const project = projectId ? {...saved,info} : {...saved, navn:form.elements.navn.value.trim(), info, plan:form.elements.plan.value || null, akt:form.elements.akt.value || null};
   if (project.info.status !== 'Avsluttet') { project.arkivert = false; delete project.arkivertDato; }
-  const payload = {format:'arealplan-project',version:1,exportedAt:new Date().toISOString(),project};
+  const payload = {format:'arealplan-project',version:project.economy?2:1,exportedAt:new Date().toISOString(),project};
   const filename = (projectTitle(project).replace(/[^a-zA-Z0-9æøåÆØÅ._ -]/g, '').slice(0,100) || 'prosjekt') + '.arealplan.json';
   const file = new File([JSON.stringify(payload,null,2)], filename, {type:'application/json'});
   pendingProjectShare = {file, project};
@@ -361,7 +361,7 @@ async function emailProjectCopy() {
 
 function readSharedProject(payload) {
   const invalid = () => { throw new Error('Filen er ikke en gyldig Arealplan-prosjektfil.'); };
-  if (!payload || payload.format !== 'arealplan-project' || payload.version !== 1) invalid();
+  if (!payload || payload.format !== 'arealplan-project' || ![1,2].includes(payload.version)) invalid();
   const raw = payload.project;
   if (!raw || typeof raw.navn !== 'string' || !raw.navn.trim() || raw.navn.length > 120) invalid();
   if (raw.plan !== null && !D.plantyper.some(p => p.id === raw.plan)) invalid();
@@ -382,6 +382,8 @@ function readSharedProject(payload) {
   const allowed = new Set(D.plantyper.flatMap(p => [...p.steg.map(i => 'steg:' + i.t), ...p.innhold.map(i => 'inn:' + i.t)]).concat([...D.faktorer,...D.alltid].map(i => 'utr:' + i.t)));
   const done = Object.fromEntries(Object.entries(raw.d).filter(([key,value]) => allowed.has(key) && (value === 1 || value === true)).map(([key]) => [key,1]));
   const project = {...nytt(raw.navn.trim()),info,plan:raw.plan,akt:raw.akt,sel:[...new Set(raw.sel)],d:done,arkivert:!!raw.arkivert};
+  if (payload.version === 2 && !raw.economy) invalid();
+  if (raw.economy !== undefined) project.economy = window.EconomyModel.validate(raw.economy);
   ['opprettet','endret','t'].forEach(key => { if (typeof raw[key] === 'string' && raw[key].length <= 40 && Number.isFinite(Date.parse(raw[key]))) project[key] = raw[key]; });
   if (project.arkivert) project.arkivertDato = new Date().toISOString();
   if (P.liste.some(p => p.navn === project.navn)) project.navn = project.navn.slice(0,109) + ' (importert)';
@@ -570,7 +572,7 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
 const G = window.GUIDER || [];
 const LOGO = '<img class="logo" src="APlogo.png" width="1536" height="1024" alt="" aria-hidden="true">';
 $('#mark').innerHTML = LOGO;
-$('#nav').innerHTML = `<a href="#veileder" data-p="veileder">Veileder</a><a href="#prosjekter" data-p="prosjekter">Mine prosjekter</a><div class="dd"><button id="ddb" aria-expanded="false" aria-controls="ddm">Guider</button><div class="menu" id="ddm" hidden>${G.map(g => `<a href="#${g.id}" data-p="${g.id}">${g.navn}</a>`).join('')}</div></div>`;
+$('#nav').innerHTML = `<a href="#veileder" data-p="veileder">Veileder</a><a href="#prosjekter" data-p="prosjekter" aria-label="Mine prosjekter"><span class="nav-projects-long">Mine prosjekter</span><span class="nav-projects-short" aria-hidden="true">Prosjekter</span></a><a href="#okonomi" data-p="okonomi">Økonomi</a><div class="dd"><button id="ddb" aria-expanded="false" aria-controls="ddm">Guider</button><div class="menu" id="ddm" hidden>${G.map(g => `<a href="#${g.id}" data-p="${g.id}">${g.navn}</a>`).join('')}</div></div>`;
 const ddb = $('#ddb'), ddm = $('#ddm');
 const dd = open => { ddm.hidden = !open; ddb.setAttribute('aria-expanded', open); };
 ddb.onclick = () => dd(ddm.hidden);
@@ -683,8 +685,9 @@ function renderVersions() {
 let lastIx = null, lastGuideIndex = null;
 function route() {
   resetKnowledgeSwipe();
-  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', info = ['om', 'faq', 'versjoner', 'bruk'].includes(h);
-  $('#veileder').hidden = !!g || pg || info;
+  const h = location.hash.slice(1), g = G.find(x => x.id === h), pg = h === 'prosjekter', economy = h === 'okonomi', info = ['om', 'faq', 'versjoner', 'bruk'].includes(h);
+  $('#veileder').hidden = !!g || pg || economy || info;
+  $('#economy').hidden = !economy;
   $('#prosjekter').hidden = !pg;
   $('#guide').hidden = !g;
   $('#about').hidden = h !== 'om' && h !== 'faq';
@@ -696,7 +699,8 @@ function route() {
   });
   if (g) renderGuide(g);
   if (pg) renderProj();
-  const ix = info ? 3 : g ? 2 : pg ? 1 : 0, el = h === 'bruk' ? $('#howto') : h === 'versjoner' ? $('#versions') : info ? $('#about') : g ? $('#guide') : pg ? $('#prosjekter') : $('#veileder');
+  if (economy) window.EconomyUI.render({followActive:true});
+  const ix = info ? 4 : g ? 3 : economy ? 2 : pg ? 1 : 0, el = h === 'bruk' ? $('#howto') : h === 'versjoner' ? $('#versions') : info ? $('#about') : g ? $('#guide') : economy ? $('#economy') : pg ? $('#prosjekter') : $('#veileder');
   if (lastIx !== null) {
     el.classList.remove('enter-l', 'enter-r', 'enter-f'); void el.offsetWidth;
     const guideIndex = g ? G.indexOf(g) : null;
@@ -706,7 +710,7 @@ function route() {
   lastIx = ix;
   lastGuideIndex = g ? G.indexOf(g) : null;
   document.querySelectorAll('#nav a').forEach(l => l.removeAttribute('aria-current'));
-  const cur = document.querySelector(`#nav a[data-p="${g ? g.id : pg ? 'prosjekter' : 'veileder'}"]`);
+  const cur = document.querySelector(`#nav a[data-p="${g ? g.id : pg ? 'prosjekter' : economy ? 'okonomi' : 'veileder'}"]`);
   if (cur && !info) cur.setAttribute('aria-current', 'page');
   ddb.textContent = 'Plankunnskap';
   ddb.setAttribute('aria-label', g ? 'Plankunnskap, valgt: ' + g.navn : 'Plankunnskap');
